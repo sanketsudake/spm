@@ -38,6 +38,8 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 
+# Build
+build
 
 # References
 # https://github.com/github/gitignore
