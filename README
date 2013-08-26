@@ -1,3 +1,13 @@
+==================================
 SPM [ Snooker Player Management ]
+===================================
 
+Usage
+-----
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+$ ./snooker args
 
+It will create snooker executable

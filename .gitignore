@@ -1,11 +1,44 @@
-*
-!assets/*
-!doc/*  
-!include/*    
-!src/*
-!.gitignore
-!*.cpp
-!*.txt
-!*.py
-!README
-!LICENCE
+#Compile object files
+
+*.slo
+*.lo
+*.o
+*.ko
+
+#Compile Static liabraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+#Executable
+*.out
+*.exe
+*.app
+
+#Headers
+*.h.gch
+
+#Backup files
+*~
+
+#Python code
+*.pyc
+
+#CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+
+# References
+# https://github.com/github/gitignore
+# Add if any entry not present here.
