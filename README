@@ -1,6 +1,11 @@
 ==================================
-SPM [ Snooker Player Management ]
+SPPM [ Snooker Player Profile Manager ]
 ===================================
+
+Requirements:
+Opencv Libraries(C/C++).
+cmake
+
 
 Usage
 -----
