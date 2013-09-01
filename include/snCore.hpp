@@ -22,6 +22,7 @@ using namespace std;
 class snVideo
 {
 	VideoCapture cap;
+public:
 	snVideo(char *filename);
 	snVideo(int no);
 	~snVideo();
@@ -54,9 +55,18 @@ class snBall
 		WHITE,
 	}color;
 	int ismoving;
-
-	snBall(float , float ,snBall::ballcolor ) ;
+public:
+	snBall(float , float ,snBall::ballcolor ,float ) ;
 	~snBall();
 	void updatepos(float x, float y);
+};
+class snTable
+{
+	float length;
+	float breadth;
+public:
+	snTable(float , float);
+	~snTable();
+	void updatedim(float, float);
 };
 #endif
