@@ -13,19 +13,19 @@
 #ifndef __SNCORE__H
 #define __SNCORE__H
 
-#include "opencv2/core/core_c.h"
-#include "opencv2/core/core.hpp"
-#include "opencv2/flann/miniflann.hpp"
-#include "opencv2/imgproc/imgproc_c.h"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/photo/photo.hpp"
-#include "opencv2/video/video.hpp"
-#include "opencv2/features2d/features2d.hpp"
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/calib3d/calib3d.hpp"
-#include "opencv2/ml/ml.hpp"
-#include "opencv2/highgui/highgui_c.h"
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/contrib/contrib.hpp"
+#include <opencv2/opencv.hpp>
+// There are some header files which are not
+// in opencv.hpp
+
+using namespace cv;
+
+class snVideo
+{
+	VideoCapture cap;
+	snVideo(char *filename);
+	snVideo(int no);
+	~snVideo();
+	void getframe(Mat *frame);
+};
 
 #endif
