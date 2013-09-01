@@ -12,7 +12,7 @@
 #include <opencv2/opencv.hpp>
 
 using namespace cv;
-
+using namespace std;
 snVideo::snVideo(char *filename)
 {
 	assert(filename);
@@ -22,12 +22,27 @@ snVideo::snVideo(char *filename)
 
 snVideo::snVideo(int no)
 {
-	assert(!cap);
 	cap = VideoCapture(no);
 	assert(cap.isOpened());
 }
 
-~snVideo()
+snVideo::~snVideo()
 {
-	delete cap;
+	delete &cap;
+}
+snBall::snBall(float x, float y,ballcolor c): color(c)
+{
+	xpos = x;
+	ypos = y;
+	color = c;
+	ismoving = 0;
+	radius = 0;
+}
+snBall::~snBall()
+{
+
+}
+void snBall::updatepos(float x, float y)
+{
+
 }

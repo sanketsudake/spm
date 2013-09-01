@@ -18,7 +18,7 @@
 // in opencv.hpp
 
 using namespace cv;
-
+using namespace std;
 class snVideo
 {
 	VideoCapture cap;
@@ -27,5 +27,36 @@ class snVideo
 	~snVideo();
 	void getframe(Mat *frame);
 };
+class snBall
+{
+	float xpos;
+	float ypos;
+	float radius;
+	/*
+	  No  Color    Points
+	  15   RED     1
+	  1    YELLOW  2
+	  1    GREEN   3
+	  1    BROWN   4
+	  1	   BLUE    5
+	  1	   PINK    6
+	  1	   BLACK   7
+	  1    WHITE   CUE
+	*/
+	enum ballcolor {
+		RED,
+		YELLOW,
+		GREEN,
+		BROWN,
+		BLUE,
+		PINK,
+		BLACK,
+		WHITE,
+	}color;
+	int ismoving;
 
+	snBall(float , float ,snBall::ballcolor ) ;
+	~snBall();
+	void updatepos(float x, float y);
+};
 #endif
