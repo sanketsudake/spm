@@ -1,2 +1,6 @@
-snCore.cpp
+ballDetect.cpp  
+snBgsub.cpp  
+snCore.cpp  
+snKalman.cpp  
 snMain.cpp
+

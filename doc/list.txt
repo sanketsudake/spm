@@ -1,7 +1,1 @@
-List of Files
-In this Folder
-background_subtraction.md
-kalman_filter.md
-particle_filter.md
-object_tracking.md
 idea.png

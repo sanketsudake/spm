@@ -1,2 +1,0 @@
-Identify Balls using HSV
-========================
