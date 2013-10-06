@@ -1,17 +1,17 @@
-<h1>SPM </h1>
+SPM ( Snooker Profile Management )
+===========================
 
-<h2>HowTo</h2>
-
+HowTo
+--------------------
 * Compile code
 
-<code><b>
- git clone https://github.com/tripples/spm.git<br>
- cd spm                                        
- git checkout $(tag) <br>
- mkdir build                            
- cd build                                      
- cmake ..                                      
- make                                           
- cd ..; ./run arg.video</b>
-</code>
+```
+$ git clone https://github.com/tripples/spm.git ; cd spm                                        
+$ git checkout your_tag
+$ mkdir build ; cd build                                      
+$ cmake ..                                      
+$ make 
+$./snooker video_Arg
+```
+
 * Read doc more help.
