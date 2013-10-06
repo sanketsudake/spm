@@ -41,6 +41,10 @@ install_manifest.txt
 # Build
 build
 
+#Video files
+*.avi
+*.mp4
+
 # References
 # https://github.com/github/gitignore
 # Add if any entry not present here.
