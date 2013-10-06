@@ -19,6 +19,7 @@
 
 using namespace cv;
 using namespace std;
+
 class snVideo
 {
 	VideoCapture cap;
@@ -28,6 +29,7 @@ public:
 	~snVideo();
 	void getframe(Mat *frame);
 };
+
 class snBall
 {
 	float xpos;
@@ -60,6 +62,7 @@ public:
 	~snBall();
 	void updatepos(float x, float y);
 };
+
 class snTable
 {
 	float length;
@@ -69,4 +72,5 @@ public:
 	~snTable();
 	void updatedim(float, float);
 };
+
 #endif

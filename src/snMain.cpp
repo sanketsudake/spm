@@ -2,6 +2,7 @@
 #include<iostream>
 using namespace cv;
 using namespace std;
+
 /*
  *Arguments:
  *argc
@@ -9,6 +10,7 @@ using namespace std;
  *Description:
  *Start point for snooker project.
  */
+
 int main(int argc, char **argv)
 {
 	int a, b;
