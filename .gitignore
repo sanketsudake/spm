@@ -45,6 +45,9 @@ build
 *.avi
 *.mp4
 
+#HTML
+*.html
+
 # References
 # https://github.com/github/gitignore
 # Add if any entry not present here.
