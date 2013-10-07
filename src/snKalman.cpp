@@ -10,12 +10,12 @@ using namespace cv;
 		  Point( center.x + d, center.y + d ), color, 2, CV_AA, 0); \
 	line( img, Point( center.x + d, center.y - d ),					\
 		  Point( center.x - d, center.y + d ), color, 2, CV_AA, 0 )
-int H_MIN = 84;
-int H_MAX = 163;
-int S_MIN = 173;
-int S_MAX = 256;
-int V_MIN = 9;
-int V_MAX = 256;
+int H_MIN = 0;
+int H_MAX = 255;
+int S_MIN = 0;
+int S_MAX = 70;
+int V_MIN = 200;
+int V_MAX = 255;
 vector<Point> mousev,kalmanv;
 
 void morphOps(Mat &thresh){
