@@ -7,7 +7,7 @@
 #include<opencv2/core/core.hpp>
 #include<string>
 #include <cmath>
-
+#include <ctime>
 using namespace std;
 using namespace cv;
 
@@ -17,6 +17,8 @@ String ballTag[] = {"Red", "White", "Black", "Blue",
 //
 int shot = -1,flag = 0, shotTemp = 0, shot_change_trigger = 0;
 int xPrev = 0, yPrev = 0;
+double white_distance = 0, time_diff = 0;
+time_t shot_start = time(NULL), shot_end = time(NULL);
 vector<Point> white_positions;
 
 ballDetect :: ballDetect(){
@@ -68,8 +70,9 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 	circle(frame, start, 10, ball_col, 2);
 	circle(frame, expected, 10, ball_col, 2);
 	line(frame, start, expected, expected_color, 1, CV_AA, 0);
-    putText(frame, "Expected shot -----", Point(90,80), 1, 1, expected_color ,2);
-	putText(frame, "Actual shot -----", Point(90,120), 1, 1, actual_color ,2);
+    putText(frame, "Expec. shot -----", Point(90,80), 1, 1, expected_color ,2);
+	putText(frame, "Actual shot ", Point(90,120), 1, 1, actual_color ,2);
+	putText(frame, "-----", Point(200,120), 1, 1, Scalar(255, 255, 255) ,2);
 
 	// slope calculation for hard-coded shot
 	double slope1 = 0, slope2 = 0, angle1 = 0, angle2 = 0, error = 0;
@@ -96,8 +99,11 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 		if(shot)
 		{
 			putText(frame, "ERROR : " + intToString((int)error) + "."
-					+ intToString((int)(error * 1000) - ((int)error) * 1000) + " deg",
-					Point(500, 500), 1, 1, Scalar(250, 30, 250) ,2);
+					+ intToString((int)(error * 1000) - ((int)error) * 1000)
+					+ " deg", Point(500, 500), 1, 1, Scalar(250, 30, 250) ,2);
+			putText(frame, "Distance " + intToString((int)white_distance) + "."
+					+ intToString((int)(white_distance * 1000) - ((int)white_distance) * 1000)
+					, Point(500, 550), 1, 1, Scalar(250, 30, 250) ,2);
 			circle(frame, actual, 10, ball_col, 2);
 			line(frame, start, actual, actual_color, 1, CV_AA, 0);
 		}
@@ -110,9 +116,25 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
             if(!flag)
 			{
 				shot++;
+				shot_end = time(NULL);
+                // Calculating velocity of white balls
+				// First finding total distance covered
+				white_distance = 0;
+				int white_positions_size = (int)white_positions.size();
+				double x_distance = 0, y_distance = 0, curr_distance = 0;
+				for(int i = 0; i < white_positions_size - 1; i++ )
+				{
+					x_distance = white_positions[i+ 1].x - white_positions[i].x;
+					y_distance = white_positions[i+ 1].y - white_positions[i].y;
+					curr_distance = sqrt(pow(x_distance, 2) + pow(y_distance, 2));
+					white_distance = white_distance + curr_distance;
 
+				}
+				//time_diff = difftime(shot_end, shot_start);
+				shot_start = time(NULL);
 				white_positions.clear();
 				shot_change_trigger = 1;
+
 			}
 			flag=1;
         }
@@ -121,12 +143,10 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
             if(shotTemp>20){
 				shotTemp=0;
                 flag=0;
-
             }
         }
         xPrev=x;
         yPrev=y;
-
     }
     else{
         putText(frame,ballTag[ballIndex],Point(x,y-5),1,1,Scalar(255,255,0),1);
@@ -207,7 +227,6 @@ void ballDetect :: trackFilteredObject(int &x, int &y, Mat threshold, Mat &camer
 }
 
 void ballDetect :: initDetect(char *videoInput){
-
     VideoCapture capture;
     Mat src,src_HSV,processed;
     int x=0;
