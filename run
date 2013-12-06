@@ -1,1 +1,2 @@
-./build/snooker $*
+cd build/
+make & ./snooker ~/vg/input/Test_New.avi

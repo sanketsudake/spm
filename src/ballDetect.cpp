@@ -1,13 +1,23 @@
 #include <iostream>
 #include "ballDetect.h"
+#include <unistd.h>
 #include <string>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/core/core.hpp>
+#include<string>
+#include <cmath>
 
 using namespace std;
 using namespace cv;
 
-String ballTag[] = {"Red","White","Black","Blue","Yellow","Pink", "Brown", "Green"};
-int shot=-1,flag=0, shotTemp=0;
-int xPrev=0, yPrev=0;
+// Ball tags for showing on the screen
+String ballTag[] = {"Red", "White", "Black", "Blue",
+					"Yellow", "Pink", "Brown", "Green"};
+//
+int shot = -1,flag = 0, shotTemp = 0, shot_change_trigger = 0;
+int xPrev = 0, yPrev = 0;
+vector<Point> white_positions;
 
 ballDetect :: ballDetect(){
     minval = new Scalar[8];
@@ -42,20 +52,55 @@ string ballDetect :: intToString(int number){
 
 void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redIndex){
 
+
     //use some of the openCV drawing functions to draw crosshairs on your tracked image!
 
     //added 'if' and 'else' statements to prevent
     //memory errors from writing off the screen (ie. (-25,-25) is not within the window!)
-
-    circle(frame,Point(x,y),10,Scalar(0,255,0),2);
-
+	circle(frame,Point(x,y),10,Scalar(0,255,0),2);
+	putText(frame,"Shot No. "+intToString(shot+1),Point(90,40),1,1,Scalar(255,255,0),2);
     // putText(frame,intToString(x)+","+intToString(y),Point(x,y+30),1,1,Scalar(0,255,0),2);
-    putText(frame,"Shot No. "+intToString(shot+1),Point(90,40),1,1,Scalar(255,0,0),2);
+
+	// Hard coded shot error calculations
+	Point start(258, 268), actual(805, 290), expected(805 - 15, 290 + 16);
+	Scalar expected_color(50, 220, 50), actual_color(0, 50, 200), ball_col(180, 50, 50);
+	// Circle start, actual , expected
+	circle(frame, start, 10, ball_col, 2);
+	circle(frame, expected, 10, ball_col, 2);
+	line(frame, start, expected, expected_color, 1, CV_AA, 0);
+    putText(frame, "Expected shot -----", Point(90,80), 1, 1, expected_color ,2);
+	putText(frame, "Actual shot -----", Point(90,120), 1, 1, actual_color ,2);
+
+	// slope calculation for hard-coded shot
+	double slope1 = 0, slope2 = 0, angle1 = 0, angle2 = 0, error = 0;
+	slope1 = (double)(expected.y - start.y) / (expected.x - start.x);
+	slope2 = (double)(actual.y - start.y) / (actual.x - start.x);
+	angle1 = atan(slope1) * 180 / M_PI;
+	angle2 = atan(slope2) * 180 / M_PI;
+	error = std::abs(angle1 - angle2);
+
 
     if(!ballIndex)
-        putText(frame,ballTag[ballIndex]+intToString(redIndex),Point(x,y-5),1,1,Scalar(255,255,0),1);
-    else if(ballIndex==1){
+        putText(frame,ballTag[ballIndex]+intToString(redIndex),
+				Point(x,y-5),1,1,Scalar(255,255,0),1);
+    else if(ballIndex == 1){
+		// std::cout <<  "Points" << x << " " << y << " " <<  (double)(y - yPrev)/(x - xPrev)<< endl;
+		white_positions.push_back(Point(x, y));
         putText(frame,ballTag[ballIndex],Point(x,y-5),1,1,Scalar(255,255,0),1);
+		int white_positions_size = (int)white_positions.size();
+		for(int i = 0; i < white_positions_size - 1; i++ )
+		{
+			line(frame, white_positions[i], white_positions[i+1], Scalar(255, 255, 255), 1, CV_AA, 0);
+			//circle(frame,white_positions[i],1,Scalar(0,0 ,255),2);
+		}
+		if(shot)
+		{
+			putText(frame, "ERROR : " + intToString((int)error) + "."
+					+ intToString((int)(error * 1000) - ((int)error) * 1000) + " deg",
+					Point(500, 500), 1, 1, Scalar(250, 30, 250) ,2);
+			circle(frame, actual, 10, ball_col, 2);
+			line(frame, start, actual, actual_color, 1, CV_AA, 0);
+		}
         if(!xPrev)
             xPrev=x;
         if(!yPrev)
@@ -63,22 +108,42 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
         if(std::abs(x-xPrev)==0 && std::abs(y-yPrev)==0)
         {
             if(!flag)
-                shot++;
-            flag=1;
+			{
+				shot++;
+
+				white_positions.clear();
+				shot_change_trigger = 1;
+			}
+			flag=1;
         }
         else{
             shotTemp++;
             if(shotTemp>20){
-                shotTemp=0;
+				shotTemp=0;
                 flag=0;
-            }   
+
+            }
         }
         xPrev=x;
         yPrev=y;
+
     }
     else{
         putText(frame,ballTag[ballIndex],Point(x,y-5),1,1,Scalar(255,255,0),1);
     }
+	// if(shot < 2){
+	// 	if(x != xPrev)
+	// 	{
+	// 		double white_slope = (double)(y - yPrev) / (x - xPrev );
+	// 		//std::cout <<  x << " "<< y << " "<< xPrev << " "<< yPrev <<  " " << white_slope << endl; //
+	// 		//std::cout <<  y - yPrev << " " << x - xPrev << " " << white_slope << endl;
+	// 	}
+	// 	else
+	// 	{
+	// 		//std::cout <<  x << " "<< y << " "<< xPrev << " "<< yPrev <<  " " << "Nil" << endl;
+	// 		//std::cout <<  y - yPrev << " " << x - xPrev << " " << "Nil" << endl;
+	// 	}
+	// }
 }
 
 void ballDetect :: morphOps(Mat &processed){
@@ -151,7 +216,7 @@ void ballDetect :: initDetect(char *videoInput){
     capture.open(videoInput);
     capture.set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);
-    
+
     while(1){
         //store image to matrix
         capture.read(src);
@@ -164,19 +229,25 @@ void ballDetect :: initDetect(char *videoInput){
             morphOps(processed);
             if(i!=0)
                 trackFilteredObject(x,y,processed,src,i);
-            else{
-                vector<Vec3f> circles;
-                // HoughCircles(processed,circles, CV_HOUGH_GRADIENT,1,src_HSV.rows/128,20,12,5,40);
-                HoughCircles(processed,circles, CV_HOUGH_GRADIENT,1,8,20,12,5,40);
-                for( size_t i = 0; i < circles.size(); i++ ) {
-                    Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-                    //int radius = cvRound(circles[i][2]);
-                    drawObject(cvRound(circles[i][0]), cvRound(circles[i][1]), src,0,(int)i);
-                    // printf("\n Object at : x=%d y=%d",cvRound(circles[i][0]),cvRound(circles[i][1]));
-                }
-            }
-            imshow("source",src);
-        }
+            // else{
+            //     vector<Vec3f> circles;
+            //     // HoughCircles(processed,circles, CV_HOUGH_GRADIENT,1,src_HSV.rows/128,20,12,5,40);
+            //     HoughCircles(processed,circles, CV_HOUGH_GRADIENT,1,8,20,12,5,40);
+            //     for( size_t i = 0; i < circles.size(); i++ )
+			// 	{
+            //         Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+            //         //int radius = cvRound(circles[i][2]);
+            //         drawObject(cvRound(circles[i][0]), cvRound(circles[i][1]), src,0,(int)i);
+            //         // printf("\n Object at : x=%d y=%d",cvRound(circles[i][0]),cvRound(circles[i][1]));
+            //     }
+            // }
+
+			imshow("source",src);
+			// Change value of shot trigger
+			// After showing frame
+			if(shot_change_trigger)
+				shot_change_trigger = 0;
+		}
         waitKey(5);
     }
 }
