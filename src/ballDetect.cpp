@@ -17,7 +17,7 @@ String ballTag[] = {"Red", "White", "Black", "Blue",
 //
 int shot = -1,flag = 0, shotTemp = 0, shot_change_trigger = 0;
 int xPrev = 0, yPrev = 0;
-double white_distance = 0, time_diff = 0;
+double white_velocity = 0;
 time_t shot_start = time(NULL), shot_end = time(NULL);
 vector<Point> white_positions;
 
@@ -98,12 +98,13 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 		}
 		if(shot)
 		{
-			putText(frame, "ERROR : " + intToString((int)error) + "."
-					+ intToString((int)(error * 1000) - ((int)error) * 1000)
-					+ " deg", Point(500, 500), 1, 1, Scalar(250, 30, 250) ,2);
-			putText(frame, "Distance " + intToString((int)white_distance) + "."
-					+ intToString((int)(white_distance * 1000) - ((int)white_distance) * 1000)
-					, Point(500, 550), 1, 1, Scalar(250, 30, 250) ,2);
+			putText(frame, "White Velo. " + intToString((int)white_velocity) + "."
+					+ intToString((int)(white_velocity * 1000) - ((int)white_velocity) * 1000)
+					+ " pixels/sec", Point(500, 550), 1, 1, Scalar(20, 25, 50) , 2, 1);
+			if(shot < 2)
+				putText(frame, "ERROR : " + intToString((int)error) + "."
+						+ intToString((int)(error * 1000) - ((int)error) * 1000)
+						+ " deg", Point(500, 500), 1, 1, Scalar(50, 155, 150), 2, 1);
 			circle(frame, actual, 10, ball_col, 2);
 			line(frame, start, actual, actual_color, 1, CV_AA, 0);
 		}
@@ -119,7 +120,7 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 				shot_end = time(NULL);
                 // Calculating velocity of white balls
 				// First finding total distance covered
-				white_distance = 0;
+				double white_distance = 0, time_diff = 0;
 				int white_positions_size = (int)white_positions.size();
 				double x_distance = 0, y_distance = 0, curr_distance = 0;
 				for(int i = 0; i < white_positions_size - 1; i++ )
@@ -128,13 +129,12 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 					y_distance = white_positions[i+ 1].y - white_positions[i].y;
 					curr_distance = sqrt(pow(x_distance, 2) + pow(y_distance, 2));
 					white_distance = white_distance + curr_distance;
-
 				}
-				//time_diff = difftime(shot_end, shot_start);
+				time_diff = difftime(shot_end, shot_start);
+				white_velocity = white_distance / time_diff;
 				shot_start = time(NULL);
 				white_positions.clear();
 				shot_change_trigger = 1;
-
 			}
 			flag=1;
         }
@@ -232,7 +232,7 @@ void ballDetect :: initDetect(char *videoInput){
     int x=0;
     int y=0;
 
-    capture.open(videoInput);
+	capture.open(videoInput);
     capture.set(CV_CAP_PROP_FRAME_WIDTH,FRAME_WIDTH);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT,FRAME_HEIGHT);
 
@@ -259,8 +259,7 @@ void ballDetect :: initDetect(char *videoInput){
             //         drawObject(cvRound(circles[i][0]), cvRound(circles[i][1]), src,0,(int)i);
             //         // printf("\n Object at : x=%d y=%d",cvRound(circles[i][0]),cvRound(circles[i][1]));
             //     }
-            // }
-
+            //
 			imshow("source",src);
 			// Change value of shot trigger
 			// After showing frame
