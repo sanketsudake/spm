@@ -12,6 +12,7 @@ $ cmake ..
 $ make
 $./snooker video_Arg
 ```
+
 [![Download Sample Video](https://www.dropbox.com/s/hglvgknr85mnm1w/Test_New.avi)](https://www.dropbox.com/s/hglvgknr85mnm1w/Test_New.avi "Download Video")
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/tripples/spm/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

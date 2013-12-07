@@ -100,7 +100,7 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 		{
 			putText(frame, "White Velo. " + intToString((int)white_velocity) + "."
 					+ intToString((int)(white_velocity * 1000) - ((int)white_velocity) * 1000)
-					+ " pixels/sec", Point(500, 550), 1, 1, Scalar(20, 25, 50) , 2, 1);
+					+ " cm/sec", Point(500, 550), 1, 1, Scalar(20, 25, 50) , 2, 1);
 			if(shot < 2)
 				putText(frame, "ERROR : " + intToString((int)error) + "."
 						+ intToString((int)(error * 1000) - ((int)error) * 1000)
@@ -131,7 +131,7 @@ void ballDetect ::  drawObject(int x, int y,Mat &frame,int ballIndex,int redInde
 					white_distance = white_distance + curr_distance;
 				}
 				time_diff = difftime(shot_end, shot_start);
-				white_velocity = white_distance / time_diff;
+				white_velocity = (white_distance / time_diff) * (0.367347);
 				shot_start = time(NULL);
 				white_positions.clear();
 				shot_change_trigger = 1;
