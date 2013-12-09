@@ -61,6 +61,10 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 	// putText(frame, intToString(x) + "," + intToString(y), Point(x, y+30),
 	// 		1, 1, Scalar(0,255,0),2);
 
+	// ESC to see shot
+	putText(frame, "Press ESC to see current shot.", Point(200, 40), 1, 1,
+			Scalar(255,255,0),2);
+
 	// Show shot no on top left corner
 	putText(frame, "Shot No. " + intToString(shot+1), Point(90,40), 1, 1,
 			Scalar(255,255,0),2);
@@ -100,11 +104,10 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 		{
 			line(frame, white_positions[i], white_positions[i+1],
 				 Scalar(255, 255, 255), 1, CV_AA, 0);
-			circle(frame,white_positions[i],1,Scalar(0,0 ,255),2);
+			circle(frame, white_positions[i], 1, Scalar(255, 255 ,200), 2);
 		}
 
-		// If shot value greater than 1
-		if(shot)
+		if(shot >= 1)
 		{
 			// Display white velocity
 			putText(frame, "White Velo. "
@@ -112,13 +115,16 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 					+ intToString((int)(white_velocity * 1000)
 								  - ((int)white_velocity) * 1000)
 					+ " cm/sec", Point(500, 550), 1, 1, Scalar(20, 25, 50), 2, 1);
+		}
+		// If shot value greater than 1
+		if(shot == 1)
+		{
 			// Display error between suggested and actual shot in terms of degree
 			// Currently just showing for first shot
-			if(shot < 2)
-				putText(frame, "ERROR : " + intToString((int)error) + "."
-						+ intToString((int)(error * 1000) - ((int)error) * 1000)
-						+ " deg", Point(500, 500), 1, 1, Scalar(50, 155, 150),
-						2, 1);
+			putText(frame, "ERROR : " + intToString((int)error) + "."
+					+ intToString((int)(error * 1000) - ((int)error) * 1000)
+					+ " deg", Point(500, 500), 1, 1, Scalar(50, 155, 150),
+					2, 1);
 			// Highlight hit point hard -coded
 			circle(frame, actual, 10, ball_col, 2);
 			// Draw line between initial and hard-coded hit point
@@ -309,7 +315,11 @@ void ballDetect :: initDetect(char *videoInput)
 			// Change value of shot trigger
 			// After showing frame
 			if(shot_change_trigger)
+			{
 				shot_change_trigger = 0;
+				// While ESC is not pressed dont proceed to next shot
+				while(waitKey(1) != 27);
+			}
 		}
         waitKey(5);
     }
