@@ -40,12 +40,12 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata)
 			 }
 			 else  if(p2.x == -1 && p2.y == -1)
 			 {
-				 line(img, p1, Point(x,y), Scalar(255,255,255), 2, CV_AA);
+				 line(img, p1, Point(x,y), Scalar(50, 220, 50), 1, CV_AA);
 				 p2 = Point(x, y);
 			 }
 			 else
 			 {
-				 line(img, p2, Point(x,y), Scalar(255,255,255), 2, CV_AA);
+				 line(img, p2, Point(x,y), Scalar(50, 220, 50), 1, CV_AA);
 				 p3=Point(x,y);
 				 setMouseCallback("source", NULL,NULL);
 			 }
@@ -134,9 +134,11 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 	// Hard coded shot error calculations
 	// Circle start, actual , expected
 	Point start(258, 268), actual(805, 290), expected(805 - 15, 290 + 16);
-	circle(frame, start, 10, ball_col, 2);
-	circle(frame, expected, 10, ball_col, 2);
-	line(frame, start, expected, expected_color, 1, CV_AA, 0);
+	// Hard-coded code to be removed after implementation of first collision
+	// Detection
+	// circle(frame, start, 10, ball_col, 2);
+	// circle(frame, expected, 10, ball_col, 2);
+	// line(frame, start, expected, expected_color, 1, CV_AA, 0);
 
 	// slope calculation for hard-coded shot
 	double slope1 = 0, slope2 = 0, angle1 = 0, angle2 = 0, error = 0;
@@ -215,12 +217,12 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
                 }
 				if(p2.x>0 && p2.y>0)
 				{
-					line(frame, p1, p2, Scalar(200,200,200), 1, CV_AA);
+					line(frame, p1, p2, Scalar(50, 220, 50), 1, CV_AA);
 				}
 
 				else if(p3.x>0 && p3.y>0)
 				{
-					line(frame, p2, p3, Scalar(200,200,200), 1, CV_AA);
+					line(frame, p2, p3, Scalar(50, 220, 50), 1, CV_AA);
 					setMouseCallback("source",NULL,NULL);
 				}
 
@@ -384,8 +386,8 @@ void ballDetect :: initDetect(char *videoInput)
                 trackFilteredObject(x, y, processed, src, i);
 			if(p3.x>0 && p3.y>0)
 			{
-				line(src,p1,p2,Scalar(180, 180, 180), 1,CV_AA);
-				line(src,p2,p3,Scalar(180, 180, 180), 1,CV_AA);
+				line(src,p1,p2,Scalar(50, 220, 50), 1, CV_AA);
+				line(src,p2,p3,Scalar(50, 220, 50), 1, CV_AA);
 			}
             // else{
             //     vector<Vec3f> circles;
