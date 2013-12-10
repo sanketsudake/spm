@@ -4,6 +4,7 @@
 #include <string>
 #include <cmath>
 #include <ctime>
+#include <cstdio>
 
 using namespace std;
 using namespace cv;
@@ -11,6 +12,7 @@ using namespace cv;
 // Ball tags for showing on the screen
 String ballTag[] = {"Red", "White", "Black", "Blue",
 					"Yellow", "Pink", "Brown", "Green"};
+
 //
 int shot = -1,flag = 0, shotTemp = 0, shot_change_trigger = 0;
 int xPrev = 0, yPrev = 0;
@@ -18,7 +20,58 @@ double white_velocity = 0;
 time_t shot_start = time(NULL), shot_end = time(NULL);
 vector<Point> white_positions;
 
-ballDetect :: ballDetect(){
+// specify expected shot - point
+Point p1(-1, -1);
+Point p2(-1, -1);
+Point p3(-1, -1);
+
+void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+	 //namedWindow("test");
+	 Mat img = *((Mat *)userdata);
+     if  ( event == EVENT_LBUTTONDOWN )
+     {
+		 if((x >= 38+6 && x <= 1014-6) && (y >= 35+6 && y <= 541-6))
+		 {
+			 if(p1.x == -1 && p1.y == -1)
+			 {
+				 p1.x = x;
+				 p1.y = y;
+			 }
+			 else  if(p2.x == -1 && p2.y == -1)
+			 {
+				 line(img, p1, Point(x,y), Scalar(255,255,255), 2, CV_AA);
+				 p2 = Point(x, y);
+			 }
+			 else
+			 {
+				 line(img, p2, Point(x,y), Scalar(255,255,255), 2, CV_AA);
+				 p3=Point(x,y);
+				 setMouseCallback("source", NULL,NULL);
+			 }
+			 // cout << "Left button of the mouse is clicked - position ("
+			 // 	  << x << ", " << y << ")" << endl;
+			 circle(img,Point(x,y),10,Scalar(0,255,0));
+			 //imshow("source",img);
+		 }
+     }
+     else if  ( event == EVENT_RBUTTONDOWN )
+     {
+		 //cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+		  setMouseCallback("source", NULL, NULL);
+     }
+     else if  ( event == EVENT_MBUTTONDOWN )
+     {
+         //cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+     }
+     else if ( event == EVENT_MOUSEMOVE )
+     {
+		 //cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+     }
+}
+
+ballDetect :: ballDetect()
+{
     minval = new Scalar[8];
     maxval = new Scalar[8];
 
@@ -43,14 +96,21 @@ ballDetect :: ballDetect(){
     maxval[7] = Scalar(82, 255, 223); //green
 }
 
-string ballDetect :: intToString(int number){
+string ballDetect :: intToString(int number)
+{
     stringstream ss;
     ss << number;
     return ss.str();
 }
 
+void ballDetect :: shotTrigger()
+{
+
+}
+
 void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
-							  int redIndex){
+							  int redIndex)
+{
     // use some of the openCV drawing functions to draw crosshairs on your
 	// tracked image! added 'if' and 'else' statements to prevent
     // memory errors from writing off the screen (ie. (-25,-25) is not within
@@ -61,9 +121,6 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 	// putText(frame, intToString(x) + "," + intToString(y), Point(x, y+30),
 	// 		1, 1, Scalar(0,255,0),2);
 
-	// ESC to see shot
-	putText(frame, "Press ESC to see current shot.", Point(200, 40), 1, 1,
-			Scalar(255,255,0),2);
 
 	// Show shot no on top left corner
 	putText(frame, "Shot No. " + intToString(shot+1), Point(90,40), 1, 1,
@@ -93,7 +150,8 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
     if(!ballIndex)
         putText(frame,ballTag[ballIndex] + intToString(redIndex),
 				Point(x,y-5), 1, 1, Scalar(255,255,0), 1);
-    else if(ballIndex == 1){
+    else if(ballIndex == 1)
+	{
         putText(frame, ballTag[ballIndex], Point(x,y-5), 1, 1,
 				Scalar(255,255,0), 1);
 
@@ -141,6 +199,31 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
             if(!flag)
 			{
 				shot++;
+				// specify expected shot
+                p1=Point(-1, -1);
+                p2=Point(-1, -1);
+                p3=Point(-1, -1);
+
+				setMouseCallback("source", CallBackFunc, &frame);
+				while (p3.x == -1 && p3.y == -1)
+                {
+						// ESC to see shot
+					putText(frame, "Specify shot and Press ESC.", Point(200, 40), 1, 1,
+							Scalar(255,255,0),2);
+                    imshow("source", frame);
+                    cvWaitKey(10);
+                }
+				if(p2.x>0 && p2.y>0)
+				{
+					line(frame, p1, p2, Scalar(200,200,200), 1, CV_AA);
+				}
+
+				else if(p3.x>0 && p3.y>0)
+				{
+					line(frame, p2, p3, Scalar(200,200,200), 1, CV_AA);
+					setMouseCallback("source",NULL,NULL);
+				}
+
 				shot_end = time(NULL);
                 // Calculating velocity of white balls
 				// First finding total distance covered
@@ -299,6 +382,11 @@ void ballDetect :: initDetect(char *videoInput)
             morphOps(processed);
             if(i != 0)
                 trackFilteredObject(x, y, processed, src, i);
+			if(p3.x>0 && p3.y>0)
+			{
+				line(src,p1,p2,Scalar(180, 180, 180), 1,CV_AA);
+				line(src,p2,p3,Scalar(180, 180, 180), 1,CV_AA);
+			}
             // else{
             //     vector<Vec3f> circles;
             //     // HoughCircles(processed,circles, CV_HOUGH_GRADIENT,1,src_HSV.rows/128,20,12,5,40);
