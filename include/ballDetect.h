@@ -25,7 +25,7 @@ class ballDetect{
     public:
         ballDetect();
         string intToString(int number);
-		void shotTrigger();
+		void shotTrigger(Mat &frame);
         void drawObject(int x, int y,Mat &frame,int ballIndex,int redIndex);
         void morphOps(Mat &processed);
         void trackFilteredObject(int &, int &, Mat , Mat &,int);

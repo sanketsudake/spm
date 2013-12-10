@@ -27,47 +27,47 @@ Point p3(-1, -1);
 
 void CallBackFunc(int event, int x, int y, int flags, void* userdata)
 {
-	 //namedWindow("test");
-	 Mat img = *((Mat *)userdata);
-     if  ( event == EVENT_LBUTTONDOWN )
-     {
-		 if((x >= 38+6 && x <= 1014-6) && (y >= 35+6 && y <= 541-6))
-		 {
-			 if(p1.x == -1 && p1.y == -1)
-			 {
-				 p1.x = x;
-				 p1.y = y;
-			 }
-			 else  if(p2.x == -1 && p2.y == -1)
-			 {
-				 line(img, p1, Point(x,y), Scalar(50, 220, 50), 1, CV_AA);
-				 p2 = Point(x, y);
-			 }
-			 else
-			 {
-				 line(img, p2, Point(x,y), Scalar(50, 220, 50), 1, CV_AA);
-				 p3=Point(x,y);
-				 setMouseCallback("source", NULL,NULL);
-			 }
-			 // cout << "Left button of the mouse is clicked - position ("
-			 // 	  << x << ", " << y << ")" << endl;
-			 circle(img,Point(x,y),10,Scalar(0,255,0));
-			 //imshow("source",img);
-		 }
-     }
-     else if  ( event == EVENT_RBUTTONDOWN )
-     {
-		 //cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
-		  setMouseCallback("source", NULL, NULL);
-     }
-     else if  ( event == EVENT_MBUTTONDOWN )
-     {
-         //cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
-     }
-     else if ( event == EVENT_MOUSEMOVE )
-     {
-		 //cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
-     }
+	//namedWindow("test");
+	Mat img = *((Mat *)userdata);
+	if  ( event == EVENT_LBUTTONDOWN )
+	{
+		if((x >= 38+6 && x <= 1014-6) && (y >= 35+6 && y <= 541-6))
+		{
+			if(p1.x == -1 && p1.y == -1)
+			{
+				p1.x = x;
+				p1.y = y;
+			}
+			else  if(p2.x == -1 && p2.y == -1)
+			{
+				line(img, p1, Point(x,y), Scalar(50, 220, 50), 1, CV_AA);
+				p2 = Point(x, y);
+			}
+			else
+			{
+				line(img, p2, Point(x,y), Scalar(50, 220, 50), 1, CV_AA);
+				p3=Point(x,y);
+				setMouseCallback("source", NULL,NULL);
+			}
+			// cout << "Left button of the mouse is clicked - position ("
+			// 	  << x << ", " << y << ")" << endl;
+			circle(img,Point(x,y),10,Scalar(0,255,0));
+			//imshow("source",img);
+		}
+	}
+	else if  ( event == EVENT_RBUTTONDOWN )
+	{
+		//cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+		setMouseCallback("source", NULL, NULL);
+	}
+	else if  ( event == EVENT_MBUTTONDOWN )
+	{
+		//cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+	}
+	else if ( event == EVENT_MOUSEMOVE )
+	{
+		//cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+	}
 }
 
 ballDetect :: ballDetect()
@@ -103,9 +103,72 @@ string ballDetect :: intToString(int number)
     return ss.str();
 }
 
-void ballDetect :: shotTrigger()
+void ballDetect :: shotTrigger(Mat &frame)
 {
+	Scalar expected_color(50, 220, 50), actual_color(0, 50, 200),
+		ball_col(180, 50, 50);
+	if(shot)
+	{
+		// Display white velocity
+		putText(frame, "White Velo. "
+				+ intToString((int)white_velocity) + "."
+				+ intToString((int)(white_velocity * 1000)
+							  - ((int)white_velocity) * 1000)
+				+ " cm/sec", Point(500, 550), 1, 1, Scalar(20, 25, 50), 2, 1);
 
+		// Hard coded shot error calculations
+		// Circle start, actual , expected
+		Point start(258, 268), actual(805, 290), expected(805 - 15, 290 + 16);
+		// Hard-coded code to be removed after implementation of first collision
+		// Detection
+		// circle(frame, start, 10, ball_col, 2);
+		// circle(frame, expected, 10, ball_col, 2);
+		// line(frame, start, expected, expected_color, 1, CV_AA, 0);
+
+		// slope calculation for hard-coded shot
+		double slope1 = 0, slope2 = 0, angle1 = 0, angle2 = 0, error = 0;
+		slope1 = (double)(expected.y - start.y) / (expected.x - start.x);
+		slope2 = (double)(actual.y - start.y) / (actual.x - start.x);
+		// tan inverse of both slopes and find difference
+		angle1 = atan(slope1) * 180 / M_PI;
+		angle2 = atan(slope2) * 180 / M_PI;
+		error = std::abs(angle1 - angle2);
+
+		// Display error between suggested and actual shot in terms of degree
+		// Currently just showing for first shot
+		putText(frame, "ERROR : " + intToString((int)error) + "."
+				+ intToString((int)(error * 1000) - ((int)error) * 1000)
+				+ " deg", Point(500, 500), 1, 1, Scalar(50, 155, 150),
+				2, 1);
+		// Highlight hit point hard -coded
+		circle(frame, actual, 10, ball_col, 2);
+		// Draw line between initial and hard-coded hit point
+		line(frame, start, actual, actual_color, 1, CV_AA, 0);
+	}
+	// Accepting user input for expected shot phenomenon
+    // specify expected shot
+	p1=Point(-1, -1);
+	p2=Point(-1, -1);
+	p3=Point(-1, -1);
+
+	setMouseCallback("source", CallBackFunc, &frame);
+	while (p3.x == -1 && p3.y == -1)
+	{
+		// ESC to see shot
+		putText(frame, "Specify shot and Press ESC.", Point(200, 40), 1, 1,
+				Scalar(255,255,0),2);
+		imshow("source", frame);
+		cvWaitKey(10);
+	}
+	if(p2.x>0 && p2.y>0)
+	{
+		line(frame, p1, p2, Scalar(50, 220, 50), 1, CV_AA);
+	}
+	else if(p3.x>0 && p3.y>0)
+	{
+		line(frame, p2, p3, Scalar(50, 220, 50), 1, CV_AA);
+		setMouseCallback("source",NULL,NULL);
+	}
 }
 
 void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
@@ -121,7 +184,6 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 	// putText(frame, intToString(x) + "," + intToString(y), Point(x, y+30),
 	// 		1, 1, Scalar(0,255,0),2);
 
-
 	// Show shot no on top left corner
 	putText(frame, "Shot No. " + intToString(shot+1), Point(90,40), 1, 1,
 			Scalar(255,255,0),2);
@@ -130,24 +192,6 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
     putText(frame, "Expec. shot -----", Point(90,80), 1, 1, expected_color ,2);
 	putText(frame, "Actual shot ", Point(90,120), 1, 1, actual_color, 2);
 	putText(frame, "-----", Point(200,120), 1, 1, Scalar(255, 255, 255) ,2);
-
-	// Hard coded shot error calculations
-	// Circle start, actual , expected
-	Point start(258, 268), actual(805, 290), expected(805 - 15, 290 + 16);
-	// Hard-coded code to be removed after implementation of first collision
-	// Detection
-	// circle(frame, start, 10, ball_col, 2);
-	// circle(frame, expected, 10, ball_col, 2);
-	// line(frame, start, expected, expected_color, 1, CV_AA, 0);
-
-	// slope calculation for hard-coded shot
-	double slope1 = 0, slope2 = 0, angle1 = 0, angle2 = 0, error = 0;
-	slope1 = (double)(expected.y - start.y) / (expected.x - start.x);
-	slope2 = (double)(actual.y - start.y) / (actual.x - start.x);
-	// tan inverse of both slopes and find difference
-	angle1 = atan(slope1) * 180 / M_PI;
-	angle2 = atan(slope2) * 180 / M_PI;
-	error = std::abs(angle1 - angle2);
 
     if(!ballIndex)
         putText(frame,ballTag[ballIndex] + intToString(redIndex),
@@ -167,30 +211,6 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 			circle(frame, white_positions[i], 1, Scalar(255, 255 ,200), 2);
 		}
 
-		if(shot >= 1)
-		{
-			// Display white velocity
-			putText(frame, "White Velo. "
-					+ intToString((int)white_velocity) + "."
-					+ intToString((int)(white_velocity * 1000)
-								  - ((int)white_velocity) * 1000)
-					+ " cm/sec", Point(500, 550), 1, 1, Scalar(20, 25, 50), 2, 1);
-		}
-		// If shot value greater than 1
-		if(shot == 1)
-		{
-			// Display error between suggested and actual shot in terms of degree
-			// Currently just showing for first shot
-			putText(frame, "ERROR : " + intToString((int)error) + "."
-					+ intToString((int)(error * 1000) - ((int)error) * 1000)
-					+ " deg", Point(500, 500), 1, 1, Scalar(50, 155, 150),
-					2, 1);
-			// Highlight hit point hard -coded
-			circle(frame, actual, 10, ball_col, 2);
-			// Draw line between initial and hard-coded hit point
-			line(frame, start, actual, actual_color, 1, CV_AA, 0);
-		}
-
         if(!xPrev)
             xPrev=x;
         if(!yPrev)
@@ -201,31 +221,7 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
             if(!flag)
 			{
 				shot++;
-				// specify expected shot
-                p1=Point(-1, -1);
-                p2=Point(-1, -1);
-                p3=Point(-1, -1);
-
-				setMouseCallback("source", CallBackFunc, &frame);
-				while (p3.x == -1 && p3.y == -1)
-                {
-						// ESC to see shot
-					putText(frame, "Specify shot and Press ESC.", Point(200, 40), 1, 1,
-							Scalar(255,255,0),2);
-                    imshow("source", frame);
-                    cvWaitKey(10);
-                }
-				if(p2.x>0 && p2.y>0)
-				{
-					line(frame, p1, p2, Scalar(50, 220, 50), 1, CV_AA);
-				}
-
-				else if(p3.x>0 && p3.y>0)
-				{
-					line(frame, p2, p3, Scalar(50, 220, 50), 1, CV_AA);
-					setMouseCallback("source",NULL,NULL);
-				}
-
+				shotTrigger(frame);
 				shot_end = time(NULL);
                 // Calculating velocity of white balls
 				// First finding total distance covered
