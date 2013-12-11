@@ -147,7 +147,7 @@ void ballDetect :: shotTrigger(Mat &frame)
 	}
 	// Accepting user input for expected shot phenomenon
     // specify expected shot
-	p1=Point(-1, -1);
+	//p1=Point(-1, -1);
 	p2=Point(-1, -1);
 	p3=Point(-1, -1);
 
@@ -221,6 +221,8 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
             if(!flag)
 			{
 				shot++;
+				p1.x = x;
+				p1.y = y;
 				shotTrigger(frame);
 				shot_end = time(NULL);
                 // Calculating velocity of white balls
