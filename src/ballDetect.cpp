@@ -19,12 +19,20 @@ int xPrev = 0, yPrev = 0;
 double white_velocity = 0;
 time_t shot_start = time(NULL), shot_end = time(NULL);
 vector<Point> white_positions;
-
+vector<time_t> timelog;
 // specify expected shot - point
 Point p1(-1, -1);
 Point p2(-1, -1);
 Point p3(-1, -1);
 
+int check_collinear(Point p1, Point p2, Point p3)
+{
+	if(p2.x - p1.x == 0 or p3.x - p1.x == 0)
+		return 1;
+	if ((int)(p3.y - p1.y) == (int)((p2.y - p1.y) * (p3.x - p1.x) / (p2.x - p1.x)))
+		return 1;
+	return 0;
+}
 void CallBackFunc(int event, int x, int y, int flags, void* userdata)
 {
 	//namedWindow("test");
@@ -144,7 +152,60 @@ void ballDetect :: shotTrigger(Mat &frame)
 		circle(frame, actual, 10, ball_col, 2);
 		// Draw line between initial and hard-coded hit point
 		line(frame, start, actual, actual_color, 1, CV_AA, 0);
+				// cout << white_positions.size() << endl;
+		// cout << timelog.size() << endl;
+
+		// Finding velocities
+		vector<double> total_distance, velocity;
+		double distance = 0.0, total_time = 0.0;
+		total_distance.push_back(0.0);
+		velocity.push_back(0.0);
+		for(int i = 1; i < (white_positions.size() - 1); i++)
+		{
+			distance = sqrt(pow((white_positions[i].x - white_positions[i-1].x), 2)
+								  + pow((white_positions[i].y - white_positions[i-1].y),2));
+			total_distance.push_back(distance + total_distance[i-1]);
+			total_time = difftime(timelog[i], timelog[i - 1]);
+			velocity.push_back(distance / i);
+		}
+		// Verifying First Shot Collision by automata
+		// Consisting two states 0 & 1
+		// Identifying only first ten points
+		int i = 1, state = 0, count = 0;
+		while(i < velocity.size() - 1)
+		{
+			cout << i << endl;
+			switch(state)
+			{
+			case 0:
+				if(velocity[i] - velocity[i - 1] < 0)
+				{
+					if( white_positions[i].x != white_positions[i -1].x
+						&& white_positions[i].x != white_positions[i -1].x)
+						circle(frame, Point(white_positions[i].x, white_positions[i].y),
+							   10, Scalar(255, 255, 255), 2);
+					state = 1;
+					count++;
+				}
+				break;
+			case 1:
+				if(velocity[i] - velocity[i - 1] > 0)
+				{
+					//circle(frame, Point(white_positions[i].x, white_positions[i].y),
+					//	   10, Scalar(0, 0, 0), 2);
+					state = 0;
+				}
+				break;
+			default:
+				circle(frame, Point(white_positions[i].x, white_positions[i].y),
+					   10, Scalar(0, 0, 255), 2);
+			}
+			i++;
+			if(count > 10)
+				break;
+		}
 	}
+
 	// Accepting user input for expected shot phenomenon
     // specify expected shot
 	//p1=Point(-1, -1);
@@ -200,8 +261,8 @@ void ballDetect :: drawObject(int x, int y, Mat &frame, int ballIndex,
 	{
         putText(frame, ballTag[ballIndex], Point(x,y-5), 1, 1,
 				Scalar(255,255,0), 1);
-
 		white_positions.push_back(Point(x, y));
+		timelog.push_back(time(NULL));
 		// Highlight white ball path
 		int white_positions_size = (int)white_positions.size();
 		for(int i = 0; i < white_positions_size - 1; i++ )
