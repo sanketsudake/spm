@@ -3,9 +3,7 @@
  * \brief Consist methods to build user profile
  */
 
-#include<opencv2/imgproc/imgproc.hpp>
-#include<opencv2/highgui/highgui.hpp>
-#include<opencv2/core/core.hpp>
+#include "detectball.hpp"
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -16,6 +14,8 @@ int main(int argc, char **argv)
 {
 	VideoCapture capture;		//! Videocapture to capture video object
     Mat src;					//! Matrix object to get input
+	Point white_position(-1, -1); //! White Ball Position
+	DetectBall white_detector;
 
 	/*!
 	 * Open user input video from given path
@@ -30,6 +30,10 @@ int main(int argc, char **argv)
         //! store image to matrix
         capture.read(src);
 
+		//! detect white ball
+		white_position = white_detector.detectWhite(src);
+		//! Map result returned by detector
+		white_detector.mapPosition(src, white_position);
 
 		//! show final image
 		imshow("source", src);
