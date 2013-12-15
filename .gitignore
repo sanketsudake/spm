@@ -1,5 +1,4 @@
 #Compile object files
-
 *.slo
 *.lo
 *.o

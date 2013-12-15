@@ -8,8 +8,10 @@ set(SNSRC ${SNOOKER_SOURCE_DIR}/src)
 set(SNINC ${SNOOKER_SOURCE_DIR}/include)
 include_directories(${SNINC})
 
-set(SRC ${SNSRC}/ballDetect.cpp ${SNSRC}/snMain.cpp )
-set(INC ${SNINC}/ballDetect.h)
+set(INC ${SNINC}/buildprofile.hpp  ${SNINC}/detectball.hpp
+  ${SNINC}/detectshot.hpp  ${SNINC}/managelogin.hpp)
+set(SRC ${SNSRC}/buildprofile.cpp  ${SNSRC}/detectball.cpp
+  ${SNSRC}/detectshot.cpp ${SNSRC}/managelogin.cpp ${SNSRC}/main.cpp)
 
-add_executable(snooker ${SRC} ${INC})
-target_link_libraries(snooker ${OpenCV_LIBS})
+add_executable(spm ${SRC} ${INC})
+target_link_libraries(spm ${OpenCV_LIBS})

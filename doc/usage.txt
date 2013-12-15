@@ -1,0 +1,4 @@
+Usage: spm.sh --option args
+Example:
+	spm.sh --build #Building code
+	spm.sh --run video_arg #Running code

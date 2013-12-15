@@ -1,3 +1,0 @@
-ballDetect.h  
-snCore.hpp
-
