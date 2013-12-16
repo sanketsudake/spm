@@ -110,7 +110,7 @@ Point DetectBall::detectWhite(Mat &frame)
 	 return trackFilteredObject(processed);
 }
 
-void DetectBall::mapPosition(Mat &frame, Point position)
+void DetectBall::mapPosition(Mat &frame, Point position, int status)
 {
 	//! Show actions according position found by detectBall
 	switch(position.x)
@@ -128,7 +128,11 @@ void DetectBall::mapPosition(Mat &frame, Point position)
 					 Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
 		break;
 	default:
-		circle(frame, position, 10, Scalar(0,255,0), 2);
+		if(!status)
+			circle(frame, position, 10, Scalar(0, 0, 0), 2);
+		else
+			circle(frame, position, 10, Scalar(255, 255, 255), 2);
+
 	}
 }
 
@@ -155,4 +159,70 @@ void BallAccuracy::showAccuracy(Mat &frame)
 	stringstream ss;
 	ss << "Accuracy : " << error_count << " / " << frame_count;
 	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
+}
+
+SnKalman:: SnKalman()
+{
+	kalmanfilter.init(4, 2, 0);
+	state = new Mat_<float>(4,1);
+	processNoise = new Mat(4, 1, CV_32F);
+	measurement = new Mat_<float>(2,1);
+	(*measurement).setTo(Scalar(0));
+	flaginit = 1;
+}
+
+SnKalman:: ~SnKalman()
+{
+
+}
+
+Point SnKalman::correctPoisition(Point position)
+{
+	if(flaginit)
+	{
+		kalmanfilter.statePre.at<float>(0) = position.x;
+		kalmanfilter.statePre.at<float>(1) = position.y;
+		kalmanfilter.statePre.at<float>(2) = 0;
+		kalmanfilter.statePre.at<float>(3) = 0;
+		kalmanfilter.transitionMatrix = *(Mat_<float>(4, 4)
+										  << 1,0,0,0, 0,1,0,0, 1,0,1,0, 0,1,0,1);
+		setIdentity(kalmanfilter.measurementMatrix);
+		setIdentity(kalmanfilter.processNoiseCov, Scalar::all(1e-1));
+		setIdentity(kalmanfilter.measurementNoiseCov, Scalar::all(1e-5));
+		setIdentity(kalmanfilter.errorCovPost, Scalar::all(.1));
+		flaginit = 0;
+		return position;
+	}
+	else
+	{
+        // Point statePt(state(0),state(1));
+		Mat prediction = kalmanfilter.predict();
+		Point predictPt(prediction.at<float>(0),prediction.at<float>(1));
+
+		if(position.x == -1)
+		{
+			//(*measurement)(0) = position.x;
+			//(*measurement)(1) = position.y;
+			Point measPt((*measurement)(0), (*measurement)(1));
+
+			// generate measurement
+			//measurement += KF.measurementMatrix*state;
+			Mat estimated = kalmanfilter.correct(*measurement);
+			Point statePt(estimated.at<float>(0),estimated.at<float>(1));
+			return Point(estimated.at<float>(0), estimated.at<float>(1));
+		}
+		else
+		{
+			(*measurement)(0) = position.x;
+			(*measurement)(1) = position.y;
+			Point measPt((*measurement)(0), (*measurement)(1));
+
+			// generate measurement
+			//measurement += KF.measurementMatrix*state;
+			Mat estimated = kalmanfilter.correct(*measurement);
+			Point statePt(estimated.at<float>(0),estimated.at<float>(1));
+			return Point(estimated.at<float>(0), estimated.at<float>(1));
+			//return position;
+		}
+	}
 }

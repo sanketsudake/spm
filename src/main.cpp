@@ -27,6 +27,7 @@ int main(int argc, char **argv)
 	DetectBall white_detector;
 	char code = (char)-1;
 	BallAccuracy white_accuracy;
+	SnKalman kfchecker;
 	/*!
 	 * Open user input video from given path
 	 * and set frame width & height.
@@ -43,7 +44,13 @@ int main(int argc, char **argv)
 		//! detect white ball
 		white_position = white_detector.detectWhite(src);
 		//! Map result returned by detector
-		white_detector.mapPosition(src, white_position);
+		//white_detector.mapPosition(src, white_position, 0);
+
+		//!
+		white_position = kfchecker.correctPoisition(white_position),
+		white_detector.mapPosition(src,
+								   white_position,
+								   1);
 
 		//! Showing accuracy
 		white_accuracy.updateWithPosition(white_position);

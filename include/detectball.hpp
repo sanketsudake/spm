@@ -8,7 +8,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
+#include <opencv2/video/video.hpp>
 #include <iostream>
+
 using namespace cv;
 
 /*!
@@ -30,7 +32,7 @@ public:
 	void morphOps(Mat &frame);
 	Point trackFilteredObject(Mat &frame);
 	Point detectWhite(Mat &frame);
-	void mapPosition(Mat &frame, Point position);
+	void mapPosition(Mat &frame, Point position, int status);
 };
 
 class BallAccuracy
@@ -43,6 +45,21 @@ public:
 	~BallAccuracy();
 	void updateWithPosition(Point position);
 	void showAccuracy(Mat &frame);
+};
+
+class SnKalman
+{
+private:
+	KalmanFilter kalmanfilter;
+	Mat_<float> *state;
+	Mat *processNoise;
+	Mat_<float> *measurement;
+	int flaginit;
+
+public:
+	SnKalman();
+	~SnKalman();
+	Point correctPoisition(Point position);
 };
 
 #endif
