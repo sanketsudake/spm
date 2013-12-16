@@ -4,6 +4,7 @@
  */
 
 #include "detectball.hpp"
+#include "detectshot.hpp"
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -19,6 +20,8 @@ int main(int argc, char **argv)
 	char code = (char)-1;
 	BallAccuracy white_accuracy;
 	SnKalman kfchecker;
+	DetectShot shot_detector;
+
 	/*!
 	 * Open user input video from given path
 	 * and set frame width & height.
@@ -44,6 +47,9 @@ int main(int argc, char **argv)
 		//! Showing accuracy
 		white_accuracy.updateWithPosition(white_position);
 		white_accuracy.showAccuracy(src);
+
+		//!
+		shot_detector.BgSubtractor(src);
 
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
