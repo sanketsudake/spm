@@ -4,15 +4,6 @@
  */
 
 #include "detectball.hpp"
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/core/core.hpp>
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <cmath>
-#include <ctime>
-#include <cstdio>
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -46,11 +37,9 @@ int main(int argc, char **argv)
 		//! Map result returned by detector
 		//white_detector.mapPosition(src, white_position, 0);
 
-		//!
+		//! Correct position through kalman filter
 		white_position = kfchecker.correctPoisition(white_position),
-		white_detector.mapPosition(src,
-								   white_position,
-								   1);
+		white_detector.mapPosition(src, white_position, 1);
 
 		//! Showing accuracy
 		white_accuracy.updateWithPosition(white_position);
@@ -59,7 +48,6 @@ int main(int argc, char **argv)
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
 
-		// waitKey(5);
 		//! Escape window on pressing 'Q' or 'q'
 		code = (char)waitKey(5);
 		if( code == 'q' || code == 'Q' )

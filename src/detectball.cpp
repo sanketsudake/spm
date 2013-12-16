@@ -4,13 +4,13 @@
  */
 
 #include "detectball.hpp"
-#include <iostream>
 
 using namespace std;
 using namespace cv;
 
 DetectBall::DetectBall()
 {
+	//! HSV Min and Max Range for white ball detection
 	white_minval = new Scalar(0, 0, 200);
 	white_maxval = new Scalar(255, 70, 255);
 }
@@ -21,17 +21,19 @@ DetectBall::~DetectBall()
 
 void DetectBall::morphOps(Mat &frame)
 {
-	/*!create structuring element that will be used to
-	 *"dilate" and "erode" image.
-     *the element chosen here is a 3px by 3px rectangle
+	/*! create structuring element that will be used to
+	 * "dilate" and "erode" image.
+     * the element chosen here is a 3px by 3px rectangle
 	 */
     Mat erodeElement = getStructuringElement( MORPH_ELLIPSE, Size(3,3));
     //! dilate with larger element so make sure object is nicely visible
     Mat dilateElement = getStructuringElement( MORPH_ELLIPSE, Size(7,7));
 
+	//! erode removes noise from identified contours
     erode(frame, frame, erodeElement);
     erode(frame, frame, erodeElement);
 
+	//! dilate adjusts shape of identified object
     dilate(frame, frame, dilateElement);
     dilate(frame, frame, dilateElement);
 }
@@ -128,34 +130,36 @@ void DetectBall::mapPosition(Mat &frame, Point position, int status)
 					 Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
 		break;
 	default:
+		//! check status point coming from white detector or kalman fiter
 		if(!status)
 			circle(frame, position, 10, Scalar(0, 0, 0), 2);
 		else
 			circle(frame, position, 10, Scalar(255, 255, 255), 2);
-
 	}
 }
 
 BallAccuracy::BallAccuracy()
 {
-	frame_count = 0;
-	error_count = 0;
+	frame_count = 0;  //! count for total no of frames
+	error_count = 0;  //! count for faulty white ball detection
 }
 
 BallAccuracy::~BallAccuracy()
 {
-
 }
 
 void BallAccuracy::updateWithPosition(Point position)
 {
+
 	frame_count++;
+	//! update error_count if position detection failed
 	if(position.x == -1)
 		error_count++;
 }
 
 void BallAccuracy::showAccuracy(Mat &frame)
 {
+	//! Generate string from error_count and frame_count
 	stringstream ss;
 	ss << "Accuracy : " << error_count << " / " << frame_count;
 	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
@@ -163,6 +167,7 @@ void BallAccuracy::showAccuracy(Mat &frame)
 
 SnKalman:: SnKalman()
 {
+	//! Specify dimensions of kalman filter
 	kalmanfilter.init(4, 2, 0);
 	state = new Mat_<float>(4,1);
 	processNoise = new Mat(4, 1, CV_32F);
@@ -178,6 +183,9 @@ SnKalman:: ~SnKalman()
 
 Point SnKalman::correctPoisition(Point position)
 {
+	/*! Innitiate kalmanfilter at current state
+	 *  Adjust process noise and error noise
+	 */
 	if(flaginit)
 	{
 		kalmanfilter.statePre.at<float>(0) = position.x;
@@ -185,7 +193,10 @@ Point SnKalman::correctPoisition(Point position)
 		kalmanfilter.statePre.at<float>(2) = 0;
 		kalmanfilter.statePre.at<float>(3) = 0;
 		kalmanfilter.transitionMatrix = *(Mat_<float>(4, 4)
-										  << 1,0,0,0, 0,1,0,0, 1,0,1,0, 0,1,0,1);
+										  << 1,0,0,0,
+										     0,1,0,0,
+										     1,0,1,0,
+										     0,1,0,1);
 		setIdentity(kalmanfilter.measurementMatrix);
 		setIdentity(kalmanfilter.processNoiseCov, Scalar::all(1e-1));
 		setIdentity(kalmanfilter.measurementNoiseCov, Scalar::all(1e-5));
@@ -195,34 +206,28 @@ Point SnKalman::correctPoisition(Point position)
 	}
 	else
 	{
-        // Point statePt(state(0),state(1));
+		/*!
+		 * Kalman filter consist of two main states
+		 * 1. Prediction
+		 * 2. Correction
+		 * Below code returns estimated point
+		 */
+		// Point statePt(state(0),state(1));
 		Mat prediction = kalmanfilter.predict();
 		Point predictPt(prediction.at<float>(0),prediction.at<float>(1));
 
-		if(position.x == -1)
-		{
-			//(*measurement)(0) = position.x;
-			//(*measurement)(1) = position.y;
-			Point measPt((*measurement)(0), (*measurement)(1));
-
-			// generate measurement
-			//measurement += KF.measurementMatrix*state;
-			Mat estimated = kalmanfilter.correct(*measurement);
-			Point statePt(estimated.at<float>(0),estimated.at<float>(1));
-			return Point(estimated.at<float>(0), estimated.at<float>(1));
-		}
-		else
+		//! if position measurement correct
+		if(position.x != -1)
 		{
 			(*measurement)(0) = position.x;
 			(*measurement)(1) = position.y;
-			Point measPt((*measurement)(0), (*measurement)(1));
-
-			// generate measurement
-			//measurement += KF.measurementMatrix*state;
-			Mat estimated = kalmanfilter.correct(*measurement);
-			Point statePt(estimated.at<float>(0),estimated.at<float>(1));
-			return Point(estimated.at<float>(0), estimated.at<float>(1));
-			//return position;
 		}
+		Point measPt((*measurement)(0), (*measurement)(1));
+
+		//! generate measurement
+		//! measurement += KF.measurementMatrix*state;
+		Mat estimated = kalmanfilter.correct(*measurement);
+		Point statePt(estimated.at<float>(0),estimated.at<float>(1));
+		return Point(estimated.at<float>(0), estimated.at<float>(1));
 	}
 }
