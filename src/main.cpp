@@ -25,7 +25,8 @@ int main(int argc, char **argv)
     Mat src;					//! Matrix object to get input
 	Point white_position(-1, -1); //! White Ball Position
 	DetectBall white_detector;
-
+	char code = (char)-1;
+	BallAccuracy white_accuracy;
 	/*!
 	 * Open user input video from given path
 	 * and set frame width & height.
@@ -34,8 +35,6 @@ int main(int argc, char **argv)
     capture.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 
-	long long int frame = 0, count = 0;
-	double accuracy = 0;
     while(1)
 	{
         //! store image to matrix
@@ -46,21 +45,18 @@ int main(int argc, char **argv)
 		//! Map result returned by detector
 		white_detector.mapPosition(src, white_position);
 
-		//! Find white position accuracy
-		frame++;
-		if(white_position.x == -1)
-			count++;
-		std::ostringstream os;
-		os << "Accuracy : " << count << " / "<< frame ;
-		std::string tempstring = os.str();
-		// "Accuracty : " + intToString((int)accuracy) + "."
-		// 		+ intToString((int)( accuracy * 1000)
-		// 					  - ((int)accuracy) * 1000)
-		putText(src, tempstring, Point(900, 15), 1, 1, Scalar(255, 255, 255), 2, 5);
+		//! Showing accuracy
+		white_accuracy.updateWithPosition(white_position);
+		white_accuracy.showAccuracy(src);
 
 		//! show final image
-		imshow("source", src);
-		waitKey(5);
+		imshow("Snooker Player Profile Management", src);
+
+		// waitKey(5);
+		//! Escape window on pressing 'Q' or 'q'
+		code = (char)waitKey(5);
+		if( code == 'q' || code == 'Q' )
+			break;
     }
 	return 0;
 }

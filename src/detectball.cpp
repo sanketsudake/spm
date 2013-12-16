@@ -5,6 +5,7 @@
 
 #include "detectball.hpp"
 #include <iostream>
+
 using namespace std;
 using namespace cv;
 
@@ -129,4 +130,29 @@ void DetectBall::mapPosition(Mat &frame, Point position)
 	default:
 		circle(frame, position, 10, Scalar(0,255,0), 2);
 	}
+}
+
+BallAccuracy::BallAccuracy()
+{
+	frame_count = 0;
+	error_count = 0;
+}
+
+BallAccuracy::~BallAccuracy()
+{
+
+}
+
+void BallAccuracy::updateWithPosition(Point position)
+{
+	frame_count++;
+	if(position.x == -1)
+		error_count++;
+}
+
+void BallAccuracy::showAccuracy(Mat &frame)
+{
+	stringstream ss;
+	ss << "Accuracy : " << error_count << " / " << frame_count;
+	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
 }

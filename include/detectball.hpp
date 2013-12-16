@@ -33,4 +33,16 @@ public:
 	void mapPosition(Mat &frame, Point position);
 };
 
+class BallAccuracy
+{
+private:
+	//! total no of frames and count of unidentifed white ball frames
+	long long int frame_count, error_count;
+public:
+	BallAccuracy();
+	~BallAccuracy();
+	void updateWithPosition(Point position);
+	void showAccuracy(Mat &frame);
+};
+
 #endif
