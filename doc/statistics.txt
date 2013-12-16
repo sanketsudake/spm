@@ -1,0 +1,6 @@
+1. Accuracy for shot.avi
+   Total no. of frame = 22312
+   No of frames(white correctly identified) = 20411
+   No of frames(white not identified)       = 1901
+   Accuracy   = 91.48%
+   Error Rate = 08.52%

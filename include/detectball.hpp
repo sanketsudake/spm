@@ -21,7 +21,7 @@ private:
 	//! max number of objects to be detected in frame
 	static const int MAX_NUM_OBJECTS = 50;
 	//! minimum and maximum object area
-	static const int MIN_OBJECT_AREA = 5*5;
+	static const int MIN_OBJECT_AREA = 11 * 11;
 	static const int MAX_OBJECT_AREA = 20 * 20;
 	Scalar *white_minval, *white_maxval;
 public:

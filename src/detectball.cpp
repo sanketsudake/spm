@@ -4,7 +4,7 @@
  */
 
 #include "detectball.hpp"
-
+#include <iostream>
 using namespace std;
 using namespace cv;
 
@@ -59,7 +59,7 @@ Point DetectBall::trackFilteredObject(Mat &frame)
 			{
 				Moments moment = moments((cv::Mat)contours[index]);
 				double area = moment.m00;
-
+				// cout << area << endl;
 				/*! if the area is less than 20 px by 20px then it is probably
 				 * just noise if the area is the same as the 3/2 of the image size,
 				 * probably just a bad filter we only want the object with the
@@ -71,7 +71,6 @@ Point DetectBall::trackFilteredObject(Mat &frame)
 					x = moment.m10/area;
 					y = moment.m01/area;
 					objectFound = true;
-
 				}
 				else
 					objectFound = false;
@@ -79,7 +78,7 @@ Point DetectBall::trackFilteredObject(Mat &frame)
 			//! let user know you found an object
 			if(objectFound == true)
 			{
-				//! cout << "White Ball at: " << x << y << endl;
+				// cout << "White Ball at: " << x << y << endl;
 				//! return object location on screen
 				return Point(x, y);
 			}
@@ -121,7 +120,7 @@ void DetectBall::mapPosition(Mat &frame, Point position)
 		putText(frame, "Failed to Find Position",
 					 Point(0, 50), 1, 2, Scalar(0, 0, 255),2);
 		putText(frame, "Possibly Foul",
-					 Point(50, 50), 1, 2, Scalar(0, 0, 255),2);
+					 Point(0, 100), 1, 2, Scalar(0, 0, 255),2);
 		break;
 		//! Less possible occurance of this case
 	case -2: putText(frame, "TOO MUCH NOISE! ADJUST FILTER",
