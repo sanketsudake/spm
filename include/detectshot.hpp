@@ -18,6 +18,19 @@
 using namespace std;
 using namespace cv;
 
+class ShotArray
+{
+private:
+	vector<Point> white_positions;
+public:
+	ShotArray();
+	~ShotArray();
+	void clearArray();
+	void addPosition(Point position);
+	void drawPath(Mat &frame);
+};
+
+
 /*!
  * \class DetectShot
  * \brief
@@ -41,8 +54,9 @@ public:
     DetectShot();
 	~DetectShot();
 	int BgSubtractor(Mat &frame);
-	void shotChecker(Mat &frame);
-	void shotTrigger(Mat &frame);
+	void shotChecker(Mat &frame, ShotArray *shotarray);
+	void shotTrigger(Mat &frame, ShotArray *shotarray);
+	void preshotTrigger(Mat &frame);
 	void displayShotnumber(Mat &frame);
 };
 

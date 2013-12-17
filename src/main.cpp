@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 	BallAccuracy white_accuracy;
 	SnKalman kfchecker;
 	DetectShot shot_detector;
+	ShotArray white_array;
 
 	/*!
 	 * Open user input video from given path
@@ -49,7 +50,11 @@ int main(int argc, char **argv)
 		white_accuracy.showAccuracy(src);
 
 		//!Call shot checker for every frame
-		shot_detector.shotChecker(src);
+		shot_detector.shotChecker(src, &white_array);
+
+		//! White Positions array
+		white_array.addPosition(white_position);
+		white_array.drawPath(src);
 
 		//! show final image
 		imshow("Snooker Player Profile Management", src);

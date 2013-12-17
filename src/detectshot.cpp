@@ -8,6 +8,37 @@
 using namespace std;
 using namespace cv;
 
+ShotArray::ShotArray()
+{
+	white_positions.clear();
+}
+
+ShotArray::~ShotArray()
+{
+
+}
+
+void ShotArray::addPosition(Point position)
+{
+	white_positions.push_back(position);
+}
+
+void ShotArray::clearArray()
+{
+	white_positions.clear();
+}
+
+void ShotArray::drawPath(Mat &frame)
+{
+	int white_positions_size = (int)white_positions.size();
+	for(int i = 0; i < white_positions_size - 1; i++ )
+	{
+		line(frame, white_positions[i], white_positions[i+1],
+			 Scalar(255, 255, 255), 1, CV_AA, 0);
+		circle(frame, white_positions[i], 1, Scalar(255, 255 ,200), 2);
+	}
+}
+
 DetectShot::DetectShot()
 {
 	shotcount = 0;
@@ -43,7 +74,7 @@ int DetectShot::BgSubtractor(Mat &frame)
 	return contours.size();
 }
 
-void DetectShot::shotChecker(Mat &frame)
+void DetectShot::shotChecker(Mat &frame, ShotArray *shotarray)
 {
 	//! Get no of contours first
 	int contours_size = BgSubtractor(frame);
@@ -79,9 +110,11 @@ void DetectShot::shotChecker(Mat &frame)
 		else
 		{
 			shottemp++;
+			if(shottemp == SHOT_TEMP_COUNT - 1)
+				preshotTrigger(frame);
             //! When shot temp reached fire shotTrigger
 			if(shottemp == SHOT_TEMP_COUNT)
-				shotTrigger(frame);
+				shotTrigger(frame, shotarray);
 		}
 		break;
 	default:
@@ -90,11 +123,16 @@ void DetectShot::shotChecker(Mat &frame)
 	displayShotnumber(frame);
 }
 
-void DetectShot::shotTrigger(Mat &frame)
+void DetectShot::preshotTrigger(Mat &frame)
+{
+	putText(frame, "Press ESC.",
+			Point(600, 500), 1, 1, Scalar(200, 200, 200), 2);
+}
+
+void DetectShot::shotTrigger(Mat &frame, ShotArray *shotarray)
 {
 	shotcount++;
-    putText(frame, "Press ESC.",
-			Point(600, 500), 1, 1, Scalar(200, 200, 200), 2);
+	shotarray->clearArray();
 	//! While ESC is not pressed dont proceed to next shot
 	while(waitKey(1) != 27);
 }
