@@ -48,8 +48,8 @@ int main(int argc, char **argv)
 		white_accuracy.updateWithPosition(white_position);
 		white_accuracy.showAccuracy(src);
 
-		//!
-		shot_detector.BgSubtractor(src);
+		//!Call shot checker for every frame
+		shot_detector.shotChecker(src);
 
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
