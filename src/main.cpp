@@ -56,6 +56,9 @@ int main(int argc, char **argv)
 		white_array.addPosition(white_position);
 		white_array.drawPath(src);
 
+		//! Used to identify first collision
+		shot_detector.movingBall(src, white_position);
+
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
 

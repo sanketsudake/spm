@@ -228,6 +228,8 @@ Point SnKalman::correctPoisition(Point position)
 		//! measurement += KF.measurementMatrix*state;
 		Mat estimated = kalmanfilter.correct(*measurement);
 		Point statePt(estimated.at<float>(0),estimated.at<float>(1));
+		if(position.x != -1)
+			return position;
 		return Point(estimated.at<float>(0), estimated.at<float>(1));
 	}
 }

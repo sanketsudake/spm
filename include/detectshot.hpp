@@ -58,6 +58,8 @@ public:
 	void shotTrigger(Mat &frame, ShotArray *shotarray);
 	void preshotTrigger(Mat &frame);
 	void displayShotnumber(Mat &frame);
+	int isWhiteMoving(Point position);
+	void movingBall(Mat &frame, Point position);
 };
 
 #endif
