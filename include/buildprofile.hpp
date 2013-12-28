@@ -9,6 +9,16 @@
 #include<opencv2/highgui/highgui.hpp>
 #include<opencv2/core/core.hpp>
 
+class Shot
+{
+	private:
+	public:
+	Shot();
+	~Shot();
+	void angleError();
+	void velocityError();
+	void rateShot();
+};
 
 /*!
  * \class BuildProfile
@@ -22,5 +32,6 @@ public:
 	BuildProfile();
 	~BuildProfile();
 };
+
 
 #endif

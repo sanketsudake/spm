@@ -56,7 +56,13 @@ int main(int argc, char **argv)
 		white_accuracy.showAccuracy(src);
 
 		//!Call shot checker for every frame
-		shot_detector.shotChecker(src, &white_array, white_position);
+		int trigger_val = shot_detector.shotChecker(src, white_position);
+		if(trigger_val)
+		{
+			//Execute code
+			white_array.clearArray();
+			col_detector.reset();
+		}
 
 		//! White Positions array
 		white_array.addPosition(white_position);

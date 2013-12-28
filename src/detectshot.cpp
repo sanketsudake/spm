@@ -78,8 +78,10 @@ int DetectShot::BgSubtractor(Mat &frame)
 	return contours.size();
 }
 
-void DetectShot::shotChecker(Mat &frame, ShotArray *shotarray, Point position)
+int DetectShot::shotChecker(Mat &frame, Point position)
 {
+	int returnval = 0;
+
 	//! Get no of contours first
 	int contours_size = BgSubtractor(frame);
 
@@ -90,7 +92,8 @@ void DetectShot::shotChecker(Mat &frame, ShotArray *shotarray, Point position)
 	{
 		if(flag == 2)
 		{
-			shotTrigger(frame, shotarray);
+			shotTrigger(frame);
+			returnval = 1;
 			flag = 0;
 		}
 		if(flag)
@@ -116,12 +119,14 @@ void DetectShot::shotChecker(Mat &frame, ShotArray *shotarray, Point position)
 			preshotTrigger(frame);
 		if(contour_temp == 10)
 		{
-			shotTrigger(frame, shotarray);
+			returnval = 1;
+			shotTrigger(frame);
 			// cout << "Contour" << contour_temp << shottemp << endl;
 			flag = contour_temp = shottemp = 0;
 		}
 	}
 	displayShotnumber(frame);
+	return returnval;
 }
 
 void DetectShot::preshotTrigger(Mat &frame)
@@ -130,10 +135,10 @@ void DetectShot::preshotTrigger(Mat &frame)
 			Point(600, 500), 1, 1, Scalar(200, 200, 200), 2);
 }
 
-void DetectShot::shotTrigger(Mat &frame, ShotArray *shotarray)
+void DetectShot::shotTrigger(Mat &frame)
 {
 	shotcount++;
-	shotarray->clearArray();
+
 	//! While ESC is not pressed dont proceed to next shot
 	while(waitKey(1) != 27);
 }
@@ -205,15 +210,21 @@ void DetectShot::movingBall(Mat &frame, Point position)
 
 CollisionDetector:: CollisionDetector()
 {
+	reset();
+}
+
+CollisionDetector:: ~CollisionDetector()
+{
+}
+
+void CollisionDetector:: reset()
+{
 	prevPoint = Point(-1, -1);
 	prevSlope = 1000;
 	collisionCount = 1;
 	for(int i = 0; i < 10; i++)
 		collPoints[i] = Point(-1, -1);
-}
-
-CollisionDetector:: ~CollisionDetector()
-{
+	slopeTheta = 0.19;
 }
 
 void CollisionDetector::drawPrev(Mat &frame)
@@ -249,13 +260,14 @@ void CollisionDetector::checkCollision(Point position)
 		// Redundant code => if statement can merged
 		if(prevSlope < 900)
 		{
-			if(abs(prevSlope - currSlope) > 0.25)
+			if(abs(prevSlope - currSlope) > slopeTheta)
 			{
 				if(!(abs(xdelta) == 1 && abs(ydelta) == 1))
 				{
 					cout << "Collision" ;
 					collPoints[collisionCount] = prevPoint;
 					collisionCount++;
+					slopeTheta += 0.018;
 					while(waitKey(1) != 27);
 				}
 			}

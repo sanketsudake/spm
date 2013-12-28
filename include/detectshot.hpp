@@ -18,6 +18,8 @@
 using namespace std;
 using namespace cv;
 
+class CollisionDetector;
+
 class ShotArray
 {
 private:
@@ -54,8 +56,8 @@ public:
     DetectShot();
 	~DetectShot();
 	int BgSubtractor(Mat &frame);
-	void shotChecker(Mat &frame, ShotArray *shotarray, Point position);
-	void shotTrigger(Mat &frame, ShotArray *shotarray);
+	int shotChecker(Mat &frame, Point position);
+	void shotTrigger(Mat &frame);
 	void preshotTrigger(Mat &frame);
 	void displayShotnumber(Mat &frame);
 	int isWhiteMoving(Point position);
@@ -66,14 +68,15 @@ class CollisionDetector
 {
 private:
 	Point prevPoint, collPoints[10];
-	double prevSlope;
+	double prevSlope, slopeTheta;
 	int  collisionCount;
+
 
 public:
 	CollisionDetector();
 	~CollisionDetector();
+	void reset();
 	void drawPrev(Mat &frame);
 	void checkCollision(Point position);
 };
-
 #endif
