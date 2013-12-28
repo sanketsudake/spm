@@ -22,8 +22,7 @@ int main(int argc, char **argv)
 	SnKalman kfchecker;
 	DetectShot shot_detector;
 	ShotArray white_array;
-	Point prev(0, 0);
-	double slope2 = 1000;
+	CollisionDetector col_detector;
 
 	/*!
 	 * Open user input video from given path
@@ -63,51 +62,18 @@ int main(int argc, char **argv)
 		white_array.addPosition(white_position);
 		white_array.drawPath(src);
 
-		circle(src, prev, 2, Scalar(255, 0 ,0), 2);
+		//! Draw effective collision points
+		col_detector.drawPrev(src);
 
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
 
-		double slope1 = 0;
-		//! Temporary code need to removed
-		cout << "White Position " << white_position.x
-			 << " "
-			 << white_position.y << " ";
-		cout << prev.y - white_position.y << " "
-			 << prev.x - white_position.x << " ";
+		//! While ESC is not pressed dont proceed to next shot
+		// Uncomment to debug code
+		// while(waitKey(1) != 27);
 
-		if(prev.x - white_position.x)
-		{
-			slope1 = ((double)(prev.y - white_position.y)/(prev.x - white_position.x));
-			cout << slope1 <<  " ";
-			cout << slope2 - slope1 ;
-			if(slope2 < 900)
-			{
-				if(abs(slope2 - slope1) > 0.25)
-				{
-					if(abs(prev.y - white_position.y) == 1 && abs(prev.x - white_position.x) == 1)
-						cout << endl;
-					else
-					{
-						cout << "Collision" << endl;
-						//! While ESC is not pressed dont proceed to next shot
-						while(waitKey(1) != 27);
-					}
-				}
-				else
-					cout << endl;
-			}
-			else
-				cout << endl;
-		}
-		else
-		{
-			slope1 = 1000;
-			cout << endl;
-		}
-
-		prev = white_position;
-		slope2 = slope1;
+		//! Find colliding points
+		col_detector.checkCollision(white_position);
 
 		//! Escape window on pressing 'Q' or 'q'
 		code = (char)waitKey(5);

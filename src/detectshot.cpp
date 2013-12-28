@@ -202,3 +202,66 @@ void DetectShot::movingBall(Mat &frame, Point position)
 	// putText(frame, ss.str(),
 	// 		Point(100, 630), 1, 1, Scalar(255, 255, 255), 2);
 }
+
+CollisionDetector:: CollisionDetector()
+{
+	prevPoint = Point(-1, -1);
+	prevSlope = 1000;
+	collisionCount = 1;
+	for(int i = 0; i < 10; i++)
+		collPoints[i] = Point(-1, -1);
+}
+
+CollisionDetector:: ~CollisionDetector()
+{
+}
+
+void CollisionDetector::drawPrev(Mat &frame)
+{
+	for(int i = 1; i < collisionCount; i++)
+		circle(frame, collPoints[i], 10, Scalar(255, 0 ,0), 2);
+}
+
+void CollisionDetector::checkCollision(Point position)
+{
+	//! Identifying only 4 collisions
+	if(collisionCount > 4)
+		return;
+
+	//! Code need to refactorized
+	double currSlope = 1000;
+
+	//! Temporary code need to removed
+	cout << "W.Position " << position.x
+		 << " "
+		 << position.y << " ";
+	cout << prevPoint.y - position.y << " "
+		 << prevPoint.x - position.x << " ";
+
+	int xdelta = position.x - prevPoint.x;
+	int ydelta = position.y - prevPoint.y;
+
+	if(xdelta)
+	{
+		currSlope = ((double)(ydelta)/(xdelta));
+		cout << currSlope <<  " ";
+		cout << prevSlope - currSlope ;
+		// Redundant code => if statement can merged
+		if(prevSlope < 900)
+		{
+			if(abs(prevSlope - currSlope) > 0.25)
+			{
+				if(!(abs(xdelta) == 1 && abs(ydelta) == 1))
+				{
+					cout << "Collision" ;
+					collPoints[collisionCount] = prevPoint;
+					collisionCount++;
+					while(waitKey(1) != 27);
+				}
+			}
+		}
+	}
+	cout << endl;
+	prevPoint = position;
+	prevSlope = currSlope;
+}

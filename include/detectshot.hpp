@@ -62,4 +62,18 @@ public:
 	void movingBall(Mat &frame, Point position);
 };
 
+class CollisionDetector
+{
+private:
+	Point prevPoint, collPoints[10];
+	double prevSlope;
+	int  collisionCount;
+
+public:
+	CollisionDetector();
+	~CollisionDetector();
+	void drawPrev(Mat &frame);
+	void checkCollision(Point position);
+};
+
 #endif
