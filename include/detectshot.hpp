@@ -47,14 +47,14 @@ private:
     //! Previous postion of white ball
 	Point prevPosition;
     //! Temporary variables in shot detection
-	int shot_state, shottemp;
+	int shot_state, shottemp, shotstart, flag, contour_temp;
 public:
     //! Maintains global shot count
 	int shotcount;
     DetectShot();
 	~DetectShot();
 	int BgSubtractor(Mat &frame);
-	void shotChecker(Mat &frame, ShotArray *shotarray);
+	void shotChecker(Mat &frame, ShotArray *shotarray, Point position);
 	void shotTrigger(Mat &frame, ShotArray *shotarray);
 	void preshotTrigger(Mat &frame);
 	void displayShotnumber(Mat &frame);

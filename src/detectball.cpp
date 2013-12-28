@@ -153,15 +153,15 @@ void BallAccuracy::updateWithPosition(Point position)
 
 	frame_count++;
 	//! update error_count if position detection failed
-	if(position.x == -1)
-		error_count++;
+	// if(position.x == -1)
+	// 	error_count++;
 }
 
 void BallAccuracy::showAccuracy(Mat &frame)
 {
 	//! Generate string from error_count and frame_count
 	stringstream ss;
-	ss << "Accuracy : " << error_count << " / " << frame_count;
+	ss << "Frame No : " << frame_count;
 	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
 }
 
