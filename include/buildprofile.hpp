@@ -18,6 +18,7 @@ class Shot
 	void angleError();
 	void velocityError();
 	void rateShot();
+	void shottype();
 };
 
 /*!

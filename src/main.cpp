@@ -60,8 +60,12 @@ int main(int argc, char **argv)
 		if(trigger_val)
 		{
 			//Execute code
+			shot_detector.preshotTrigger(src);
 			white_array.clearArray();
+			col_detector.drawPath(src);
 			col_detector.reset();
+			col_detector.setShotStartPoint(white_position);
+
 		}
 
 		//! White Positions array
@@ -73,6 +77,14 @@ int main(int argc, char **argv)
 
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
+
+		if(trigger_val)
+		{
+			//! While ESC is not pressed dont proceed to next shot
+			while(waitKey(1) != 27);
+		}
+
+
 
 		//! While ESC is not pressed dont proceed to next shot
 		// Uncomment to debug code

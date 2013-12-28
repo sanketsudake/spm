@@ -98,7 +98,7 @@ int DetectShot::shotChecker(Mat &frame, Point position)
 		}
 		if(flag)
 		{
-			preshotTrigger(frame);
+			//preshotTrigger(frame);
 			flag = 2;
 		}
 	}
@@ -115,8 +115,8 @@ int DetectShot::shotChecker(Mat &frame, Point position)
 	if(contours_size == 0 && flag)
 	{
 		contour_temp++;
-		if(contour_temp == 9)
-			preshotTrigger(frame);
+		// if(contour_temp == 9)
+		// 	preshotTrigger(frame);
 		if(contour_temp == 10)
 		{
 			returnval = 1;
@@ -138,9 +138,6 @@ void DetectShot::preshotTrigger(Mat &frame)
 void DetectShot::shotTrigger(Mat &frame)
 {
 	shotcount++;
-
-	//! While ESC is not pressed dont proceed to next shot
-	while(waitKey(1) != 27);
 }
 
 void DetectShot::displayShotnumber(Mat &frame)
@@ -227,10 +224,26 @@ void CollisionDetector:: reset()
 	slopeTheta = 0.19;
 }
 
+void CollisionDetector::setShotStartPoint(Point position)
+{
+	collPoints[0] = position;
+}
+
 void CollisionDetector::drawPrev(Mat &frame)
 {
 	for(int i = 1; i < collisionCount; i++)
 		circle(frame, collPoints[i], 10, Scalar(255, 0 ,0), 2);
+}
+
+void CollisionDetector::drawPath(Mat &frame)
+{
+	if(collisionCount > 4)
+	{
+		line(frame, collPoints[0], collPoints[1], Scalar(0, 200, 220), 1, CV_AA);
+		line(frame, collPoints[1], collPoints[2], Scalar(0, 200, 200), 1, CV_AA);
+		line(frame, collPoints[2], collPoints[3], Scalar(0, 200, 200), 1, CV_AA);
+		line(frame, collPoints[3], collPoints[4], Scalar(0, 200, 200), 1, CV_AA);
+	}
 }
 
 void CollisionDetector::checkCollision(Point position)
@@ -268,7 +281,8 @@ void CollisionDetector::checkCollision(Point position)
 					collPoints[collisionCount] = prevPoint;
 					collisionCount++;
 					slopeTheta += 0.018;
-					while(waitKey(1) != 27);
+					//! Wait after every collision
+					//while(waitKey(1) != 27);
 				}
 			}
 		}
