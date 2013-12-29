@@ -5,6 +5,8 @@
 
 #include "detectball.hpp"
 #include "detectshot.hpp"
+#include "buildprofile.hpp"
+#include "managelogin.hpp"
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -23,6 +25,7 @@ int main(int argc, char **argv)
 	DetectShot shot_detector;
 	ShotArray white_array;
 	CollisionDetector col_detector;
+	Shot shot;
 
 	/*!
 	 * Open user input video from given path
@@ -66,11 +69,15 @@ int main(int argc, char **argv)
 			col_detector.reset();
 			col_detector.setShotStartPoint(white_position);
 
+
 		}
 
 		//! White Positions array
 		white_array.addPosition(white_position);
 		white_array.drawPath(src);
+
+		//! Draw suggested Point
+		shot.drawSuggested(src);
 
 		//! Draw effective collision points
 		col_detector.drawPrev(src);
@@ -78,13 +85,16 @@ int main(int argc, char **argv)
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
 
+		shot.getUserInput(src);
+
 		if(trigger_val)
 		{
 			//! While ESC is not pressed dont proceed to next shot
 			while(waitKey(1) != 27);
+			shot.setShotStartP(white_position);
+			shot.clear();
+
 		}
-
-
 
 		//! While ESC is not pressed dont proceed to next shot
 		// Uncomment to debug code

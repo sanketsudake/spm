@@ -70,8 +70,6 @@ private:
 	Point prevPoint, collPoints[10];
 	double prevSlope, slopeTheta;
 	int  collisionCount;
-
-
 public:
 	CollisionDetector();
 	~CollisionDetector();
@@ -81,4 +79,5 @@ public:
 	void drawPath(Mat &frame);
 	void checkCollision(Point position);
 };
+
 #endif
