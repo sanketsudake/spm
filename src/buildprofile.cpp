@@ -25,6 +25,7 @@ Shot::Shot()
 {
 	startpoint = Point(-1, -1);
 	p1 = Point(1000, 10000);
+	angleError = 0;
 }
 
 Shot::~Shot()
@@ -67,9 +68,25 @@ void Shot::drawSuggested(Mat &frame)
 	}
 }
 
-void Shot::angleError()
+void Shot::angleErr(Mat &frame, CollisionDetector *col_detector)
 {
-
+	double actual_slope = col_detector->getSlope();
+	double suggested_slope =
+		((double)(p1.y - startpoint.y)/(p1.x - startpoint.x));
+	// angleError = abs(
+	// 	(atan(actual_slope))
+	// 	- (atan(suggested_slope))
+	// 	) * 180 / M_PI ;
+	// /*! angle formula
+	//  *  tan(angle) = m1 - m2 / ( 1 + m1*m2)
+	//  */
+	angleError = (actual_slope - suggested_slope)/
+		(1 + (actual_slope * suggested_slope));
+	angleError = abs(atan(angleError) * 180 / M_PI);
+	stringstream ss;
+	ss << "AngleError : " << angleError << " deg";
+	putText(frame, ss.str(),
+			Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
 }
 
 void Shot::velocityError()

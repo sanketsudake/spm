@@ -78,6 +78,7 @@ public:
 	void drawPrev(Mat &frame);
 	void drawPath(Mat &frame);
 	void checkCollision(Point position);
+	double getSlope();
 };
 
 #endif

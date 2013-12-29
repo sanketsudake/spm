@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	ShotArray white_array;
 	CollisionDetector col_detector;
 	Shot shot;
-
+	int flag = 1;
 	/*!
 	 * Open user input video from given path
 	 * and set frame width & height.
@@ -63,13 +63,15 @@ int main(int argc, char **argv)
 		if(trigger_val)
 		{
 			//Execute code
-			shot_detector.preshotTrigger(src);
+			if(!flag)
+			{
+				shot_detector.preshotTrigger(src);
+				shot.angleErr(src, &col_detector);
+			}
 			white_array.clearArray();
 			col_detector.drawPath(src);
 			col_detector.reset();
 			col_detector.setShotStartPoint(white_position);
-
-
 		}
 
 		//! White Positions array
@@ -89,10 +91,12 @@ int main(int argc, char **argv)
 
 		if(trigger_val)
 		{
-			//! While ESC is not pressed dont proceed to next shot
-			while(waitKey(1) != 27);
+			if(!flag)
+				//! While ESC is not pressed dont proceed to next shot
+				while(waitKey(1) != 27);
 			shot.setShotStartP(white_position);
 			shot.clear();
+			flag = 0;
 
 		}
 

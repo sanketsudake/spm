@@ -9,6 +9,8 @@
 #include<opencv2/highgui/highgui.hpp>
 #include<opencv2/core/core.hpp>
 #include<iostream>
+#include <cmath>
+#include "detectshot.hpp"
 
 using namespace std;
 using namespace cv;
@@ -18,6 +20,7 @@ class Shot
 {
 	private:
 	Point startpoint, p1;
+	double angleError;
 	public:
 	Shot();
 	~Shot();
@@ -25,7 +28,7 @@ class Shot
 	void setShotStartP(Point position);
 	void getUserInput(Mat &frame);
 	void drawSuggested(Mat &frame);
-	void angleError();
+	void angleErr(Mat &frame, CollisionDetector *col_detector);
 	void velocityError();
 	void rateShot();
 	void shottype();

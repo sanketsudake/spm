@@ -291,3 +291,9 @@ void CollisionDetector::checkCollision(Point position)
 	prevPoint = position;
 	prevSlope = currSlope;
 }
+
+double CollisionDetector::getSlope()
+{
+	return ((double)(collPoints[1].y - collPoints[0].y)
+			/(collPoints[1].x - collPoints[0].x)	);
+}
