@@ -1,0 +1,22 @@
+* SPM Project
+** DONE  White ball detection
+** DONE Tracking white ball
+** DONE Frame no counting
+** DONE Correct Shot start and end
+** DONE Accept points for suggested shot
+** DONE Find point of collisions
+** DONE Angle Between Suggested and Actual
+** TODO Find velocity per shot
+** TODO Determine velocity scale
+** TODO Add trackbar to set velocity scale
+** TODO Errror between actual and suggested velocity
+** TODO Determine Shot Type
+** TODO Find out weightage for AngleError and Velocity Error
+** TODO Rate Shot
+** TODO Add up all shots with type and rating
+** TODO Populate statistics for user
+** TODO Compare User with others and rate him
+** TODO Generate Suggestions for User
+** TODO Spin shot checking
+** TODO User Interface
+** TODO Integrate Shot Suggestion Model
