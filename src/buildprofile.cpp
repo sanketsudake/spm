@@ -13,7 +13,7 @@ void onMouseClick(int event, int x, int y, int flags, void* userdata)
 	Point *p = ((Point *)userdata);
     if(event == EVENT_LBUTTONDOWN)
 	{
-        cout << "Mouseclick " << x << " " << y << endl;
+        //cout << "Mouseclick " << x << " " << y << endl;
         if((x>=68+7 && x<=1091-7) && (y>=73+7 && y<=603-7))
 		{
 			*p = Point(x, y);
@@ -43,8 +43,8 @@ void Shot::getUserInput(Mat &frame)
 		imshow("Snooker Player Profile Management", frame);
 		waitKey(5);
 
-		if(p1.x != -1)
-			cout << "Got value " << p1.x << " " << p1.y << endl;
+		// if(p1.x != -1)
+		// 	cout << "Got value " << p1.x << " " << p1.y << endl;
 	}
 	setMouseCallback("Snooker Player Profile Management", NULL, NULL);
 }
@@ -70,7 +70,9 @@ void Shot::drawSuggested(Mat &frame)
 
 void Shot::angleErr(Mat &frame, CollisionDetector *col_detector)
 {
-	double actual_slope = col_detector->getSlope();
+	// slope between first and second point from collision
+	// array
+	double actual_slope = col_detector->getSlope(0, 1);
 	double suggested_slope =
 		((double)(p1.y - startpoint.y)/(p1.x - startpoint.x));
 	// angleError = abs(

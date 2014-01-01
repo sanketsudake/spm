@@ -63,11 +63,16 @@ int main(int argc, char **argv)
 		if(trigger_val)
 		{
 			//Execute code
+			// Do not if block for first shot starting
 			if(!flag)
 			{
+				cout << "Total distance : " << white_array.totalDist() << endl;
+				cout << "Total time : " << white_array.totalTime() << endl;
+				cout << "Velocity : " << white_array.shotVelocity() << "pixels/sec" << endl;
 				shot_detector.preshotTrigger(src);
 				shot.angleErr(src, &col_detector);
 			}
+
 			white_array.clearArray();
 			col_detector.drawPath(src);
 			col_detector.reset();
@@ -97,7 +102,6 @@ int main(int argc, char **argv)
 			shot.setShotStartP(white_position);
 			shot.clear();
 			flag = 0;
-
 		}
 
 		//! While ESC is not pressed dont proceed to next shot

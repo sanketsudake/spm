@@ -10,7 +10,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/video/video.hpp>
 #include <iostream>
-
+#include <cmath>
 //! Blank frames between two shots
 //! To be adjusted according to video
 #define SHOT_TEMP_COUNT 20
@@ -24,12 +24,17 @@ class ShotArray
 {
 private:
 	vector<Point> white_positions;
+	time_t shot_start;
 public:
 	ShotArray();
 	~ShotArray();
 	void clearArray();
 	void addPosition(Point position);
 	void drawPath(Mat &frame);
+	double dist(Point p1, Point p2);
+	double totalDist();
+	double totalTime();
+	double shotVelocity();
 };
 
 
@@ -78,7 +83,8 @@ public:
 	void drawPrev(Mat &frame);
 	void drawPath(Mat &frame);
 	void checkCollision(Point position);
-	double getSlope();
+	double getSlope(int p1, int p2);
+	void shotType();
 };
 
 #endif
