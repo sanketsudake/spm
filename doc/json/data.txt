@@ -1,0 +1,26 @@
+[
+{
+	"total_distance" : 1288.65,
+	"total_time" : 39,
+	"velocity" : 12.138,
+	"angle_error" : 1.97754
+},
+{
+	"total_distance" : 2618.26,
+	"total_time" : 84,
+	"velocity" : 11.4501,
+	"angle_error" : 8.37601
+},
+{
+	"total_distance" : 714.989,
+	"total_time" : 60,
+	"velocity" : 4.37748,
+	"angle_error" : 24.3627
+},
+{
+	"total_distance" : 809.658,
+	"total_time" : 81,
+	"velocity" : 3.67192,
+	"angle_error" : 9.40139
+}
+]

@@ -87,6 +87,7 @@ void Shot::angleErr(Mat &frame, CollisionDetector *col_detector)
 	angleError = abs(atan(angleError) * 180 / M_PI);
 	stringstream ss;
 	ss << "AngleError : " << angleError << " deg";
+	cout << "\t\"angle_error\" : " << angleError << endl;
 	putText(frame, ss.str(),
 			Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
 }

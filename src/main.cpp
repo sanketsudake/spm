@@ -66,11 +66,14 @@ int main(int argc, char **argv)
 			// Do not if block for first shot starting
 			if(!flag)
 			{
-				cout << "Total distance : " << white_array.totalDist() << endl;
-				cout << "Total time : " << white_array.totalTime() << endl;
-				cout << "Velocity : " << white_array.shotVelocity() << "pixels/sec" << endl;
+				cout << "{" << endl;
+				cout << "\t\"total_distance\" : " << white_array.totalDist() << ","<< endl;
+				cout << "\t\"total_time\" : " << white_array.totalTime() << ","<< endl;
+				// Velocity in cm/sec
+				cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
 				shot_detector.preshotTrigger(src);
 				shot.angleErr(src, &col_detector);
+				cout << "}," << endl;
 			}
 
 			white_array.clearArray();

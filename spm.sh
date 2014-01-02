@@ -21,7 +21,7 @@ function run
 		echo "File \"$1\" does not exist."
 		usage
 	else
-		echo "Runnning code with $1 "
+		#echo "Runnning code with $1 "
 		build/spm $1
 	fi
 }
@@ -33,7 +33,7 @@ function usage
 
 function spm_main
 {
-	echo $TITLE
+	#echo $TITLE
 	if [ -n "$1" ]
 	then
 		if [ $1 = "--build" ];
