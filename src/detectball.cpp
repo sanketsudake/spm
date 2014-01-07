@@ -13,9 +13,19 @@ DetectBall::DetectBall()
 	//! HSV Min and Max Range for white ball detection
 	white_minval = new Scalar(0, 0, 200);
 	white_maxval = new Scalar(255, 70, 255);
+    frameCount = 0;
 }
 DetectBall::~DetectBall()
 {
+
+}
+
+void DetectBall :: showFrameNo(Mat &frame)
+{
+    frameCount++;
+    stringstream ss;
+	ss << "Frame No : " << frameCount;
+	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
 
 }
 
@@ -81,7 +91,7 @@ Point DetectBall::trackFilteredObject(Mat &frame)
 			//! let user know you found an object
 			if(objectFound == true)
 			{
-				// cout << "White Ball at: " << x << y << endl;
+                // cout << "White Ball at: " << x << y << endl;
 				//! return object location on screen
 				return Point(x, y);
 			}
@@ -132,37 +142,10 @@ void DetectBall::mapPosition(Mat &frame, Point position, int status)
 	default:
 		//! check status point coming from white detector or kalman fiter
 		if(!status)
-			circle(frame, position, 10, Scalar(0, 0, 0), 2);
+			circle(frame, position, 12, Scalar(0, 0, 0), 2);
 		else
 			circle(frame, position, 10, Scalar(255, 255, 255), 2);
 	}
-}
-
-BallAccuracy::BallAccuracy()
-{
-	frame_count = 0;  //! count for total no of frames
-	error_count = 0;  //! count for faulty white ball detection
-}
-
-BallAccuracy::~BallAccuracy()
-{
-}
-
-void BallAccuracy::updateWithPosition(Point position)
-{
-
-	frame_count++;
-	//! update error_count if position detection failed
-	// if(position.x == -1)
-	// 	error_count++;
-}
-
-void BallAccuracy::showAccuracy(Mat &frame)
-{
-	//! Generate string from error_count and frame_count
-	stringstream ss;
-	ss << "Frame No : " << frame_count;
-	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
 }
 
 SnKalman:: SnKalman()

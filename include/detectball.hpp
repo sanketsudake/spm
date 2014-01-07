@@ -26,6 +26,7 @@ private:
 	static const int MIN_OBJECT_AREA = 11 * 11;
 	static const int MAX_OBJECT_AREA = 20 * 20;
 	Scalar *white_minval, *white_maxval;
+    long long int frameCount;
 public:
 	DetectBall();
 	~DetectBall();
@@ -33,19 +34,9 @@ public:
 	Point trackFilteredObject(Mat &frame);
 	Point detectWhite(Mat &frame);
 	void mapPosition(Mat &frame, Point position, int status);
+    void showFrameNo(Mat &frame);
 };
 
-class BallAccuracy
-{
-private:
-	//! total no of frames and count of unidentifed white ball frames
-	long long int frame_count, error_count;
-public:
-	BallAccuracy();
-	~BallAccuracy();
-	void updateWithPosition(Point position);
-	void showAccuracy(Mat &frame);
-};
 
 class SnKalman
 {

@@ -1,5 +1,5 @@
 /*!
-  * \file main.cpp
+ * \file main.cpp
  * \brief Consist methods to build user profile
  */
 
@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 	Point white_position(-1, -1); //! White Ball Position
 	DetectBall white_detector;
 	char code = (char)-1;
-	BallAccuracy white_accuracy;
+	
 	SnKalman kfchecker;
 	DetectShot shot_detector;
 	ShotArray white_array;
@@ -54,9 +54,10 @@ int main(int argc, char **argv)
 		white_position = kfchecker.correctPoisition(white_position),
 		white_detector.mapPosition(src, white_position, 1);
 
-		//! Showing accuracy
-		white_accuracy.updateWithPosition(white_position);
-		white_accuracy.showAccuracy(src);
+		//! Display frame number
+        white_detector.showFrameNo(src);
+        
+
 
 		//!Call shot checker for every frame
 		int trigger_val = shot_detector.shotChecker(src, white_position);
