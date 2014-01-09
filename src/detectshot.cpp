@@ -193,44 +193,6 @@ int DetectShot::isWhiteMoving(Point position)
 	return 1;
 }
 
-void DetectShot::movingBall(Mat &frame, Point position)
-{
-	//! Now draw those contours on frame with red color
-	// int contours_size = contours.size();
-	// vector<Point2f>center( contours_size );
-	// vector<float>radius( contours_size );
-	// int ball_count = 0;
-
-	// //! if whiteball is moving identify other ball which are moving
-	// if(isWhiteMoving(position))
-	// {
-	// 	for(int k = 0; k < contours_size; k++)
-	// 	{
-	// 		//if(isContourConvex(contours[k]))
-	// 		{
-	// 			//! Find closest circle to given contours
-	// 			//! Similar to convex hull problem
-	// 			minEnclosingCircle((Mat)contours[k], center[k], radius[k]);
-	// 			//! Draw circle within specified radius
-	// 			if(7 < (int)radius[k] && (int)radius[k] < 13)
-	// 			{
-	// 				//std::cout << "Radius" << radius[k] << std::endl;
-	// 				ball_count++;
-	// 				circle(frame, center[k], radius[k], Scalar(0, 255, 0));
-	// 			}
-	// 		}
-	// 	}
-	// 	//! If ball moving
-	// 	if(ball_count > 1)
-	// 		putText(frame, "Moving",
-	// 				Point(500, 500), 5, 1, Scalar(255, 255, 255), 2);
-	// }
-	// //! Show number of moving balls on screen
-	// stringstream ss;
-	// ss << "Moving Ball No : " << ball_count;
-	// putText(frame, ss.str(),
-	// 		Point(100, 630), 1, 1, Scalar(255, 255, 255), 2);
-}
 
 CollisionDetector:: CollisionDetector()
 {
