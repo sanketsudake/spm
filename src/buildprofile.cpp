@@ -68,24 +68,23 @@ void Shot::drawSuggested(Mat &frame)
 	}
 }
 
-void Shot::angleErr(Mat &frame, CollisionDetector *col_detector)
+void Shot::angleErr(Mat &frame, CollisionDetector *col_detector, ShotArray *shot_array)
 {
-	// slope between first and second point from collision
-	// array
-	double actual_slope = col_detector->getSlope(0, 1);
+        //slop counted using first 2 points of whiteball detected in the frames
+        double actual_slope = shot_array->getSlope(0, 1);
 	double suggested_slope =
-		((double)(p1.y - startpoint.y)/(p1.x - startpoint.x));
-	// angleError = abs(
-	// 	(atan(actual_slope))
-	// 	- (atan(suggested_slope))
-	// 	) * 180 / M_PI ;
+		((double)(startpoint.y - p1.y)/(p1.x - startpoint.x));
+	 angleError = abs(
+	 	(atan(actual_slope))
+	 	- (atan(suggested_slope))
+	 	) * 180 / M_PI ;
 	// /*! angle formula
 	//  *  tan(angle) = m1 - m2 / ( 1 + m1*m2)
 	//  */
-	angleError = (actual_slope - suggested_slope)/
-		(1 + (actual_slope * suggested_slope));
+	/*angleError = abs((actual_slope - suggested_slope)/
+		(1 + (actual_slope * suggested_slope)));
 	angleError = abs(atan(angleError) * 180 / M_PI);
-	stringstream ss;
+	*/stringstream ss;
 	ss << "AngleError : " << angleError << " deg";
 	cout << "\t\"angle_error\" : " << angleError << endl;
 	putText(frame, ss.str(),

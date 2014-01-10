@@ -1,7 +1,7 @@
 /*!
  * \file main.cpp
  * \brief Consist methods to build user profile
- */
+*/
 
 #include "detectball.hpp"
 #include "detectshot.hpp"
@@ -16,7 +16,7 @@ using namespace cv;
 int main(int argc, char **argv)
 {
 	VideoCapture capture;		//! Videocapture to capture video object
-    Mat src;					//! Matrix object to get input
+        Mat src;					//! Matrix object to get input
 	Point white_position(-1, -1); //! White Ball Position
 	DetectBall white_detector;
 	char code = (char)-1;
@@ -47,8 +47,6 @@ int main(int argc, char **argv)
 		//! Map result returned by detector
 		//white_detector.mapPosition(src, white_position, 0);
 
-		//! Used to identify first collision
-		shot_detector.movingBall(src, white_position);
 
 		//! Correct position through kalman filter
 		white_position = kfchecker.correctPoisition(white_position),
@@ -73,7 +71,7 @@ int main(int argc, char **argv)
 				// Velocity in cm/sec
 				cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
 				shot_detector.preshotTrigger(src);
-				shot.angleErr(src, &col_detector);
+				shot.angleErr(src, &col_detector,&white_array);
 				cout << "}," << endl;
 			}
 
@@ -85,7 +83,7 @@ int main(int argc, char **argv)
 
 		//! White Positions array
 		white_array.addPosition(white_position);
-		white_array.drawPath(src);
+            white_array.drawPath(src);
 
 		//! Draw suggested Point
 		shot.drawSuggested(src);
@@ -96,7 +94,7 @@ int main(int argc, char **argv)
 		//! show final image
 		imshow("Snooker Player Profile Management", src);
 
-		shot.getUserInput(src);
+            shot.getUserInput(src);
 
 		if(trigger_val)
 		{

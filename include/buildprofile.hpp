@@ -28,7 +28,7 @@ class Shot
 	void setShotStartP(Point position);
 	void getUserInput(Mat &frame);
 	void drawSuggested(Mat &frame);
-	void angleErr(Mat &frame, CollisionDetector *col_detector);
+	void angleErr(Mat &frame, CollisionDetector *col_detector, ShotArray *shot_array);
 	void velocityError();
 	void rateShot();
 	void shottype();

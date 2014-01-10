@@ -24,7 +24,8 @@ class ShotArray
 {
 private:
 	vector<Point> white_positions;
-	time_t shot_start;
+	Point prevPosition;
+        time_t shot_start;
 public:
 	ShotArray();
 	~ShotArray();
@@ -35,6 +36,7 @@ public:
 	double totalDist();
 	double totalTime();
 	double shotVelocity();
+        double getSlope(int p1, int p2 );
 };
 
 

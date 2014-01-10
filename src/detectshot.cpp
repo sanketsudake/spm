@@ -12,6 +12,7 @@ ShotArray::ShotArray()
 {
 	white_positions.clear();
 	shot_start = time(NULL);
+        prevPosition = Point(0,0);
 }
 
 ShotArray::~ShotArray()
@@ -21,13 +22,27 @@ ShotArray::~ShotArray()
 
 void ShotArray::addPosition(Point position)
 {
-	white_positions.push_back(position);
+    //set the previous position if it is not set
+        if(!prevPosition.x && !prevPosition.y){
+            prevPosition = position;
+	    white_positions.push_back(position);
+        }
+        else if((prevPosition.x - position.x) && (prevPosition.y - position.y)){
+	    white_positions.push_back(position);
+            prevPosition = position;
+        }
 }
 
 void ShotArray::clearArray()
 {
 	white_positions.clear();
 	shot_start = time(NULL);
+        prevPosition = Point(0,0);
+}
+
+double ShotArray :: getSlope(int p1,int p2 ){
+    return (double)((white_positions[p1].y - white_positions[p2].y) / 
+            (white_positions[p2].x - white_positions[p1].x) ); 
 }
 
 void ShotArray::drawPath(Mat &frame)
@@ -53,6 +68,8 @@ double ShotArray::totalDist()
 	{
 		tot_dist += dist(white_positions[i], white_positions[i+1]);
 	}
+        double temp = dist(white_positions[2],white_positions[3]);
+        cout << "first dist: " << temp <<"  " << white_positions.size() <<endl;
 	return tot_dist;
 }
 
@@ -153,6 +170,7 @@ int DetectShot::shotChecker(Mat &frame, Point position)
 		}
 	}
 	displayShotnumber(frame);
+      
 	return returnval;
 }
 
@@ -285,7 +303,9 @@ double CollisionDetector::getSlope(int p1, int p2)
 {
 	return ((double)(collPoints[p2].y - collPoints[p1].y)
 			/(collPoints[p2].x - collPoints[p1].x)	);
+        
 }
+
 
 void CollisionDetector::shotType()
 {
