@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 				// Velocity in cm/sec
 				cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
 				shot_detector.preshotTrigger(src);
-				shot.angleErr(src, &col_detector,&white_array);
+				shot.angleErr(src, &white_array);
 				cout << "}," << endl;
 			}
 

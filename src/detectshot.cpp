@@ -4,7 +4,7 @@
  */
 
 #include "detectshot.hpp"
-
+#include <math.h>
 using namespace std;
 using namespace cv;
 
@@ -40,11 +40,6 @@ void ShotArray::clearArray()
         prevPosition = Point(0,0);
 }
 
-double ShotArray :: getSlope(int p1,int p2 ){
-    return (double)((white_positions[p1].y - white_positions[p2].y) / 
-            (white_positions[p2].x - white_positions[p1].x) ); 
-}
-
 void ShotArray::drawPath(Mat &frame)
 {
 	int white_positions_size = (int)white_positions.size();
@@ -68,9 +63,15 @@ double ShotArray::totalDist()
 	{
 		tot_dist += dist(white_positions[i], white_positions[i+1]);
 	}
-        double temp = dist(white_positions[2],white_positions[3]);
-        cout << "first dist: " << temp <<"  " << white_positions.size() <<endl;
 	return tot_dist;
+}
+
+double ShotArray :: angleError(Point C)
+{
+        double b = dist(C,white_positions[1]);
+        double c = dist(white_positions[1], white_positions[0]);
+        double a = dist(white_positions[0], C);
+        return acos(((a*a) + (c*c) - (b*b))/(2*a*c));
 }
 
 double ShotArray::totalTime()
@@ -299,12 +300,6 @@ void CollisionDetector::checkCollision(Point position)
 	prevSlope = currSlope;
 }
 
-double CollisionDetector::getSlope(int p1, int p2)
-{
-	return ((double)(collPoints[p2].y - collPoints[p1].y)
-			/(collPoints[p2].x - collPoints[p1].x)	);
-        
-}
 
 
 void CollisionDetector::shotType()

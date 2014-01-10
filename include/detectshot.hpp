@@ -36,7 +36,7 @@ public:
 	double totalDist();
 	double totalTime();
 	double shotVelocity();
-        double getSlope(int p1, int p2 );
+        double angleError(Point C);
 };
 
 
@@ -85,7 +85,6 @@ public:
 	void drawPrev(Mat &frame);
 	void drawPath(Mat &frame);
 	void checkCollision(Point position);
-	double getSlope(int p1, int p2);
 	void shotType();
 };
 
