@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.ko
+*.swp
 
 #Compile Static liabraries
 *.lai
