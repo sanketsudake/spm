@@ -13,14 +13,16 @@ ${SNINC}/buildprofile.hpp
 ${SNINC}/detectball.hpp
 ${SNINC}/detectshot.hpp  
 ${SNINC}/managelogin.hpp
-${SNINC}/shot.hpp)
+${SNINC}/shot.hpp
+${SNINC}/collisionDetector.hpp)
 set(SRC 
 ${SNSRC}/buildprofile.cpp  
 ${SNSRC}/detectball.cpp
 ${SNSRC}/detectshot.cpp 
 ${SNSRC}/managelogin.cpp 
 ${SNSRC}/main.cpp
-${SNSRC}/shot.cpp)
+${SNSRC}/shot.cpp
+${SNSRC}/collisionDetector.cpp)
 
 add_executable(spm ${SRC} ${INC})
 target_link_libraries(spm ${OpenCV_LIBS})

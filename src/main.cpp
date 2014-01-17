@@ -8,6 +8,7 @@
 #include "buildprofile.hpp"
 #include "managelogin.hpp"
 #include "shot.hpp"
+#include "collisionDetector.hpp"
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -73,7 +74,8 @@ int main(int argc, char **argv)
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
                 double angleError = shot.angleErr(src, &white_array);
-                cout << "Player Profile angle: " << build_profile.profileAngle(angleError) << endl;
+                int currAngleAcc = build_profile.profileAngle(angleError);
+                cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
             }
 
             white_array.clearArray();

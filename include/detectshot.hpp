@@ -68,23 +68,6 @@ public:
 	void preshotTrigger(Mat &frame);
 	void displayShotnumber(Mat &frame);
 	int isWhiteMoving(Point position);
-	void movingBall(Mat &frame, Point position);
-};
-
-class CollisionDetector
-{
-private:
-	Point prevPoint, collPoints[10];
-	double prevSlope, slopeTheta;
-	int  collisionCount;
-public:
-	CollisionDetector();
-	~CollisionDetector();
-	void reset();
-	void setShotStartPoint(Point position);
-	void drawPrev(Mat &frame);
-	void checkCollision(Point position);
-	void shotType();
 };
 
 #endif
