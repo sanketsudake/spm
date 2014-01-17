@@ -8,6 +8,7 @@
 #include "buildprofile.hpp"
 #include "managelogin.hpp"
 #include "shot.hpp"
+#include "shotArray.hpp"
 #include "collisionDetector.hpp"
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480

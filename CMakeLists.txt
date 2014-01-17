@@ -14,7 +14,8 @@ ${SNINC}/detectball.hpp
 ${SNINC}/detectshot.hpp  
 ${SNINC}/managelogin.hpp
 ${SNINC}/shot.hpp
-${SNINC}/collisionDetector.hpp)
+${SNINC}/collisionDetector.hpp
+${SNINC}/shotArray.hpp)
 set(SRC 
 ${SNSRC}/buildprofile.cpp  
 ${SNSRC}/detectball.cpp
@@ -22,7 +23,8 @@ ${SNSRC}/detectshot.cpp
 ${SNSRC}/managelogin.cpp 
 ${SNSRC}/main.cpp
 ${SNSRC}/shot.cpp
-${SNSRC}/collisionDetector.cpp)
+${SNSRC}/collisionDetector.cpp
+${SNSRC}/shotArray.cpp)
 
 add_executable(spm ${SRC} ${INC})
 target_link_libraries(spm ${OpenCV_LIBS})

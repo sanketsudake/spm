@@ -18,26 +18,6 @@
 using namespace std;
 using namespace cv;
 
-class CollisionDetector;
-
-class ShotArray
-{
-private:
-	vector<Point> white_positions;
-	Point prevPosition;
-        time_t shot_start;
-public:
-	ShotArray();
-	~ShotArray();
-	void clearArray();
-	void addPosition(Point position);
-	void drawPath(Mat &frame);
-	double dist(Point p1, Point p2);
-	double totalDist();
-	double totalTime();
-	double shotVelocity();
-        double angleError(Point C);
-};
 
 
 /*!

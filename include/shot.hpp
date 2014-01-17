@@ -6,6 +6,7 @@
 #include<iostream>
 #include <cmath>
 #include "detectshot.hpp"
+#include "shotArray.hpp"
 
 using namespace std;
 using namespace cv;
