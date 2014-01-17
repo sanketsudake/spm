@@ -83,7 +83,6 @@ public:
 	void reset();
 	void setShotStartPoint(Point position);
 	void drawPrev(Mat &frame);
-	void drawPath(Mat &frame);
 	void checkCollision(Point position);
 	void shotType();
 };

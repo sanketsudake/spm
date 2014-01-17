@@ -8,10 +8,19 @@ set(SNSRC ${SNOOKER_SOURCE_DIR}/src)
 set(SNINC ${SNOOKER_SOURCE_DIR}/include)
 include_directories(${SNINC})
 
-set(INC ${SNINC}/buildprofile.hpp  ${SNINC}/detectball.hpp
-  ${SNINC}/detectshot.hpp  ${SNINC}/managelogin.hpp)
-set(SRC ${SNSRC}/buildprofile.cpp  ${SNSRC}/detectball.cpp
-  ${SNSRC}/detectshot.cpp ${SNSRC}/managelogin.cpp ${SNSRC}/main.cpp)
+set(INC 
+${SNINC}/buildprofile.hpp  
+${SNINC}/detectball.hpp
+${SNINC}/detectshot.hpp  
+${SNINC}/managelogin.hpp
+${SNINC}/shot.hpp)
+set(SRC 
+${SNSRC}/buildprofile.cpp  
+${SNSRC}/detectball.cpp
+${SNSRC}/detectshot.cpp 
+${SNSRC}/managelogin.cpp 
+${SNSRC}/main.cpp
+${SNSRC}/shot.cpp)
 
 add_executable(spm ${SRC} ${INC})
 target_link_libraries(spm ${OpenCV_LIBS})

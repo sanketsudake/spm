@@ -5,6 +5,7 @@
 
 #include "detectshot.hpp"
 #include <math.h>
+#include <vector>
 using namespace std;
 using namespace cv;
 
@@ -26,6 +27,7 @@ void ShotArray::addPosition(Point position)
         if(!prevPosition.x && !prevPosition.y){
             prevPosition = position;
 	    white_positions.push_back(position);
+
         }
         else if((prevPosition.x - position.x) && (prevPosition.y - position.y)){
 	    white_positions.push_back(position);
@@ -243,16 +245,7 @@ void CollisionDetector::drawPrev(Mat &frame)
 		circle(frame, collPoints[i], 10, Scalar(255, 0 ,0), 2);
 }
 
-void CollisionDetector::drawPath(Mat &frame)
-{
-	if(collisionCount > 4)
-	{
-		line(frame, collPoints[0], collPoints[1], Scalar(0, 200, 220), 1, CV_AA);
-		line(frame, collPoints[1], collPoints[2], Scalar(0, 200, 200), 1, CV_AA);
-		line(frame, collPoints[2], collPoints[3], Scalar(0, 200, 200), 1, CV_AA);
-		line(frame, collPoints[3], collPoints[4], Scalar(0, 200, 200), 1, CV_AA);
-	}
-}
+
 
 void CollisionDetector::checkCollision(Point position)
 {
@@ -276,15 +269,16 @@ void CollisionDetector::checkCollision(Point position)
 	if(xdelta)
 	{
 		currSlope = ((double)(ydelta)/(xdelta));
-		// cout << currSlope <<  " ";
+		// cout <<endl<<"curslope , prevSlop"<< currSlope <<  " ";
 		// cout << prevSlope - currSlope ;
 		// Redundant code => if statement can merged
 		if(prevSlope < 900)
 		{
 			if(abs(prevSlope - currSlope) > slopeTheta)
 			{
-				if(!(abs(xdelta) == 1 && abs(ydelta) == 1))
+				if(!(abs(xdelta) <= 2 && abs(ydelta) <= 2))
 				{
+
 					//cout << "Collision" ;
 					collPoints[collisionCount] = prevPoint;
 					collisionCount++;
