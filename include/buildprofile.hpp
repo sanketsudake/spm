@@ -11,7 +11,7 @@
 #include<iostream>
 #include <cmath>
 #include "detectshot.hpp"
-
+#include "shot.hpp"
 using namespace std;
 using namespace cv;
 /*!
@@ -30,7 +30,10 @@ public:
 	BuildProfile();
 	~BuildProfile();
         int profileAngle(double);
-        void build(double);
+        void build(double, Shot *);
+        void profileStraight(int currAngleAcc, double  );
+        void profileSpin(int currAngleAcc, double  );
+        void profileCut(int currAngleAcc, double  );
 };
 
 

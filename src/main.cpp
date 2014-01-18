@@ -75,8 +75,9 @@ int main(int argc, char **argv)
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
                 double angleError = shot.angleErr(src, &white_array);
-                int currAngleAcc = build_profile.profileAngle(angleError);
-                cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
+                //int currAngleAcc = build_profile.profileAngle(angleError);
+                //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
+                build_profile.build(angleError, &shot);
             }
 
             white_array.clearArray();

@@ -29,7 +29,8 @@ class Shot
 	double angleErr(Mat &frame, ShotArray *shot_array);
 	void velocityError();
 	void rateShot();
-	void shottype();
+	int shotType();
+        double getSuggDist();
 };
 
 #endif

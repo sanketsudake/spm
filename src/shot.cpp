@@ -91,9 +91,17 @@ void Shot::rateShot()
 {
 
 }
-
-void Shot::shottype()
+/*
+ *TODO: Need to complete this as soon as possible
+ */
+int Shot::shotType()
 {
+    //1: straight 2: cut 3: spin
+    cout << "shot Type: Straight" << endl;
+    return 1;
 
 }
 
+double Shot :: getSuggDist(){
+    return (double)sqrt(pow((startpoint.x - p1.x), 2) + pow((startpoint.y - p1.y), 2)); 
+}
