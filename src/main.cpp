@@ -59,8 +59,6 @@ int main(int argc, char **argv)
         //! Display frame number
         white_detector.showFrameNo(src);
 
-
-
         //!Call shot checker for every frame
         int trigger_val = shot_detector.shotChecker(src, white_position);
         if(trigger_val)
@@ -78,6 +76,9 @@ int main(int argc, char **argv)
                 //int currAngleAcc = build_profile.profileAngle(angleError);
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
+                build_profile.setLastFrame(src);
+                //prev = build_profile.getLastFrame(); shot suggestion system call this function when we notify end of shot
+                //imshow("last Frame ",prev);
             }
 
             white_array.clearArray();
@@ -112,7 +113,7 @@ int main(int argc, char **argv)
 
         //! While ESC is not pressed dont proceed to next shot
         // Uncomment to debug code
-        // while(waitKey(1) != 27);
+//         while(waitKey(1) != 27);
 
         //! Find colliding points
         col_detector.checkCollision(white_position);

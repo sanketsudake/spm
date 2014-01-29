@@ -16,11 +16,21 @@ BuildProfile::BuildProfile()
     powerAcc = 100;
     straight = 100;
     spin = 100;
-    cut = 100;
+    cut = 100; 
 }
 BuildProfile::~BuildProfile()
 {
-
+    
+}
+/*
+ *Setter for setting last Frame that is to be given to/used by 
+ *Shot suggestion system.
+ */
+void BuildProfile :: setLastFrame(Mat src){
+    lastFrame = src;
+}
+Mat BuildProfile :: getLastFrame(){
+    return lastFrame;;
 }
 void BuildProfile :: build(double angleError, Shot *shot){
     int currAngleAcc = profileAngle(angleError);

@@ -17,18 +17,21 @@ using namespace cv;
 /*!
  * \class BuildProfile
  * \brief
-o */
+ o */
 class BuildProfile
 {
-private:
-    int angleAcc;
-    int powerAcc;
-    int straight;
-    int spin;
-    int cut;
-public:
-	BuildProfile();
-	~BuildProfile();
+    private:
+        int angleAcc;
+        int powerAcc;
+        int straight;
+        int spin;
+        int cut;
+        Mat lastFrame;
+    public:
+        BuildProfile();
+        ~BuildProfile();
+        void setLastFrame(Mat);
+        Mat getLastFrame();
         int profileAngle(double);
         void build(double, Shot *);
         void profileStraight(int currAngleAcc, double  );
