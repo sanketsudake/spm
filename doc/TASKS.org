@@ -20,3 +20,6 @@
 ** TODO Spin shot checking
 ** TODO User Interface
 ** TODO Integrate Shot Suggestion Model
+** TODO Number of fouls made by newbie are more
+** TODO Set collision point if no collision point found
+** Player Comparision http://www.snookeranalyst.com/current-ratings/rating-summary/
