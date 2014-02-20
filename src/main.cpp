@@ -19,7 +19,7 @@ using namespace cv;
 int main(int argc, char **argv)
 {
     VideoCapture capture;		//! Videocapture to capture video object
-    Mat src;					//! Matrix object to get input
+    Mat src,prev;					//! Matrix object to get input
     Point white_position(-1, -1); //! White Ball Position
     DetectBall white_detector;
     char code = (char)-1;
@@ -77,8 +77,9 @@ int main(int argc, char **argv)
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
                 build_profile.setLastFrame(src);
-                //prev = build_profile.getLastFrame(); shot suggestion system call this function when we notify end of shot
-                //imshow("last Frame ",prev);
+                prev = build_profile.getLastFrame();
+                //shot suggestion system call this function when we notify end of shot
+                imshow("last Frame ",prev);
             }
 
             white_array.clearArray();
