@@ -9,7 +9,9 @@
 #include "managelogin.hpp"
 #include "shot.hpp"
 #include "shotArray.hpp"
+#include "managelogin.hpp"
 #include "collisionDetector.hpp"
+#include<string>
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -25,12 +27,14 @@ int main(int argc, char **argv)
     char code = (char)-1;
 
     SnKalman kfchecker;
+    ManageLogin login;
     DetectShot shot_detector;
     ShotArray white_array;
     CollisionDetector col_detector;
     Shot shot;
     BuildProfile build_profile;
     int flag = 1;
+    static cv::string userId = login.getUserID();
     /*!
      * Open user input video from given path
      * and set frame width & height.
