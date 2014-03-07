@@ -34,7 +34,10 @@ int main(int argc, char **argv)
     Shot shot;
     BuildProfile build_profile;
     int flag = 1;
-    static cv::string userId = login.getUserID();
+    static string userId;
+    do{
+    userId = login.getUserID();
+    }while(userId == "test");
     /*!
      * Open user input video from given path
      * and set frame width & height.

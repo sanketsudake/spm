@@ -22,6 +22,7 @@ bool Database :: open(char *filename){
 
 vector<vector<string> > Database :: query(char *query){
     sqlite3_stmt *statement;
+    // cout << "query received: "<< query <<endl;
     vector<vector<string> > results; 
     if(sqlite3_prepare(database, query, -1, &statement,0) == SQLITE_OK){
         int cols = sqlite3_column_count(statement);

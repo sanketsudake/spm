@@ -26,11 +26,11 @@ ManageLogin::~ManageLogin()
 
 string ManageLogin :: getUserID(){
     Database *db;
-    string id;
-    string dbPath = "./database/snooker.db";
+    string id, userid = "test";
+    string dbPath = "database/snooker.db";
     char path[dbPath.size()];
     dbPath.copy(path,dbPath.size(),0);
-    db = new Database(path);
+    db = new Database("database/snooker.db");
     cout << "\nloginID:";
     cin >> id;
 
@@ -41,11 +41,11 @@ string ManageLogin :: getUserID(){
     for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
     {
         vector<string> row = *it;
-        cout << "Values: (A=" << row.at(0) << ", B=" << row.at(1) << ")" << endl;
-
+        // cout << "Values: (A=" << row.at(0) << ", B=" << row.at(1) << ")" << endl;
+        userid = row.at(0);
     }
 
     db->close(); 
-    return "user";
+    return userid;
 }
 

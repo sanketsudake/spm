@@ -17,10 +17,12 @@ BuildProfile::BuildProfile()
     straight = 100;
     spin = 100;
     cut = 100; 
+    db = new Database("database/snooker.db");
 }
+
 BuildProfile::~BuildProfile()
 {
-    
+    db->close();    
 }
 /*
  *Setter for setting last Frame that is to be given to/used by 
@@ -57,7 +59,10 @@ void BuildProfile :: profileStraight(int currAngleAcc, double dist){
     dist = dist /500;
     dist = 1 + (exp(-dist) / 10);
     double currentStraight = currAngleAcc * dist;
+    //need to think of good logic for updating score #change
     straight = (straight + currentStraight)/2; 
+    //add straight to database
+    
     cout << "Current Straight Accuracy: " << currentStraight << endl;
     cout << "Profile Straight Accuracy: " << straight <<  "  dist" << dist;
     return;
@@ -81,5 +86,4 @@ int BuildProfile :: profileAngle(double angleError){
     cout << "Profile Angle Accuracy: " << angleAcc << endl;
     return currentAngleAcc;
 }
-
 
