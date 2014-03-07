@@ -56,7 +56,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     Rect roi;
 
     int x, y;
-    
+
     int boxWidth = 200;
     int boxHeight = 200;
 
@@ -64,7 +64,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     // vector<Vec4i>  hierarchy;
 
     //! Identifying only 4 collisions
-    if(collisionCount > 4)
+    if(collisionCount > 6)
         return;
 
     //! Code need to refactorized
@@ -174,6 +174,24 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
 
                     roi = Rect(x, y, boxWidth, boxHeight);
                     interest = previous(roi);
+                    //use houghcircles to detect balls in roi
+                    Mat iGray;
+                    cvtColor(interest, iGray, CV_BGR2GRAY);
+                    vector<Vec3f> circles;
+
+                    HoughCircles(iGray,circles, CV_HOUGH_GRADIENT,1,iGray.rows/16,50,15,5,10);
+                    cout << "\nrows :"<<iGray.rows;
+                    for( size_t i = 0; i < circles.size(); i++ ) {
+                        Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+                        int radius = cvRound(circles[i][2]);
+
+                        /* circle center*/
+                        // circle( interest, center, 3, Scalar(150,255,150), -1, 8, 0 );
+
+                        /* circle outline*/
+                        circle( interest, center, radius, Scalar(0,0,0), 3, 8, 0 );    
+                    }
+
 
                     //! Wait after every collision
                     while(waitKey(1) != 27){
