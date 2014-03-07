@@ -5,6 +5,7 @@
 
 #include "detectball.hpp"
 
+
 using namespace std;
 using namespace cv;
 
@@ -114,7 +115,7 @@ Point DetectBall::detectWhite(Mat &frame)
 
 	//! Apply threshold to detect white ball
 	inRange(frame_HSV, Scalar(0, 0, 200), Scalar(255, 70, 255), processed);
-
+        imshow("hsv_value", processed);
 	//! Apply morphological operations
 	 morphOps(processed);
 

@@ -11,6 +11,8 @@
 *.a
 *.lib
 
+#database files
+*.db
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

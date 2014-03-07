@@ -9,7 +9,9 @@
 #include "managelogin.hpp"
 #include "shot.hpp"
 #include "shotArray.hpp"
+#include "managelogin.hpp"
 #include "collisionDetector.hpp"
+#include<string>
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -19,18 +21,23 @@ using namespace cv;
 int main(int argc, char **argv)
 {
     VideoCapture capture;		//! Videocapture to capture video object
-    Mat src;					//! Matrix object to get input
+    Mat src,prev;					//! Matrix object to get input
     Point white_position(-1, -1); //! White Ball Position
     DetectBall white_detector;
     char code = (char)-1;
 
     SnKalman kfchecker;
+    ManageLogin login;
     DetectShot shot_detector;
     ShotArray white_array;
     CollisionDetector col_detector;
     Shot shot;
     BuildProfile build_profile;
     int flag = 1;
+    static string userId;
+    do{
+    userId = login.getUserID();
+    }while(userId == "test");
     /*!
      * Open user input video from given path
      * and set frame width & height.
@@ -77,8 +84,9 @@ int main(int argc, char **argv)
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
                 build_profile.setLastFrame(src);
-                //prev = build_profile.getLastFrame(); shot suggestion system call this function when we notify end of shot
-                //imshow("last Frame ",prev);
+                prev = build_profile.getLastFrame();
+                //shot suggestion system call this function when we notify end of shot
+                imshow("last Frame ",prev);
             }
 
             white_array.clearArray();
