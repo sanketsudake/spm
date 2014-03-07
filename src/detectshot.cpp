@@ -6,6 +6,7 @@
 #include "detectshot.hpp"
 #include <cmath>
 #include <vector>
+
 using namespace std;
 using namespace cv;
 
@@ -25,10 +26,12 @@ DetectShot::DetectShot()
     //      << "shots." << endl;
 }
 
+
 DetectShot::~DetectShot()
 {
 
 }
+
 
 int DetectShot::BgSubtractor(Mat &frame)
 {
@@ -49,6 +52,7 @@ int DetectShot::BgSubtractor(Mat &frame)
     return contours.size();
 }
 
+
 int DetectShot::shotChecker(Mat &frame, Point position)
 {
     int returnval = 0;
@@ -59,6 +63,7 @@ int DetectShot::shotChecker(Mat &frame, Point position)
     //! Is white ball moving
     int whiteMoving = isWhiteMoving(position);
     prevPosition = position;
+
     if(!shotcount)
     {
         if(flag == 2)
@@ -101,16 +106,19 @@ int DetectShot::shotChecker(Mat &frame, Point position)
     return returnval;
 }
 
+
 void DetectShot::preshotTrigger(Mat &frame)
 {
     putText(frame, "Press ESC.",
             Point(600, 500), 1, 1, Scalar(200, 200, 200), 2);
 }
 
+
 void DetectShot::shotTrigger(Mat &frame)
 {
     shotcount++;
 }
+
 
 void DetectShot::displayShotnumber(Mat &frame)
 {
@@ -121,22 +129,20 @@ void DetectShot::displayShotnumber(Mat &frame)
             Point(40, 15), 1, 1, Scalar(255, 255, 255), 2);
 }
 
+
 int DetectShot::isWhiteMoving(Point position)
 {
     /*! Check is ball is moving with previous position
      * Returns 0 if ball not moving
      * Returns 1 if ball is moving
      */
+
     if(prevPosition.x == -1)
         return 0;
-    else
-    {
-        if(std::abs(position.x - prevPosition.x) == 0
+
+    else if(std::abs(position.x - prevPosition.x) == 0
                 && std::abs(position.y - prevPosition.y) == 0)
             return 0;
-    }
+
     return 1;
 }
-
-
-
