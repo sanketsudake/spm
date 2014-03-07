@@ -80,46 +80,10 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
 
     if(xdelta){
         currSlope = ((double)(ydelta)/(xdelta));
-
-        // if(ydelta==0){
-        //     cout<<"Ball moving horizontally!"<<endl;
-
-        //     // Ball moving forward
-        //     // if(xdelta>0) 
-        //         // roi = Rect(prevPoint.x-10, prevPoint.y-10, 100, 100);
-        //         // Ball moving backward 
-        //     // else
-        //         // roi = Rect(prevPoint.x-10, prevPoint.y-10, 100, 100);
-        // }
-
-        // else if(xdelta==0){
-        //     cout<<"Ball moving vertically!"<<endl;
-        //     roi = Rect(prevPoint.x-10, prevPoint.y-10, 100, 100);
-        // }
-
-        // else{
-        //     // First or Third Quadrant
-        //     if(currSlope>0){
-        //         if(xdelta>0)
-        //             cout<<"Ball moving in Quadrant IV"<<endl;
-        //         else
-        //             cout<<"Ball moving in Quadrant II"<<endl;
-        //     }
-
-        //     // Second or Fourth Quadrant
-        //     else{
-        //         if(xdelta>0)
-        //             cout<<"Ball moving in Quadrant I"<<endl;
-        //         else
-        //             cout<<"Ball moving in Quadrant III"<<endl;
-        //     }
-        // }
-
         // cout <<endl<<"curslope , prevSlop"<< currSlope <<  " ";
         // cout << prevSlope - currSlope ;
         // Redundant code => if statement can merged
 
-        // cout<<"Current Slope: "<<currSlope<<endl;
         if(prevSlope < 900)
         {
             if(abs(prevSlope - currSlope) > slopeTheta)
@@ -181,6 +145,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
 
                     HoughCircles(iGray,circles, CV_HOUGH_GRADIENT,1,iGray.rows/16,50,15,5,10);
                     cout << "\nrows :"<<iGray.rows;
+
                     for( size_t i = 0; i < circles.size(); i++ ) {
                         Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
                         int radius = cvRound(circles[i][2]);
@@ -189,7 +154,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
                         // circle( interest, center, 3, Scalar(150,255,150), -1, 8, 0 );
 
                         /* circle outline*/
-                        circle( interest, center, radius, Scalar(0,0,0), 3, 8, 0 );    
+                        circle( interest, center, radius, Scalar(0,0,0), 2, 8, 0 );    
                     }
 
 
