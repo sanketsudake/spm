@@ -3,13 +3,10 @@
 
 Database :: Database(char *filename){
     database = NULL;
-    if(open(filename)){
-        cout << "database open success";
-
-    }else{
+    if(!open(filename))
         cout << "database open fail";
-    }
 }
+
 Database :: ~Database(){
 
 }
@@ -23,7 +20,7 @@ bool Database :: open(char *filename){
 vector<vector<string> > Database :: query(char *query){
     sqlite3_stmt *statement;
     // cout << "query received: "<< query <<endl;
-    vector<vector<string> > results; 
+    vector<vector<string> > results;
     if(sqlite3_prepare(database, query, -1, &statement,0) == SQLITE_OK){
         int cols = sqlite3_column_count(statement);
         int result = 0;
@@ -36,9 +33,8 @@ vector<vector<string> > Database :: query(char *query){
                 }
                 results.push_back(values);
             }
-            else{
+            else
                 break;
-            }
         }
         sqlite3_finalize(statement);
     }
@@ -46,10 +42,7 @@ vector<vector<string> > Database :: query(char *query){
     if(error != "not an error") cout << query << " " << error << endl;
     return results;
 }
- 
+
 void Database :: close(){
     sqlite3_close(database);
 }
-
-
-
