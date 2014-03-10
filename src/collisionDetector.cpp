@@ -49,40 +49,31 @@ void CollisionDetector::drawPrev(Mat &frame)
 }
 
 
-void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original)
+void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array)
 {
     Mat diff;
+    Mat iGray;
     Mat interest;
     Rect roi;
 
-    int x, y;
+    int box_x, box_y;
 
     int boxWidth = 200;
     int boxHeight = 200;
 
-    // vector< vector<Point> > contours;
-    // vector<Vec4i>  hierarchy;
 
     //! Identifying only 4 collisions
-    if(collisionCount > 6)
+    if(collisionCount > 4)
         return;
 
     //! Code need to refactorized
     double currSlope = 1000;
 
-    //! Temporary code need to removed
-    // cout << "W.Position " << position.x
-    // 	 << " "
-    // 	 << position.y << " ";
-
     int xdelta = position.x - prevPoint.x;
-    int ydelta = position.y - prevPoint.y;
+    int ydelta = -(position.y - prevPoint.y);
 
     if(xdelta){
         currSlope = ((double)(ydelta)/(xdelta));
-        // cout <<endl<<"curslope , prevSlop"<< currSlope <<  " ";
-        // cout << prevSlope - currSlope ;
-        // Redundant code => if statement can merged
 
         if(prevSlope < 900)
         {
@@ -93,14 +84,6 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
                     //! calculate the difference
                     // in previous and current frame.
 
-                    diff = abs(original - previous);
-                    cvtColor(diff, diff, CV_RGB2GRAY);
-                    // findContours(diff, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-                    // cout<<"Size:"<<contours.size();
-
-                    // threshold(diff, diff, 30, 255, 0);
-
-                    //cout << "Collision" ;
                     collPoints[collisionCount] = prevPoint;
                     collisionCount++;
                     slopeTheta += 0.018;
@@ -109,66 +92,71 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
                      *  Create Bounding Box. 
                      */
 
-                    cout<<"Position: "<<prevPoint.x<<"\t"<<prevPoint.y<<endl;
-
                     if(prevPoint.x-100>0)
-                        x = prevPoint.x-100;
+                        box_x = prevPoint.x-100;
                     else
-                        x = 0;
+                        box_x = 0;
 
                     if(prevPoint.y-100>0)
-                        y = prevPoint.y-100;
+                        box_y = prevPoint.y-100;
                     else
-                        y = 0;
+                        box_y = 0;
 
                     if(prevPoint.x+100<TWIDTH)
                         boxWidth = 200;
                     else
                     {
                         boxWidth = (TWIDTH-prevPoint.x)*2;
-                        x = prevPoint.x - boxWidth/2;
+                        box_x = prevPoint.x - boxWidth/2;
                     }
 
                     if(prevPoint.y+100<THEIGHT)
                         boxHeight = 200;
-                    else{
+                    else
+                    {
                         boxHeight = (THEIGHT-prevPoint.y)*2; 
-                        y = prevPoint.y - boxHeight/2;
+                        box_y = prevPoint.y - boxHeight/2;
                     }
 
-                    roi = Rect(x, y, boxWidth, boxHeight);
+                    // cout<<"X: "<<x<<"\tY: "<<y<<endl;
+                    roi = Rect(box_x, box_y, boxWidth, boxHeight);
                     interest = previous(roi);
+
                     //use houghcircles to detect balls in roi
-                    Mat iGray;
                     cvtColor(interest, iGray, CV_BGR2GRAY);
-                    vector<Vec3f> circles;
+                    HoughCircles(iGray, circlesInBox, CV_HOUGH_GRADIENT, 1, iGray.rows/16, 50, 15, 5, 10);
 
-                    HoughCircles(iGray,circles, CV_HOUGH_GRADIENT,1,iGray.rows/16,50,15,5,10);
-                    cout << "\nrows :"<<iGray.rows;
+                    //Draw detected circles in Bounding-Box
+                    for( size_t i = 0; i < circlesInBox.size(); i++ ) {
 
-                    for( size_t i = 0; i < circles.size(); i++ ) {
-                        Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-                        int radius = cvRound(circles[i][2]);
+                        circlesInBox[i][0] += box_x;
+                        circlesInBox[i][1] += box_y;
 
-                        /* circle center*/
+                        Point center(cvRound(circlesInBox[i][0]), cvRound(circlesInBox[i][1]));
+                        int radius = cvRound(circlesInBox[i][2]);
+
                         // circle( interest, center, 3, Scalar(150,255,150), -1, 8, 0 );
-
-                        /* circle outline*/
-                        circle( interest, center, radius, Scalar(0,0,0), 2, 8, 0 );    
+                        circle( previous, center, 3, Scalar(150,255,150), -1, 8, 0 );
+                        // circle( interest, center, 3, Scalar(150,255,150), -1, 8, 0 );
+                        circle( previous, center, radius, Scalar(0,0,0), 2, 8, 0 );    
+                        
+                        // line(previous, prevPoint, center, Scalar(0, 0, 0), 1, CV_AA);
                     }
 
+                    if(collisionCount==2)
+                        expectedWhiteLine(previous, box_x, box_y, shot_array.white_positions[0]);
+                        // expectedWhiteLine(previous, boxWidth, boxHeight, shot_array.white_positions[0]);
 
                     //! Wait after every collision
                     while(waitKey(1) != 27){
-                        imshow("Previous", interest);
-                        // imshow("Previous", previous);
-                        // imshow("Difference", diff);
+                        imshow("Previous", previous);
+                        imshow("ROI", interest);
                     }
                 }
             }
         }
     }
-    //cout << endl;
+
     prevPoint = position;
     prevSlope = currSlope;
 }
@@ -178,5 +166,83 @@ void CollisionDetector::shotType()
 {
     // We have first four apporox. collision type
     // Need to shot type from that info
-    //
+}
+
+void CollisionDetector::expectedWhiteLine(Mat &frame, int X, int Y, Point startpoint){
+
+    // cout<<"\nIn expectedWhiteLine"<<endl; 
+    
+    Point interesection;
+
+    double slope, ydelta, xdelta;
+    double A, B, C;
+    double constant;
+    double distance;
+    double x, y; 
+
+    xdelta = (startpoint.x - prevPoint.x);
+    ydelta = (startpoint.y - prevPoint.y);
+
+    slope = (ydelta/xdelta);
+    constant = (-(slope*startpoint.x)+startpoint.y);
+
+    extrapolate expectedLine(slope, startpoint.x, startpoint.y);
+
+    A = -(slope);
+    B = 1.0;
+    C = -constant;
+
+    cout<<"Slope: "<<slope<<endl;
+    cout<<"Starpoint: "<<startpoint.x<<"\t"<<startpoint.y<<endl;
+    cout<<"Endpoint: "<<prevPoint.x<<"\t"<<prevPoint.y<<endl;
+    cout<<"A: "<<A<<"\tB: "<<B<<"\tC: "<<C<<endl;
+
+    if(xdelta){
+        // Ball Not moving along Y-axis
+        if(startpoint.x < prevPoint.x){
+            // cout<<"Moving Forward!"<<endl;
+            if(ydelta>=xdelta){
+                x = prevPoint.x+60;
+                y = expectedLine.y(x);
+            }
+            else{
+                y = prevPoint.y+60;
+                x = expectedLine.x(y);
+            }
+        }
+        else{
+            // cout<<"Moving Backward!"<<endl;
+            x = prevPoint.x-60;
+            y = expectedLine.y(x);
+        }
+    }
+
+    else{
+        // Ball moving along Y-axis
+        if(startpoint.y < prevPoint.y){
+            // cout<<"Moving Downward!"<<endl;
+        }
+        else{
+            // cout<<"Moving Upward!"<<endl;
+        }
+    }
+
+    // line(frame, Point(prevPoint.x-x,prevPoint.y-y), startpoint, Scalar(0, 0, 0), 1, CV_AA);
+    line(frame, prevPoint, Point(x,y), Scalar(255, 0, 0), 1, CV_AA);
+    cout<<"X: "<<x<<"Y: "<<y<<endl;
+   
+    for( size_t i = 0; i < circlesInBox.size(); i++ ){
+
+        Point center(cvRound(circlesInBox[i][0]), cvRound(circlesInBox[i][1]));
+        int radius = cvRound(circlesInBox[i][2]);
+        distance = 0.0;        
+
+        cout<<"Center: "<<center.x<<"\t"<<center.y<<endl;
+        cout<<"Radius: "<<radius<<endl;
+
+        distance = abs(A*(center.x)+B*(center.y)+C)/(sqrt((A*A)+(B*B)));
+        line(frame, center, prevPoint, Scalar(255, 255, 255), 1, CV_AA);
+        // line(frame, prevPoint, Point(x,y), Scalar(0, 0, 0), 1, CV_AA);
+        cout<<"Distance: "<<distance<<endl;
+    }
 }

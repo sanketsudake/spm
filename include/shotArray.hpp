@@ -19,11 +19,12 @@ using namespace cv;
 class ShotArray
 {
     private:
-    	vector<Point> white_positions;
         Point prevPosition;
         time_t shot_start;
 
     public:
+    	vector<Point> white_positions;
+
     	ShotArray();
     	~ShotArray();
     	void clearArray();

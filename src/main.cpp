@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 //         while(waitKey(1) != 27);
 
         //! Find colliding points
-        col_detector.checkCollision(white_position, previous, original);
+        col_detector.checkCollision(white_position, previous, original, white_array);
 
         //! Escape window on pressing 'Q' or 'q'
         code = (char)waitKey(5);
