@@ -149,8 +149,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
 
                     //! Wait after every collision
                     while(waitKey(1) != 27){
-                        imshow("Previous", previous);
-                        imshow("ROI", interest);
+                        imshow("Previous",interest);
                     }
                 }
             }
@@ -168,17 +167,15 @@ void CollisionDetector::shotType()
     // Need to shot type from that info
 }
 
-void CollisionDetector::expectedWhiteLine(Mat &frame, int X, int Y, Point startpoint){
+void CollisionDetector::expectedWhiteLine(Mat &frame, int box_X, int box_Y, Point startpoint){
 
-    // cout<<"\nIn expectedWhiteLine"<<endl; 
-    
     Point interesection;
 
     double slope, ydelta, xdelta;
     double A, B, C;
     double constant;
-    double distance;
     double x, y; 
+    int distance;
 
     xdelta = (startpoint.x - prevPoint.x);
     ydelta = (startpoint.y - prevPoint.y);
@@ -192,10 +189,10 @@ void CollisionDetector::expectedWhiteLine(Mat &frame, int X, int Y, Point startp
     B = 1.0;
     C = -constant;
 
-    cout<<"Slope: "<<slope<<endl;
-    cout<<"Starpoint: "<<startpoint.x<<"\t"<<startpoint.y<<endl;
-    cout<<"Endpoint: "<<prevPoint.x<<"\t"<<prevPoint.y<<endl;
-    cout<<"A: "<<A<<"\tB: "<<B<<"\tC: "<<C<<endl;
+    // cout<<"Slope: "<<slope<<endl;
+    // cout<<"Starpoint: "<<startpoint.x<<"\t"<<startpoint.y<<endl;
+    // cout<<"Endpoint: "<<prevPoint.x<<"\t"<<prevPoint.y<<endl;
+    // cout<<"A: "<<A<<"\tB: "<<B<<"\tC: "<<C<<endl;
 
     if(xdelta){
         // Ball Not moving along Y-axis
@@ -229,20 +226,20 @@ void CollisionDetector::expectedWhiteLine(Mat &frame, int X, int Y, Point startp
 
     // line(frame, Point(prevPoint.x-x,prevPoint.y-y), startpoint, Scalar(0, 0, 0), 1, CV_AA);
     line(frame, prevPoint, Point(x,y), Scalar(255, 0, 0), 1, CV_AA);
-    cout<<"X: "<<x<<"Y: "<<y<<endl;
-   
+    // cout<<"X: "<<x<<"Y: "<<y<<endl;
+
     for( size_t i = 0; i < circlesInBox.size(); i++ ){
 
         Point center(cvRound(circlesInBox[i][0]), cvRound(circlesInBox[i][1]));
         int radius = cvRound(circlesInBox[i][2]);
-        distance = 0.0;        
+        distance = 0;        
 
-        cout<<"Center: "<<center.x<<"\t"<<center.y<<endl;
-        cout<<"Radius: "<<radius<<endl;
-
-        distance = abs(A*(center.x)+B*(center.y)+C)/(sqrt((A*A)+(B*B)));
+        distance = int(abs(A*(center.x)+B*(center.y)+C)/(sqrt((A*A)+(B*B))));
         line(frame, center, prevPoint, Scalar(255, 255, 255), 1, CV_AA);
-        // line(frame, prevPoint, Point(x,y), Scalar(0, 0, 0), 1, CV_AA);
-        cout<<"Distance: "<<distance<<endl;
+
+        if(distance<=10 && distance){
+           // cout<<"Include: "<<distance<<endl;
+        }
+
     }
 }
