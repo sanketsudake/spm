@@ -24,13 +24,12 @@ DetectBall::~DetectBall()
 }
 
 
-void DetectBall :: showFrameNo(Mat &frame)
+void DetectBall::showFrameNo(Mat &frame)
 {
     frameCount++;
     stringstream ss;
-	ss << "Frame No : " << frameCount;
+	ss << "Frame No: " << frameCount;
 	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
-
 }
 
 

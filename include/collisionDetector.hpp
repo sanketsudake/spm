@@ -6,16 +6,16 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/video/video.hpp>
 #include "shotArray.hpp"
-#include <iostream>
+#include <assert.h>
 #include <cmath>
+#include <iostream>
 
 #define TWIDTH 1140 
 #define THEIGHT 652 
+#define PI 3.14159265
 
 using namespace std;
 using namespace cv;
-
-
 
 class CollisionDetector
 {
@@ -23,8 +23,12 @@ class CollisionDetector
         Point prevPoint, collPoints[10];
         double prevSlope, slopeTheta;
         int  collisionCount;
+        int box_x, box_y;
+        int boxWidth;
+        int boxHeight;
+
         vector<Vec3f> circlesInBox; 
-        // extrapolate expectedLine;
+        vector< vector<int> > circles;
 
     public:
         struct extrapolate{
@@ -44,7 +48,7 @@ class CollisionDetector
                 double x(double y) const // return x for given y
                 {
                     // return _y1 + (x-_x1)*_slope;
-                    return (y-_y1+_x1) / _slope;
+                    return ((y-_y1)+(_x1 * _slope)) / _slope;
                 }
         };
 
@@ -55,7 +59,9 @@ class CollisionDetector
         void drawPrev(Mat &frame);
         void checkCollision(Point position, Mat &frame, Mat &original, ShotArray &);
         void shotType();
-        void expectedWhiteLine(Mat&, int, int, Point);
+        void collisionPoint(Mat &, Point);
+        int perpendicularDistance(Mat&, Point, Point);
+        int distanceCalculate(Point, Point);
 };
 
 #endif

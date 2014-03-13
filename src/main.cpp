@@ -10,6 +10,7 @@
 #include "shot.hpp"
 #include "shotArray.hpp"
 #include "collisionDetector.hpp"
+#include <math.h>
 
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
@@ -52,11 +53,9 @@ int main(int argc, char **argv)
             exit(0);
         
         original = src.clone();
+
         //! detect white ball
         white_position = white_detector.detectWhite(src);
-        //! Map result returned by detector
-        //white_detector.mapPosition(src, white_position, 0);
-
 
         //! Correct position through kalman filter
         white_position = kfchecker.correctPoisition(white_position),
@@ -118,8 +117,7 @@ int main(int argc, char **argv)
         }
 
         //! While ESC is not pressed dont proceed to next shot
-        // Uncomment to debug code
-//         while(waitKey(1) != 27);
+        imshow("Snooker Player Profile Management", src);
 
         //! Find colliding points
         col_detector.checkCollision(white_position, previous, original, white_array);
@@ -129,9 +127,11 @@ int main(int argc, char **argv)
         if( code == 'q' || code == 'Q' )
             break;
 
-        imshow("Snooker Player Profile Management", src);
-
         previous = original.clone();
+
+        // Uncomment to debug code
+        // while(waitKey(1) != 27);
+
     }while(waitKey(1) != 27);
 
     return 0;
