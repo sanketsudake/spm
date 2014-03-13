@@ -16,16 +16,20 @@ BuildProfile::BuildProfile()
     powerAcc = 100;
     straight = 100;
     spin = 100;
-    cut = 100; 
-    db = new Database("database/snooker.db");
+    cut = 100;
+
+    string dbPath = "database/snooker.db";
+    char path[dbPath.size()];
+    dbPath.copy(path,dbPath.size(),0);
+    db = new Database(path);
 }
 
 BuildProfile::~BuildProfile()
 {
-    db->close();    
+    db->close();
 }
 /*
- *Setter for setting last Frame that is to be given to/used by 
+ *Setter for setting last Frame that is to be given to/used by
  *Shot suggestion system.
  */
 void BuildProfile :: setLastFrame(Mat src){
@@ -48,21 +52,21 @@ void BuildProfile :: build(double angleError, Shot *shot){
                 //if cut shot
         case 2: profileCut(currAngleAcc, dist);
                 break;
-                //if spin 
+                //if spin
         case 3: profileSpin(currAngleAcc,dist);
                 break;
     }
 }
 
 void BuildProfile :: profileStraight(int currAngleAcc, double dist){
-    //max dist can be 1101,  
+    //max dist can be 1101,
     dist = dist /500;
     dist = 1 + (exp(-dist) / 10);
     double currentStraight = currAngleAcc * dist;
     //need to think of good logic for updating score #change
-    straight = (straight + currentStraight)/2; 
+    straight = (straight + currentStraight)/2;
     //add straight to database
-    
+
     cout << "Current Straight Accuracy: " << currentStraight << endl;
     cout << "Profile Straight Accuracy: " << straight <<  "  dist" << dist;
     return;
@@ -80,10 +84,9 @@ void BuildProfile :: profileSpin(int currAngleAcc, double dist){
 //this factor will be considered irrespective of shot type.
 int BuildProfile :: profileAngle(double angleError){
     double currentAngleAcc = exp(-angleError);
-    currentAngleAcc *= 100; 
+    currentAngleAcc *= 100;
     cout << "Current Angle Accuracy: " << currentAngleAcc<< endl;
     angleAcc = (currentAngleAcc + angleAcc)/2;
     cout << "Profile Angle Accuracy: " << angleAcc << endl;
     return currentAngleAcc;
 }
-
