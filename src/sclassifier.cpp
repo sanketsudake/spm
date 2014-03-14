@@ -3,6 +3,9 @@
  * \brief Consist methods to classify shots
  */
 
+#include "sclassifier.hpp"
+
+
 
 Sclassifier:: Sclassifier()
 {
@@ -14,7 +17,7 @@ Sclassifier:: ~Sclassifier()
 
 }
 
-int Sclassifier::classfier(int beta, Point contact, int alpha=0)
+int Sclassifier::classifier(int beta, Point contact, int alpha)
 {
     /*! alpha =>
      * angle between white ball segment before collision
@@ -26,7 +29,5 @@ int Sclassifier::classfier(int beta, Point contact, int alpha=0)
      * point should be precise considering intersection between
      * circumference of two circles
      */
-
-
     return 1;
 }

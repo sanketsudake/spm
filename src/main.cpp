@@ -11,7 +11,7 @@
 #include "shotArray.hpp"
 #include "managelogin.hpp"
 #include "collisionDetector.hpp"
-#include<string>
+#include "sclassifier.hpp"
 
 
 #define FRAME_WIDTH 640

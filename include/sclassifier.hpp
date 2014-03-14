@@ -34,16 +34,14 @@ enum shot_type{
     RIGHT_SPIN_RIGHT
 };
 
-class Sclassfier
+class Sclassifier
 {
 private:
-    int alpha, beta;
-    Point contact;
     shot_type shot_class;
 public:
-    Sclassfier();
-    ~Sclassfier();
-    int classfier(int beta, Point contact, int alpha=0);
+    Sclassifier();
+    ~Sclassifier();
+    int classifier(int beta, Point contact, int alpha);
 };
 
 #endif
