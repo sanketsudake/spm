@@ -24,6 +24,8 @@ class CollisionDetector
         double prevSlope, slopeTheta;
         int  collisionCount;
         int box_x, box_y;
+        int xDir;
+        int yDir;
         int boxWidth;
         int boxHeight;
 
@@ -59,9 +61,11 @@ class CollisionDetector
         void drawPrev(Mat &frame);
         void checkCollision(Point position, Mat &frame, Mat &original, ShotArray &);
         void shotType();
-        void collisionPoint(Mat &, Point);
+        void collisionPoint(Mat &, Point , Point);
         int perpendicularDistance(Mat&, Point, Point);
         int distanceCalculate(Point, Point);
+        Point generatePoint(int , int , extrapolate &);
+        void setDirection(Point, Point);
 };
 
 #endif
