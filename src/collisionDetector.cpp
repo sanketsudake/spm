@@ -87,7 +87,8 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     //! Distance of white ball between 2 frames
     interDistance = distanceCalculate(position, prevPoint);
 
-    if((xdelta || ydelta) && interDistance>=10){
+    if((xdelta || ydelta)){
+    // if((xdelta || ydelta) && interDistance>=10){
     // if(xdelta){
         if(!xdelta)
             currSlope = 899;
@@ -382,6 +383,8 @@ void CollisionDetector::collisionPoint(Mat &frame, Point startpoint, Point lastp
     double tangent_slope;
     Point normal_endpoint;
     Point tangent_endpoint;
+    Point normal_startpoint;
+    Point tangent_startpoint;
 
     xdelta = (final.x - center.x);
     ydelta = (final.y - center.y);
@@ -395,6 +398,12 @@ void CollisionDetector::collisionPoint(Mat &frame, Point startpoint, Point lastp
     normal_endpoint = generatePoint(xdelta, ydelta, normalLine);
     tangent_endpoint = generatePoint(ydelta, xdelta, tangentLine);
 
-    line(frame, final, normal_endpoint, Scalar(173, 55, 173), 1, CV_AA);
-    line(frame, final, tangent_endpoint, Scalar(255, 255, 0), 1, CV_AA);
+    xDir *= -1;
+    yDir *= -1;
+
+    normal_startpoint= generatePoint(xdelta, ydelta, normalLine);
+    tangent_startpoint= generatePoint(ydelta, xdelta, tangentLine);
+
+    line(frame, normal_startpoint, normal_endpoint, Scalar(18, 158, 230), 1, CV_AA);
+    line(frame, tangent_startpoint, tangent_endpoint, Scalar(255, 255, 0), 1, CV_AA);
 }
