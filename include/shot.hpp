@@ -17,7 +17,7 @@ extern void onMouseClick(int event, int x, int y, int flags, void* userdata);
 class Shot
 {
 	private:
-	    Point startpoint, p1;
+        Point startpoint, p1, p2;
 	    double angleError;
 
 	public:

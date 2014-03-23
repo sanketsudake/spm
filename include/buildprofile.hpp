@@ -11,6 +11,7 @@
 #include<iostream>
 #include <cmath>
 #include "detectshot.hpp"
+#include "database.hpp"
 #include "shot.hpp"
 using namespace std;
 using namespace cv;
@@ -27,6 +28,7 @@ class BuildProfile
         int spin;
         int cut;
         Mat lastFrame;
+        Database *db;
     public:
         BuildProfile();
         ~BuildProfile();
