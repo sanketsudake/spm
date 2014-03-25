@@ -28,8 +28,9 @@ string ManageLogin :: getUserID(){
     Database *db;
     string id, userid = "test";
     string dbPath = "database/snooker.db";
-    char path[dbPath.size()];
+    char path[dbPath.size()+1];
     dbPath.copy(path,dbPath.size(),0);
+    path[dbPath.size()] = '\0';
     db = new Database(path);
     cout << "\nloginID:";
     cin >> id;
