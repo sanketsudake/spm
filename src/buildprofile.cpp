@@ -19,9 +19,11 @@ BuildProfile::BuildProfile()
     cut = 100;
 
     string dbPath = "database/snooker.db";
-    char path[dbPath.size()];
+    char path[dbPath.size()+1];
     dbPath.copy(path,dbPath.size(),0);
+    path[dbPath.size()] = '\0';
     db = new Database(path);
+
 }
 
 BuildProfile::~BuildProfile()
