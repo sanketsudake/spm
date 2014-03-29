@@ -85,7 +85,7 @@ void Shot::drawSuggested(Mat &frame)
 
 }
 
-double Shot::angleErr(Mat &frame, ShotArray *shot_array)
+double Shot::showFeedback(Mat &frame, ShotArray *shot_array,string shottype)
 {
     //using cosine law
     angleError = abs(shot_array->angleError(p1) * 180 / M_PI);
@@ -94,6 +94,11 @@ double Shot::angleErr(Mat &frame, ShotArray *shot_array)
     cout << "\t\"angle_error\" : " << angleError << endl;
     putText(frame, ss.str(),
             Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
+    ss.str("Shot Type : ");
+ //   ss<<shottype;
+    putText(frame, ss.str()+shottype,
+            Point(600, 550), 1, 1, Scalar(255, 255, 255), 2);
+
     return angleError;
 }
 

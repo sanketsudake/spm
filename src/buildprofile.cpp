@@ -43,7 +43,7 @@ Mat BuildProfile :: getLastFrame(){
 void BuildProfile :: build(double angleError, Shot *shot){
     int currAngleAcc = profileAngle(angleError);
     //depending on shot type
-    int shotType = shot->shotType();
+    int shotType = shot->shotType();  // eliminate this, use shottype variable in main, result of shot_classify.shot_classifier
     double dist = shot->getSuggDist();
     cout << "Dist to suggested: "<<dist << endl;
 

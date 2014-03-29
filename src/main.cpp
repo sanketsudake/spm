@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     Point white_position(-1, -1); //! White Ball Position
     DetectBall white_detector;
     char code = (char)-1;
+    unsigned int shottype=-1;
 
     SnKalman kfchecker;
     ManageLogin login;
@@ -36,6 +37,8 @@ int main(int argc, char **argv)
     CollisionDetector col_detector;
     Shot shot;
     BuildProfile build_profile;
+    Sclassifier shot_classify; 
+    
     int flag = 1;
     static string userId;
     do{
@@ -83,7 +86,11 @@ int main(int argc, char **argv)
                 // Velocity in cm/sec
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
-                double angleError = shot.angleErr(src, &white_array);
+
+                shottype = shot_classify.shot_classifier(76.0,1,0,1);
+
+                double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
+
                 //int currAngleAcc = build_profile.profileAngle(angleError);
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
