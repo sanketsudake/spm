@@ -26,20 +26,32 @@ function run
 	fi
 }
 
+function search
+{
+	find . -iregex '.*\.\(cpp\|sql\|hpp\)' -exec grep -inH $1 {} \;
+}
+
+function count
+{
+	find . -iregex '.*\.\(cpp\|sql\|hpp\)' -exec cat {} \; | wc -l
+}
+
 function usage
 {
+	echo $TITLE
 	cat doc/usage.txt
 }
 
 function spm_main
 {
-	#echo $TITLE
+	# TODO: Replace with better parsing
+	# https://gist.github.com/jehiah/855086
 	if [ -n "$1" ]
 	then
-		if [ $1 = "--build" ];
+		if [ $1 = "-b" -o $1 = "--build" -o $1 = "build" ];
 		then
 			build
-		elif [ $1 = "--run" ];
+		elif [ $1 = "-r" -o $1 = "--run" -o $1 = "run" ];
 		then
 			if [ -n "$2" ]
 			then
@@ -48,13 +60,22 @@ function spm_main
 				echo "Error: Missing input argument."
 				usage
 			 fi
-		else
-			echo "Error: Check input option."
+		elif [ $1 = "-s" -o $1 = "--search" -o $1 = "search" ];
+		then
+			search $2
+		elif [ $1 = "-c" -o $1 = "--count" -o $1 = "count" ];
+		then
+			count
+		elif [ $1 = "-h" -o $1 = "--help" -o $1 = "help" ];
+		then
 			usage
+		else
+			echo "Error:Invalid input option."
+			echo "Try: spm.sh --help"
 		fi
 	else
 		echo "Error: Missing input option."
-		usage
+		echo "Try: spm.sh --help"
 	fi
 }
 
