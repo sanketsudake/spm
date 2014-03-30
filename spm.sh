@@ -18,13 +18,14 @@ function run
 {
 	if [ -z "$1" ]
 	then
-		echo "Error: Missing input argument."
+		echo "Error: Missing file path."
+		echo "Try spm.sh --help"
 		exit
 	fi
 	if [ ! -f "$1" ]
 	then
 		echo "File \"$1\" does not exist."
-		usage
+		echo "Try spm.sh --help"
 		exit
 	fi
 	build/spm $1
@@ -42,7 +43,7 @@ function search
 
 function count
 {
-	find . -iregex '.*\.\(cpp\|sql\|hpp\)' -exec cat {} \; | wc -l
+	find . -iregex '.*\.\(cpp\|sql\|hpp\|sh\)' -exec cat {} \; | wc -l
 }
 
 function db
