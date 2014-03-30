@@ -16,18 +16,27 @@ function build
 
 function run
 {
+	if [ -z "$1" ]
+	then
+		echo "Error: Missing input argument."
+		exit
+	fi
 	if [ ! -f "$1" ]
 	then
 		echo "File \"$1\" does not exist."
 		usage
-	else
-		#echo "Runnning code with $1 "
-		build/spm $1
+		exit
 	fi
+	build/spm $1
 }
 
 function search
 {
+	if [ -z "$1" ]
+	then
+		echo "Error: Missing input argument."
+		exit
+	fi
 	find . -iregex '.*\.\(cpp\|sql\|hpp\)' -exec grep -inH $1 {} \;
 }
 
@@ -36,47 +45,48 @@ function count
 	find . -iregex '.*\.\(cpp\|sql\|hpp\)' -exec cat {} \; | wc -l
 }
 
+function db
+{
+	sqlite3 --interactive -echo database/snooker.db -separator "| "
+}
+
 function usage
 {
 	echo $TITLE
+	if [ ! -f "doc/usage.txt" ]
+	then
+		echo "Error: doc/usage.txt missing."
+		exit
+	fi
 	cat doc/usage.txt
 }
 
 function spm_main
 {
-	# TODO: Replace with better parsing
-	# https://gist.github.com/jehiah/855086
-	if [ -n "$1" ]
-	then
-		if [ $1 = "-b" -o $1 = "--build" -o $1 = "build" ];
-		then
+	case $1 in
+		-b | --build | build)
 			build
-		elif [ $1 = "-r" -o $1 = "--run" -o $1 = "run" ];
-		then
-			if [ -n "$2" ]
-			then
-				run $2
-			else
-				echo "Error: Missing input argument."
-				usage
-			 fi
-		elif [ $1 = "-s" -o $1 = "--search" -o $1 = "search" ];
-		then
-			search $2
-		elif [ $1 = "-c" -o $1 = "--count" -o $1 = "count" ];
-		then
-			count
-		elif [ $1 = "-h" -o $1 = "--help" -o $1 = "help" ];
-		then
-			usage
-		else
-			echo "Error:Invalid input option."
-			echo "Try: spm.sh --help"
-		fi
-	else
-		echo "Error: Missing input option."
-		echo "Try: spm.sh --help"
-	fi
+			;;
+		-r | --run | run)
+			run $2
+			;;
+		-s | --search | search)
+            search $2
+			;;
+		-c | --count | count)
+		    count
+			;;
+		-db | --database | database)
+		    db
+			;;
+		-h | --help | help)
+		    usage
+			;;
+		*)
+			echo "Error: Invalid input option."
+			echo "Try spm.sh --help"
+			;;
+	esac
 }
 
 #### Main

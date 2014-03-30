@@ -23,3 +23,7 @@ DESCRIPTION
        -c, --count, count
             Count no. of lines in source
             Example. spm.sh --count
+
+       -db, --database, database
+            Brings sqlite shell for execute db queries.
+            Example. spm.sh -db
