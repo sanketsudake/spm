@@ -35,12 +35,14 @@ int main(int argc, char **argv)
     ShotArray white_array;
     CollisionDetector col_detector;
     Shot shot;
-    BuildProfile build_profile;
     int flag = 1;
     static string userId;
     do{
     userId = login.getUserID();
     }while(userId == "test");
+
+     BuildProfile build_profile(userId);
+
     /*!
      * Open user input video from given path
      * and set frame width & height.
