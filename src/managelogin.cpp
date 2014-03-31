@@ -30,14 +30,14 @@ string ManageLogin :: getUserID(){
     string dbPath = "database/snooker.db";
     char path[dbPath.size()];
     dbPath.copy(path,dbPath.size(),0);
-    db = new Database("database/snooker.db");
+    db = new Database(path);
     cout << "\nloginID:";
     cin >> id;
 
-    string query ="SELECT * FROM user WHERE userID='" + id +"';"; 
+    string query ="SELECT * FROM user WHERE userID='" + id +"';";
     char temp[query.size()];
     query.copy(temp,query.size(),0);
-    vector<vector<string> > result = db->query(temp); 
+    vector<vector<string> > result = db->query(temp);
     for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
     {
         vector<string> row = *it;
@@ -45,7 +45,6 @@ string ManageLogin :: getUserID(){
         userid = row.at(0);
     }
 
-    db->close(); 
+    db->close();
     return userid;
 }
-
