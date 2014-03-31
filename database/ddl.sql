@@ -6,7 +6,6 @@ CREATE TABLE user(
     password TEXT
 );
 
-
 CREATE TABLE if not exists frame(
     userID TEXT,
     played INT,
@@ -35,5 +34,5 @@ CREATE TABLE if not exists profile(
     power INT,
     maxpot INT,
     maxscore INT,
-    overall INT); 
-
+    overall INT
+);

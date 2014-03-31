@@ -27,3 +27,10 @@ DESCRIPTION
        -db, --database, database
             Brings sqlite shell for execute db queries.
             Example. spm.sh -db
+
+       -dd, --dump, dump
+            Take dump of sqlite database.
+            Example. spm.sh --dump Or spm.sh --dump > backup.sql
+
+        -h, --help, help
+            Get help.
