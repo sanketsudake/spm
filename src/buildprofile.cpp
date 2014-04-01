@@ -6,10 +6,21 @@
 #include "buildprofile.hpp"
 #include <cmath>
 #include<stdlib.h>
+#include <sstream>
 
 
-using namespace std;
 using namespace cv;
+using namespace std;
+
+namespace patch
+{
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
+}
 
 /*!
  *\BuildProfile constructor initialises database object,
@@ -32,7 +43,7 @@ BuildProfile::BuildProfile(string id)
     for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
     {
         vector<string> row = *it;
-        straight = atoi(row.at(1).c_str()); 
+        straight = atoi(row.at(1).c_str());
         cut = atoi(row.at(2).c_str());
         safety = atoi(row.at(3).c_str());
         spin = atoi(row.at(4).c_str());
@@ -74,13 +85,18 @@ void BuildProfile :: build(double angleError, Shot *shot){
                 break;
     }
     int overall = (straight + cut + spin + safety + powerAcc)/5;
-    string query = "update profile set straight= " + to_string(straight) + ", cut= " + to_string(cut) + ", safety= " + to_string(safety) + ",spin= " + to_string(spin) + ",power= "+ to_string(powerAcc) +",overall = "+ to_string(overall) + ";";
+    string query = "update profile set straight= " + patch::to_string(straight)
+		+ ", cut= " + patch::to_string(cut)
+		+ ", safety= " + patch::to_string(safety)
+		+ ",spin= " + patch::to_string(spin)
+		+ ",power= "+ patch::to_string(powerAcc)
+		+ ",overall = "+ patch::to_string(overall) + ";";
     char temp[query.size()+1];
     query.copy(temp,query.size(),0);
     temp[query.size()] = '\0';
     // cout << query;
     db->query(temp);
-    
+
 
 }
 
