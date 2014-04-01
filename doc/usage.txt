@@ -1,3 +1,4 @@
+DOC_STRING=$(cat << EOF
 NAME
        spm.sh - Manager Snooker Project
 
@@ -42,3 +43,6 @@ DESCRIPTION
 
         -h, --help, help
             Get help.
+EOF
+)
+echo "$DOC_STRING"

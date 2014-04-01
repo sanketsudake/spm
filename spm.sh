@@ -84,7 +84,7 @@ function usage
         echo "Error: doc/usage.txt missing."
         exit
     fi
-	cat $DOC_PATH
+	source $DOC_PATH
 }
 
 function spm_main
