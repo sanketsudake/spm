@@ -1,4 +1,36 @@
-Usage: spm.sh --option args
-Example:
-	spm.sh --build #Building code
-	spm.sh --run video_arg #Running code
+NAME
+       spm.sh - Manager Snooker Project
+
+SYNOPSIS
+       spm.sh [OPTION]... [ARG]...
+
+DESCRIPTION
+       spm.sh builds, compiles snooker project quickly.
+       Helps easy interface to project
+
+       -b, --build, build
+             Building Code with Source code.
+             Example. spm.sh --build
+
+       -r, --run, run
+             Running Code with Video
+             Example. spm.sh --run video_path
+
+       -s, --search, search
+             Search certain keyword in source code
+             Example. spm.sh --search kalman
+
+       -c, --count, count
+            Count no. of lines in source
+            Example. spm.sh --count
+
+       -db, --database, database
+            Brings sqlite shell for execute db queries.
+            Example. spm.sh -db
+
+       -dd, --dump, dump
+            Take dump of sqlite database.
+            Example. spm.sh --dump Or spm.sh --dump > backup.sql
+
+        -h, --help, help
+            Get help.

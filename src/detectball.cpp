@@ -9,6 +9,7 @@
 using namespace std;
 using namespace cv;
 
+
 DetectBall::DetectBall()
 {
 	//! HSV Min and Max Range for white ball detection
@@ -16,19 +17,22 @@ DetectBall::DetectBall()
 	white_maxval = new Scalar(255, 70, 255);
     frameCount = 0;
 }
+
+
 DetectBall::~DetectBall()
 {
 
 }
 
-void DetectBall :: showFrameNo(Mat &frame)
+
+void DetectBall::showFrameNo(Mat &frame)
 {
     frameCount++;
     stringstream ss;
-	ss << "Frame No : " << frameCount;
+	ss << "Frame No: " << frameCount;
 	putText(frame, ss.str(), Point(900, 15), 1, 1, Scalar(255, 255, 255), 2);
-
 }
+
 
 void DetectBall::morphOps(Mat &frame)
 {
@@ -49,6 +53,7 @@ void DetectBall::morphOps(Mat &frame)
     dilate(frame, frame, dilateElement);
 }
 
+
 Point DetectBall::trackFilteredObject(Mat &frame)
 {
 	//! two vectors needed for output of find contours
@@ -63,6 +68,7 @@ Point DetectBall::trackFilteredObject(Mat &frame)
 	//! use moments to find our filtered object
 	double refArea = 0;
 	bool objectFound = false;
+
 	if (hierarchy.size() > 0)
 	{
 		int numObjects = hierarchy.size();
@@ -107,6 +113,7 @@ Point DetectBall::trackFilteredObject(Mat &frame)
 	return Point(-1, -1);
 }
 
+
 Point DetectBall::detectWhite(Mat &frame)
 {
 	Mat frame_HSV, processed;
@@ -122,6 +129,7 @@ Point DetectBall::detectWhite(Mat &frame)
 	 return trackFilteredObject(processed);
 }
 
+
 void DetectBall::mapPosition(Mat &frame, Point position, int status)
 {
 	//! Show actions according position found by detectBall
@@ -129,22 +137,24 @@ void DetectBall::mapPosition(Mat &frame, Point position, int status)
 	{
 		//! Failed to find position
 		//! Mostly occurs when Foul appears on screen
-	case -1:
-		putText(frame, "Failed to Find Position",
-					 Point(0, 50), 1, 2, Scalar(0, 0, 255),2);
-		putText(frame, "Possibly Foul",
-					 Point(0, 100), 1, 2, Scalar(0, 0, 255),2);
-		break;
-		//! Less possible occurance of this case
-	case -2: putText(frame, "TOO MUCH NOISE! ADJUST FILTER",
-					 Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
-		break;
-	default:
-		//! check status point coming from white detector or kalman fiter
-		if(!status)
-			circle(frame, position, 12, Scalar(0, 0, 0), 2);
-		else
-			circle(frame, position, 10, Scalar(255, 255, 255), 2);
+	    case -1:
+	    	putText(frame, "Failed to Find Position",
+	    				 Point(0, 50), 1, 2, Scalar(0, 0, 255),2);
+	    	putText(frame, "Possibly Foul",
+	    				 Point(0, 100), 1, 2, Scalar(0, 0, 255),2);
+	    	break;
+
+	    //! Less possible occurance of this case
+	    case -2: putText(frame, "TOO MUCH NOISE! ADJUST FILTER",
+	    				 Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
+	    	break;
+
+	    //! check status point coming from white detector or kalman fiter
+	    default:
+	    	if(!status)
+	    		circle(frame, position, 7, Scalar(0, 0, 0), 2);
+	    	else
+	    		circle(frame, position, 7, Scalar(0,0,0), 2);
 	}
 }
 
@@ -185,8 +195,10 @@ Point SnKalman::correctPoisition(Point position)
 		setIdentity(kalmanfilter.measurementNoiseCov, Scalar::all(1e-5));
 		setIdentity(kalmanfilter.errorCovPost, Scalar::all(.1));
 		flaginit = 0;
+
 		return position;
 	}
+
 	else
 	{
 		/*!

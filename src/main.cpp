@@ -11,7 +11,8 @@
 #include "shotArray.hpp"
 #include "managelogin.hpp"
 #include "collisionDetector.hpp"
-#include<string>
+#include "sclassifier.hpp"
+
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
 
@@ -22,9 +23,12 @@ int main(int argc, char **argv)
 {
     VideoCapture capture;		//! Videocapture to capture video object
     Mat src,prev;					//! Matrix object to get input
+    Mat original;
+    Mat previous;
     Point white_position(-1, -1); //! White Ball Position
     DetectBall white_detector;
     char code = (char)-1;
+    unsigned int shottype=-1;
 
     SnKalman kfchecker;
     ManageLogin login;
@@ -32,12 +36,17 @@ int main(int argc, char **argv)
     ShotArray white_array;
     CollisionDetector col_detector;
     Shot shot;
-    BuildProfile build_profile;
+    Sclassifier shot_classify;
+
+
     int flag = 1;
     static string userId;
     do{
     userId = login.getUserID();
     }while(userId == "test");
+
+     BuildProfile build_profile(userId);
+
     /*!
      * Open user input video from given path
      * and set frame width & height.
@@ -45,19 +54,20 @@ int main(int argc, char **argv)
     capture.open(argv[1]);
     capture.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
+    previous = capture.read(src);
 
-    while(1)
+    // while(1)
+    do
     {
         //! store image to matrix
         int c = capture.read(src);
         if(!c)
             exit(0);
 
+        original = src.clone();
+
         //! detect white ball
         white_position = white_detector.detectWhite(src);
-        //! Map result returned by detector
-        //white_detector.mapPosition(src, white_position, 0);
-
 
         //! Correct position through kalman filter
         white_position = kfchecker.correctPoisition(white_position),
@@ -79,7 +89,11 @@ int main(int argc, char **argv)
                 // Velocity in cm/sec
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
-                double angleError = shot.angleErr(src, &white_array);
+
+                shottype = shot_classify.shot_classifier(76.0,1,0,1);
+
+                double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
+
                 //int currAngleAcc = build_profile.profileAngle(angleError);
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
@@ -105,7 +119,7 @@ int main(int argc, char **argv)
         col_detector.drawPrev(src);
 
         //! show final image
-        imshow("Snooker Player Profile Management", src);
+        // imshow("Snooker Player Profile Management", src);
 
         shot.getUserInput(src);
 
@@ -120,16 +134,22 @@ int main(int argc, char **argv)
         }
 
         //! While ESC is not pressed dont proceed to next shot
-        // Uncomment to debug code
-//         while(waitKey(1) != 27);
+        imshow("Snooker Player Profile Management", src);
 
         //! Find colliding points
-        col_detector.checkCollision(white_position);
+        col_detector.checkCollision(white_position, previous, original, white_array);
 
         //! Escape window on pressing 'Q' or 'q'
         code = (char)waitKey(5);
         if( code == 'q' || code == 'Q' )
             break;
-    }
+
+        previous = original.clone();
+
+        // Uncomment to debug code
+        // while(waitKey(1) != 27);
+
+    }while(waitKey(1) != 27);
+
     return 0;
 }

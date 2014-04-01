@@ -5,23 +5,51 @@
 
 #include "buildprofile.hpp"
 #include <cmath>
+#include<stdlib.h>
+#include <sstream>
 
 
-using namespace std;
 using namespace cv;
+using namespace std;
 
-BuildProfile::BuildProfile()
+namespace patch
 {
-    angleAcc = 100;
-    powerAcc = 100;
-    straight = 100;
-    spin = 100;
-    cut = 100;
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
+}
+
+/*!
+ *\BuildProfile constructor initialises database object,
+ *\sets values of player profile to actual values from database.
+ */
+BuildProfile::BuildProfile(string id)
+{
 
     string dbPath = "database/snooker.db";
-    char path[dbPath.size()];
+    char path[dbPath.size()+1];
     dbPath.copy(path,dbPath.size(),0);
+    path[dbPath.size()] = '\0';
     db = new Database(path);
+    //get the values of player profile from database
+    string query ="SELECT * FROM profile WHERE userID='" + id +"';";
+    char temp[query.size()+1];
+    query.copy(temp,query.size(),0);
+    temp[query.size()] = '\0';
+    vector<vector<string> > result = db->query(temp);
+    for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
+    {
+        vector<string> row = *it;
+        straight = atoi(row.at(1).c_str());
+        cut = atoi(row.at(2).c_str());
+        safety = atoi(row.at(3).c_str());
+        spin = atoi(row.at(4).c_str());
+        powerAcc = atoi(row.at(5).c_str());
+    }
+
 }
 
 BuildProfile::~BuildProfile()
@@ -41,7 +69,7 @@ Mat BuildProfile :: getLastFrame(){
 void BuildProfile :: build(double angleError, Shot *shot){
     int currAngleAcc = profileAngle(angleError);
     //depending on shot type
-    int shotType = shot->shotType();
+    int shotType = shot->shotType();  // eliminate this, use shottype variable in main, result of shot_classify.shot_classifier
     double dist = shot->getSuggDist();
     cout << "Dist to suggested: "<<dist << endl;
 
@@ -56,6 +84,20 @@ void BuildProfile :: build(double angleError, Shot *shot){
         case 3: profileSpin(currAngleAcc,dist);
                 break;
     }
+    int overall = (straight + cut + spin + safety + powerAcc)/5;
+    string query = "update profile set straight= " + patch::to_string(straight)
+		+ ", cut= " + patch::to_string(cut)
+		+ ", safety= " + patch::to_string(safety)
+		+ ",spin= " + patch::to_string(spin)
+		+ ",power= "+ patch::to_string(powerAcc)
+		+ ",overall = "+ patch::to_string(overall) + ";";
+    char temp[query.size()+1];
+    query.copy(temp,query.size(),0);
+    temp[query.size()] = '\0';
+    // cout << query;
+    db->query(temp);
+
+
 }
 
 void BuildProfile :: profileStraight(int currAngleAcc, double dist){

@@ -1,3 +1,5 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
 CREATE TABLE user(
     userID TEXT PRIMARY KEY NOT NULL,
     first TEXT not null,
@@ -5,8 +7,10 @@ CREATE TABLE user(
     age INT not null,
     password TEXT
 );
-
-CREATE TABLE if not exists frame(
+INSERT INTO "user" VALUES('ronnie11','ronnie','patel',35,'password');
+INSERT INTO "user" VALUES('tripples','sanket','sudake',21,'password');
+INSERT INTO "user" VALUES('sagar','sagar','rakshe',21,'password');
+CREATE TABLE frame(
     userID TEXT,
     played INT,
     won INT,
@@ -15,8 +19,7 @@ CREATE TABLE if not exists frame(
     FOREIGN KEY (userID) REFERENCES user(userID) ON DELETE RESTRICT
 
 );
-
-CREATE TABLE if not exists matches(
+CREATE TABLE matches(
     userID TEXT,
     played INT,
     won INT,
@@ -24,8 +27,7 @@ CREATE TABLE if not exists matches(
     PRIMARY KEY (userID),
     FOREIGN KEY (userID) REFERENCES user(userID) ON DELETE RESTRICT
 );
-
-CREATE TABLE if not exists profile(
+CREATE TABLE profile(
     userID TEXT PRIMARY KEY,
     straight INT,
     cut INT,
@@ -34,5 +36,6 @@ CREATE TABLE if not exists profile(
     power INT,
     maxpot INT,
     maxscore INT,
-    overall INT
-);
+    overall INT);
+INSERT INTO "profile" VALUES('ronnie11',15,45,63,73,69,50,50,53);
+COMMIT;

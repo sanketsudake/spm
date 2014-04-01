@@ -13,6 +13,7 @@
 #include "detectshot.hpp"
 #include "database.hpp"
 #include "shot.hpp"
+#include <string>
 using namespace std;
 using namespace cv;
 /*!
@@ -27,10 +28,11 @@ class BuildProfile
         int straight;
         int spin;
         int cut;
+        int safety;
         Mat lastFrame;
         Database *db;
     public:
-        BuildProfile();
+        BuildProfile(string id);
         ~BuildProfile();
         void setLastFrame(Mat);
         Mat getLastFrame();

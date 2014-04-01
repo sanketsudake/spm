@@ -1,0 +1,8 @@
+Profile 1
+USER = {
+    userID: tripples,
+    first: sanket,
+    last: sudake,
+    age: 21,
+    password: pass,
+}
