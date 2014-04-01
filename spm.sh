@@ -35,7 +35,7 @@ function search
 {
     if [ -z "$1" ]
     then
-        echo "Error: Missing input argument."
+        echo "Error: Missing search keyword."
         exit
     fi
     find . -iregex '.*\.\(cpp\|sql\|hpp\)' -exec grep -inH $1 {} \;
