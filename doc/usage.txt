@@ -32,5 +32,13 @@ DESCRIPTION
             Take dump of sqlite database.
             Example. spm.sh --dump Or spm.sh --dump > backup.sql
 
+        --backup, backup
+             Take backup of current database in $BACKUP.
+             Example. spm.sh --backup
+
+        --restore, restore
+             Creates new database $DB_PATH from $BACKUP
+             Example. spm.sh --restore
+
         -h, --help, help
             Get help.

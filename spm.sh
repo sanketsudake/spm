@@ -3,6 +3,9 @@
 ##### constants
 FILENAME="spm.sh"
 TITLE="Snooker Player Profile Manager v0.1"
+DB_PATH="database/snooker.db"
+BACKUP="database/backup.sql"
+DOC_PATH="doc/usage.txt"
 
 #### functions
 function build
@@ -31,6 +34,23 @@ function run
     build/spm $1
 }
 
+function backup
+{
+  sqlite3 -line $DB_PATH .dump > $BACKUP
+}
+
+function restore
+{
+    if [ ! -f "$1" ]
+	then
+        echo "File $BACKUP does not exist."
+        echo "Try spm.sh --help"
+		exit
+	fi
+	rm $DB_PATH
+	sqlite3 $DB_PATH < $BACKUP
+}
+
 function search
 {
     if [ -z "$1" ]
@@ -48,23 +68,23 @@ function count
 
 function db
 {
-    sqlite3 --interactive -echo database/snooker.db -separator "| "
+    sqlite3 --interactive -echo $DB_PATH -separator "| "
 }
 
 function dbdump
 {
-    sqlite3 -line database/snooker.db .dump
+    sqlite3 -line $DB_PATH .dump
 }
 
 function usage
 {
     echo $TITLE
-    if [ ! -f "doc/usage.txt" ]
+    if [ ! -f $DOC_PATH ]
     then
         echo "Error: doc/usage.txt missing."
         exit
     fi
-    cat doc/usage.txt
+	cat $DOC_PATH
 }
 
 function spm_main
@@ -88,6 +108,12 @@ function spm_main
         -dd | --dump | dump)
             dbdump
             ;;
+		--restore | restore)
+			restore
+			;;
+		--backup | backup)
+			backup
+			;;
         -h | --help | help)
             usage
             ;;
