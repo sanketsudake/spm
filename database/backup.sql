@@ -38,4 +38,15 @@ CREATE TABLE profile(
     maxscore INT,
     overall INT);
 INSERT INTO "profile" VALUES('ronnie11',15,45,63,73,69,50,50,53);
+
+CREATE TABLE if not exists currentshot(
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        userID TEXT,
+        angleerror REAL,
+        totaldist REAL,
+        totaltime REAL,
+        velocity REAL
+
+);
+INSERT INTO "currentshot" (userID,angleerror,totaldist,totaltime,velocity) VALUES('ronnie11',0,0,0,0);
 COMMIT;

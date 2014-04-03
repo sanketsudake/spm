@@ -84,6 +84,7 @@ void BuildProfile :: build(double angleError, Shot *shot){
         case 3: profileSpin(currAngleAcc,dist);
                 break;
     }
+    //All the shot parameters should be updated before this.
     int overall = (straight + cut + spin + safety + powerAcc)/5;
     string query = "update profile set straight= " + patch::to_string(straight)
 		+ ", cut= " + patch::to_string(cut)
@@ -97,6 +98,19 @@ void BuildProfile :: build(double angleError, Shot *shot){
     // cout << query;
     db->query(temp);
 
+
+}
+void BuildProfile :: addCurrent(double angleError, double totalDist, double totalTime, double velocity ){
+     string query = "update currentshot set angleerror= " + patch::to_string(angleError)
+		+ ", totaldist= " + patch::to_string(totalDist)
+		+ ", totalTime= " + patch::to_string(totalTime)
+		+ ",velocity= " + patch::to_string(velocity)
+		+ ";";
+    char temp[query.size()+1];
+    query.copy(temp,query.size(),0);
+    temp[query.size()] = '\0';
+    // cout << query;
+    db->query(temp);
 
 }
 

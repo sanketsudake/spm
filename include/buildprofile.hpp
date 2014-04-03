@@ -38,6 +38,7 @@ class BuildProfile
         Mat getLastFrame();
         int profileAngle(double);
         void build(double, Shot *);
+        void addCurrent(double,double,double,double);
         void profileStraight(int currAngleAcc, double  );
         void profileSpin(int currAngleAcc, double  );
         void profileCut(int currAngleAcc, double  );
