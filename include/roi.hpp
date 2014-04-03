@@ -18,7 +18,7 @@ class Roi
         ~Roi();
         bool gotRoi();
         void morphOps(Mat &thresh);
-        vector<Vec3f>& getRoi(Mat camerafeed);
+        vector<Vec3f>& getRoi(Mat &camerafeed);
 };
 
 #endif

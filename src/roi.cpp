@@ -24,11 +24,8 @@ Roi::~Roi()
 
 void Roi::morphOps(Mat &thresh)
 {
-	//create structuring element that will be used to "dilate" and "erode" image.
-	//the element chosen here is a 3px by 3px rectangle
 
 	Mat erodeElement = getStructuringElement( MORPH_ELLIPSE,Size(3,3));
-    //dilate with larger element so make sure object is nicely visible
 	Mat dilateElement = getStructuringElement( MORPH_ELLIPSE,Size(7,7));
 
 	erode(thresh,thresh,erodeElement);
@@ -38,46 +35,20 @@ void Roi::morphOps(Mat &thresh)
 	dilate(thresh,thresh,dilateElement);
 }
 
-vector<Vec3f>& Roi::getRoi(Mat camerafeed)
+vector<Vec3f>& Roi::getRoi(Mat &camerafeed)
 {
     Mat HSV;
-	//matrix storage for binary threshold image
 	Mat threshold;
-
-	//string file=argv[1];
-
-    //Mat camerafeed = imread(file); 
-
- //   imshow("input", camerafeed);
     cvtColor(camerafeed,HSV,COLOR_BGR2HSV);
 
     inRange(HSV, Scalar(6,18,72), Scalar(34,70,209), threshold);
 
-    //imshow("filtered", HSV);
     morphOps(threshold);
-    //imshow("filtered", threshold);
-
-//    cvtColor( threshold, src_gray, CV_BGR2GRAY );
     
     waitKey(3000);
     vector<Vec3f> circles;
 
-  /// Apply the Hough Transform to find the circles
     HoughCircles( threshold, circles, CV_HOUGH_GRADIENT, 2, 50, 4, 10, 4, 20 );
-
-    /// Draw the circles detected
-    sort(circles.begin(),circles.end(),by_x());
-
-    /*for( size_t i = 0; i < circles.size(); i++ )
-    {
-        Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-        int radius = cvRound(circles[i][2]);
-        // circle center
-        printf("\n Ball position : x = %.2f, y= %.2f, Radius = %.2f\n",circles[i][0],circles[i][1],circles[i][2]);
-        circle( camerafeed, center, 3, Scalar(0,255,0), -1, 8, 0 );
-        // circle outline
-        circle( camerafeed, center, radius, Scalar(0,0,255), 3, 8, 0 );
-    } */
 
     sort(circles.begin(),circles.end(),by_x());
 
@@ -120,10 +91,6 @@ vector<Vec3f>& Roi::getRoi(Mat camerafeed)
     final_roi.push_back(circles[4]);
     final_roi.push_back(circles[2]);
     final_roi.push_back(circles[0]);
-
- /*   printf("\n Final ROI\n\n");
-    for( size_t i = 0; i < final_roi.size(); i++ )
-        printf("\n x = %.2f, y = %.2f",final_roi[i][0],final_roi[i][1]);*/
 
     printf("ROI Done ! Press Esc...");
     printf("\n");

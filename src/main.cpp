@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
         original = src.clone();
         if(!roi.gotRoi()) {
-            final_roi = roi.getRoi(src.clone());
+            final_roi = roi.getRoi(src);
             printf("Final ROI");
             for( size_t i = 0; i < final_roi.size(); i++ )
                 printf("\n x = %.2f, y = %.2f",final_roi[i][0],final_roi[i][1]);
