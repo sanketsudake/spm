@@ -17,6 +17,7 @@ ${SNINC}/shot.hpp
 ${SNINC}/collisionDetector.hpp
 ${SNINC}/shotArray.hpp
 ${SNINC}/database.hpp
+${SNINC}/roi.hpp
 ${SNINC}/sclassifier.hpp)
 set(SRC
 ${SNSRC}/buildprofile.cpp
@@ -28,6 +29,7 @@ ${SNSRC}/shot.cpp
 ${SNSRC}/collisionDetector.cpp
 ${SNSRC}/shotArray.cpp
 ${SNSRC}/database.cpp
+${SNSRC}/roi.cpp
 ${SNSRC}/sclassifier.cpp)
 
 add_executable(spm ${SRC} ${INC})
