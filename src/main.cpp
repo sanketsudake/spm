@@ -12,6 +12,7 @@
 #include "managelogin.hpp"
 #include "collisionDetector.hpp"
 #include "sclassifier.hpp"
+#include "roi.hpp"
 
 #define FRAME_WIDTH 640
 #define FRAME_HEIGHT 480
@@ -29,6 +30,7 @@ int main(int argc, char **argv)
     DetectBall white_detector;
     char code = (char)-1;
     unsigned int shottype=-1;
+    Vector<Vec3f> final_roi;
 
     SnKalman kfchecker;
     ManageLogin login;
@@ -37,7 +39,7 @@ int main(int argc, char **argv)
     CollisionDetector col_detector;
     Shot shot;
     Sclassifier shot_classify;
-
+    Roi roi;
 
     int flag = 1;
     static string userId;
@@ -65,6 +67,13 @@ int main(int argc, char **argv)
             exit(0);
 
         original = src.clone();
+        if(!roi.gotRoi()) {
+            final_roi = roi.getRoi(src.clone());
+            printf("Final ROI");
+            for( size_t i = 0; i < final_roi.size(); i++ )
+                printf("\n x = %.2f, y = %.2f",final_roi[i][0],final_roi[i][1]);
+            printf("\n");
+        }
 
         //! detect white ball
         white_position = white_detector.detectWhite(src);
