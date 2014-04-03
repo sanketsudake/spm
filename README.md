@@ -10,6 +10,7 @@ Execute code
 
 ```
 $ git clone https://github.com/tripples/spm.git ; cd spm
+$ source packages.txt
 $./spm.sh --build
 $./spm.sh --run video_path
 ```
