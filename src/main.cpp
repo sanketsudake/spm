@@ -103,7 +103,7 @@ int main(int argc, char **argv)
                 //int currAngleAcc = build_profile.profileAngle(angleError);
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
-                build_profile.addCurrent(angleError, white_array.totalDist(), white_array.totalTime(),
+                build_profile.addCurrent(userId,angleError, white_array.totalDist(), white_array.totalTime(),
                         white_array.shotVelocity()*(0.367347));
                 build_profile.setLastFrame(src);
                 prev = build_profile.getLastFrame();

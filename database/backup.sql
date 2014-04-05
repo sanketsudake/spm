@@ -10,6 +10,12 @@ CREATE TABLE user(
 INSERT INTO "user" VALUES('ronnie11','ronnie','patel',35,'password');
 INSERT INTO "user" VALUES('tripples','sanket','sudake',21,'password');
 INSERT INTO "user" VALUES('sagar','sagar','rakshe',21,'password');
+INSERT INTO "user" VALUES('testdata','test','test',20,'password');
+INSERT INTO "user" VALUES('test','test','test',20,'test');
+INSERT INTO "user" VALUES('test1','test','test',20,NULL);
+INSERT INTO "user" VALUES('t1','t1','t',2,'sd');
+INSERT INTO "user" VALUES('g1','g','g',12,'g');
+INSERT INTO "user" VALUES('vinay','vinay','hiwarkar',21,'vinay');
 CREATE TABLE frame(
     userID TEXT,
     played INT,
@@ -37,9 +43,13 @@ CREATE TABLE profile(
     maxpot INT,
     maxscore INT,
     overall INT);
-INSERT INTO "profile" VALUES('ronnie11',15,45,63,73,69,50,50,53);
-
-CREATE TABLE if not exists currentshot(
+INSERT INTO "profile" VALUES('ronnie11',73,50,50,50,50,50,50,54);
+INSERT INTO "profile" VALUES('testdata',73,50,50,50,50,0,0,54);
+INSERT INTO "profile" VALUES('test2',73,50,50,50,50,0,0,54);
+INSERT INTO "profile" VALUES('t1',73,50,50,50,50,0,0,54);
+INSERT INTO "profile" VALUES('g1',73,50,50,50,50,0,0,54);
+INSERT INTO "profile" VALUES('vinay',73,50,50,50,50,0,0,54);
+CREATE TABLE shothistory(
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         userID TEXT,
         angleerror REAL,
@@ -48,5 +58,4 @@ CREATE TABLE if not exists currentshot(
         velocity REAL
 
 );
-INSERT INTO "currentshot" (userID,angleerror,totaldist,totaltime,velocity) VALUES('ronnie11',0,0,0,0);
 COMMIT;

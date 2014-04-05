@@ -100,12 +100,14 @@ void BuildProfile :: build(double angleError, Shot *shot){
 
 
 }
-void BuildProfile :: addCurrent(double angleError, double totalDist, double totalTime, double velocity ){
-     string query = "update currentshot set angleerror= " + patch::to_string(angleError)
-		+ ", totaldist= " + patch::to_string(totalDist)
-		+ ", totalTime= " + patch::to_string(totalTime)
-		+ ",velocity= " + patch::to_string(velocity)
-		+ ";";
+void BuildProfile :: addCurrent(string userId, double angleError, double totalDist, double totalTime, double velocity ){
+     string query = "insert into shothistory (userID,angleerror,totaldist,totalTime,velocity) values('" 
+        + patch::to_string(userId) 
+        + "','" + patch::to_string(angleError)
+		+ "','" + patch::to_string(totalDist)
+		+ "','" + patch::to_string(totalTime)
+		+ "','" + patch::to_string(velocity)
+		+ "');";
     char temp[query.size()+1];
     query.copy(temp,query.size(),0);
     temp[query.size()] = '\0';

@@ -37,7 +37,7 @@ CREATE TABLE if not exists profile(
         overall INT
 );
 
-CREATE TABLE if not exists currentshot(
+CREATE TABLE if not exists shothistory(
         ID INTEGER PRIMARY KEY AUTOINCREMENT,
         userID TEXT,
         angleerror REAL,
