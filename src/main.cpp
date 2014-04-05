@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     static string userId;
     do{
     userId = login.getUserID();
-    }while(userId == "test");
+    }while(userId == "\0");
 
      BuildProfile build_profile(userId);
 

@@ -68,7 +68,7 @@ function count
 
 function db
 {
-    sqlite3 --interactive -echo $DB_PATH -separator "| "
+    sqlite3 --interactive -echo $DB_PATH
 }
 
 function dbdump
