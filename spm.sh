@@ -5,6 +5,7 @@ FILENAME="spm.sh"
 TITLE="Snooker Player Profile Manager v0.1"
 DB_PATH="database/snooker.db"
 BACKUP="database/backup.sql"
+DB_DEF="database/ddl.sql"
 DOC_PATH="doc/usage.txt"
 
 #### functions
@@ -71,6 +72,19 @@ function db
     sqlite3 --interactive -echo $DB_PATH
 }
 
+function syncdb
+{
+    if [ ! -f $DB_DEF ]
+    then
+        echo "File $BACKUP does not exist."
+        echo "Try spm.sh --help"
+        exit
+    fi
+    rm $DB_PATH
+    sqlite3 $DB_PATH < $DB_DEF
+
+}
+
 function dbdump
 {
     sqlite3 -line $DB_PATH .dump
@@ -93,10 +107,10 @@ function spm_main
         -b | --build | build)
             build
             ;;
-	--rebuild | rebuild)
-	    rm -rf ./build
-	    build
-	    ;;
+        --rebuild | rebuild)
+            rm -rf ./build
+            build
+            ;;
         -r | --run | run)
             run $2
             ;;
@@ -117,6 +131,9 @@ function spm_main
             ;;
         --backup | backup)
             backup
+            ;;
+        --syncdb | syncdb)
+            syncdb
             ;;
         -h | --help | help)
             usage
