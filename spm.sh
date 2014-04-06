@@ -36,19 +36,19 @@ function run
 
 function backup
 {
-  sqlite3 -line $DB_PATH .dump > $BACKUP
+    sqlite3 -line $DB_PATH .dump > $BACKUP
 }
 
 function restore
 {
     if [ ! -f "$1" ]
-	then
+    then
         echo "File $BACKUP does not exist."
         echo "Try spm.sh --help"
-		exit
-	fi
-	rm $DB_PATH
-	sqlite3 $DB_PATH < $BACKUP
+        exit
+    fi
+    rm $DB_PATH
+    sqlite3 $DB_PATH < $BACKUP
 }
 
 function search
@@ -84,7 +84,7 @@ function usage
         echo "Error: doc/usage.txt missing."
         exit
     fi
-	source $DOC_PATH
+    source $DOC_PATH
 }
 
 function spm_main
@@ -93,6 +93,10 @@ function spm_main
         -b | --build | build)
             build
             ;;
+	--rebuild | rebuild)
+	    rm -rf ./build
+	    build
+	    ;;
         -r | --run | run)
             run $2
             ;;
@@ -108,12 +112,12 @@ function spm_main
         -dd | --dump | dump)
             dbdump
             ;;
-		--restore | restore)
-			restore
-			;;
-		--backup | backup)
-			backup
-			;;
+        --restore | restore)
+            restore
+            ;;
+        --backup | backup)
+            backup
+            ;;
         -h | --help | help)
             usage
             ;;
