@@ -41,7 +41,7 @@ function backup
 
 function restore
 {
-    if [ ! -f "$1" ]
+    if [ ! -f $BACKUP ]
     then
         echo "File $BACKUP does not exist."
         echo "Try spm.sh --help"
