@@ -5,7 +5,7 @@
 
 #include "buildprofile.hpp"
 #include <cmath>
-#include<stdlib.h>
+#include<cstdlib>
 #include <sstream>
 
 
@@ -56,24 +56,31 @@ BuildProfile::~BuildProfile()
 {
     db->close();
 }
+
 /*
  *Setter for setting last Frame that is to be given to/used by
  *Shot suggestion system.
  */
-void BuildProfile :: setLastFrame(Mat src){
+void BuildProfile :: setLastFrame(Mat src)
+{
     lastFrame = src;
 }
-Mat BuildProfile :: getLastFrame(){
+
+Mat BuildProfile :: getLastFrame()
+{
     return lastFrame;;
 }
-void BuildProfile :: build(double angleError, Shot *shot){
+
+void BuildProfile :: build(double angleError, Shot *shot)
+{
     int currAngleAcc = profileAngle(angleError);
     //depending on shot type
     int shotType = shot->shotType();  // eliminate this, use shottype variable in main, result of shot_classify.shot_classifier
     double dist = shot->getSuggDist();
     cout << "Dist to suggested: "<<dist << endl;
 
-    switch(shotType){
+    switch(shotType)
+    {
         //if straight shot
         case 1: profileStraight(currAngleAcc, dist);
                 break;
@@ -84,8 +91,11 @@ void BuildProfile :: build(double angleError, Shot *shot){
         case 3: profileSpin(currAngleAcc,dist);
                 break;
     }
+
     //All the shot parameters should be updated before this.
+    // #TODO: Replace with normal equation method
     int overall = (straight + cut + spin + safety + powerAcc)/5;
+    
     string query = "update profile set straight= " + patch::to_string(straight)
 		+ ", cut= " + patch::to_string(cut)
 		+ ", safety= " + patch::to_string(safety)
@@ -129,15 +139,15 @@ void BuildProfile :: profileStraight(int currAngleAcc, double dist){
     cout << "Profile Straight Accuracy: " << straight <<  "  dist" << dist;
     return;
 }
-void BuildProfile :: profileCut(int currAngleAcc, double dist){
+void BuildProfile :: profileCut(int currAngleAcc, double dist)
+{
 
 }
 
-void BuildProfile :: profileSpin(int currAngleAcc, double dist){
+void BuildProfile :: profileSpin(int currAngleAcc, double dist)
+{
 
 }
-
-
 
 //this factor will be considered irrespective of shot type.
 int BuildProfile :: profileAngle(double angleError){

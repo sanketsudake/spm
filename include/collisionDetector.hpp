@@ -6,7 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/video/video.hpp>
 #include "shotArray.hpp"
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 #include <iostream>
 
