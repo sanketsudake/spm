@@ -16,10 +16,12 @@
 #include <string>
 using namespace std;
 using namespace cv;
+
 /*!
  * \class BuildProfile
  * \brief
- o */
+ */
+
 class BuildProfile
 {
     private:
@@ -37,12 +39,13 @@ class BuildProfile
         void setLastFrame(Mat);
         Mat getLastFrame();
         int profileAngle(double);
+        float getRating(const char *uname);
+        int getRanking(const char *uname);
         void build(double, Shot *);
         void addCurrent(string,double,double,double,double);
         void profileStraight(int currAngleAcc, double  );
         void profileSpin(int currAngleAcc, double  );
         void profileCut(int currAngleAcc, double  );
 };
-
 
 #endif

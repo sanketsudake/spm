@@ -23,6 +23,43 @@ namespace patch
 }
 
 /*!
+  Profile Spec
+  =============================================================================
+  Profiling consist of two basic parts
+  a. Ranking =>
+  Just place users in ladder & find each individual's position among others.
+  Create fake csv file with data input & test data.
+  Data Input =>
+  Input(user name, straight, cut, safety, spin, power, max pot, max score), Output(overall)
+  Test Input => 
+  Input(user name, straight, cut, safety, spin, power, max pot, max score), Output(overall)
+
+  Apply Normal Equation Method to csv.
+  theta = pinv(X' * X) * X' * y
+  rating = input * theta
+
+  Every time snooker program starts we should train our ranking finder with fake data.
+  Then in real time we should apply to user's profile whenever above input data
+  for user changes with weights we got from Normal Equation Method.
+
+  For getting correct values for input(straight, cut, safety, ...)
+  Each value should be in range 0 to 100(can be float)
+  By default value should be 0.
+  These values should get incremented or decremented based on users
+  shot history.
+  Shot classification is required for this.
+  ------------------------------------------------------------------------------
+  
+  b. Rating => Find appropriate value for user's skills on particular scale.
+  Scale should be fair to all user's
+  Currently we will sort users on based overall only & rank them.
+  There are many advanced cases should be considered , will take
+  them after project competition.
+  
+  -----------------------------------------------------------------------------
+ */
+
+/*!
  *\BuildProfile constructor initialises database object,
  *\sets values of player profile to actual values from database.
  */
@@ -95,7 +132,7 @@ void BuildProfile :: build(double angleError, Shot *shot)
     //All the shot parameters should be updated before this.
     // #TODO: Replace with normal equation method
     int overall = (straight + cut + spin + safety + powerAcc)/5;
-    
+        
     string query = "update profile set straight= " + patch::to_string(straight)
 		+ ", cut= " + patch::to_string(cut)
 		+ ", safety= " + patch::to_string(safety)
@@ -110,14 +147,16 @@ void BuildProfile :: build(double angleError, Shot *shot)
 
 
 }
-void BuildProfile :: addCurrent(string userId, double angleError, double totalDist, double totalTime, double velocity ){
+void BuildProfile :: addCurrent(string userId, double angleError,
+				double totalDist, double totalTime,
+				double velocity ){
      string query = "insert into shothistory (userID,angleerror,totaldist,totalTime,velocity) values('" 
         + patch::to_string(userId) 
         + "','" + patch::to_string(angleError)
-		+ "','" + patch::to_string(totalDist)
-		+ "','" + patch::to_string(totalTime)
-		+ "','" + patch::to_string(velocity)
-		+ "');";
+	 + "','" + patch::to_string(totalDist)
+	 + "','" + patch::to_string(totalTime)
+	 + "','" + patch::to_string(velocity)
+	 + "');";
     char temp[query.size()+1];
     query.copy(temp,query.size(),0);
     temp[query.size()] = '\0';
