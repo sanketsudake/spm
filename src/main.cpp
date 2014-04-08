@@ -100,8 +100,9 @@ int main(int argc, char **argv)
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
 
-                shottype = shot_classify.shot_classifier(76.0,1,0,1);
-              
+                shottype = shot_classify.shot_classifier(0.0,-1,1,0,&shot);
+
+
                 double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
 
                 //int currAngleAcc = build_profile.profileAngle(angleError);
@@ -155,7 +156,7 @@ int main(int argc, char **argv)
         col_detector.checkCollision(white_position, previous, original, white_array, final, normalEndpoint, whiteSize);
         
         if(white_array.white_positions.size() > (whiteSize+2) && !visited){
-            cout <<  white_array.white_positions[(whiteSize+2)] << endl;
+            // cout <<  white_array.white_positions[(whiteSize+2)] << endl;
             shot.shotType(final, normalEndpoint, white_array.white_positions[(whiteSize+1)]);
             visited = true;
             // Mat angle;

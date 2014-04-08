@@ -28,6 +28,7 @@ Shot::Shot()
     p1 = Point(1000, 10000);
     p2 = Point(1000, 10000);
     angleError = 0;
+    shottype = 0;
 }
 
 Shot::~Shot()
@@ -118,8 +119,19 @@ void Shot::rateShot()
 int Shot::shotType()
 {
     //1: straight 2: cut 3: spin
-    cout << "shot Type: Straight" << endl;
-    return 1;
+    switch(shottype)
+    {
+        case 1:
+            cout << "In Shot Class, Shot Type : Straight" << endl;
+            break;
+        case 2:
+            cout << "In Shot Class, Shot Type : Cut" << endl;
+            break;
+        case 3:
+            cout << "In Shot Class, Shot Type : Spin" << endl;
+            break;
+    }
+    return shottype;
 
 }
 void Shot :: shotType(Point final, Point normalEndpoint, Point white){
@@ -130,8 +142,14 @@ void Shot :: shotType(Point final, Point normalEndpoint, Point white){
     //angle between normal and final position of white ball.
     //Calculated for purpose of spin detection.
     double angle = acos(((a*a) + (c*c) - (b*b))/(2*a*c))*180/3.1415926;
+    cout << "\n Angle betn Normal and White_Final: " << angle << endl;
 
 }
 double Shot :: getSuggDist(){
     return (double)sqrt(pow((startpoint.x - p1.x), 2) + pow((startpoint.y - p1.y), 2));
+}
+
+void ::Shot::setShotType(int type)
+{
+    shottype=type;
 }

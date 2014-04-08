@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+#include "shot.hpp"
 using namespace std;
 using namespace cv;
 
@@ -43,7 +44,7 @@ private:
 public:
     Sclassifier();
     ~Sclassifier();
-    unsigned int shot_classifier(double angle,int side, bool iscollinear, int motion);
+    unsigned int shot_classifier(double angle,int side, bool iscollinear, int motion,Shot *shotclass);
     string getShotString(unsigned int s);
 };
 

@@ -172,14 +172,14 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
                     whiteSize = dots_size;
                     collisionPoint(previous, shot_array.white_positions[0],
                             shot_array.white_positions[dots_size-1],final,normalEndpoint );
-                    cout << "White size :" << whiteSize << "  "<< final << " "<< normalEndpoint << endl; 
+                    // cout << "White size :" << whiteSize << "  "<< final << " "<< normalEndpoint << endl; 
                 }
 
                 //! Wait after every collision
                 if(collisionCount < 3){  
                     while(waitKey(1) != 27){
                         // imshow("Previous",previous);
-                        // imshow("ROI",interest);
+                        imshow("ROI",interest);
                     }
                 }
 
