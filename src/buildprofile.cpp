@@ -118,16 +118,19 @@ void BuildProfile :: generateThetaVals()
      */
     // Placed from data/fakeprofile.txt
     // straight,cut,safety,spin,power,maxpot,maxscore,overall/rating
-    float train_data[] = {100,100,100,100,100,100,100,100,
-	90.2,80,83,50,0,0,0,81.3,
-	65,70,50,75,0,0,0,73,
-	80,80,65,67,0,0,0,70,
-	55,65,50,63,0,0,0,60,
-	50,50,50,50,0,0,0,50,
-	35,50,20,40,0,0,0,37,
-	25,25,25,25,0,0,0,25,
-	50,30,20,10,0,0,0,23,
-	50,20,0,0,0,0,0,15};
+    float train_data[] = {100, 100, 100, 100, 100, 100, 100, 100,
+	100, 100, 100, 100,  0, 0, 0, 100,			      
+	90.2, 80, 83, 50, 0, 0, 0, 81.3, 
+	55, 60, 50, 63, 0, 0, 0, 62,
+	80, 80, 65, 67, 0, 0, 0, 67, 			      
+	50, 50, 50, 50, 0, 0, 0, 50, 
+	35, 50, 20, 40, 0, 0, 0, 37, 
+	25, 25, 25, 25, 0, 0, 0, 25, 
+	50, 30, 20, 10, 0, 0, 0, 23, 
+	50, 20, 0, 0, 0, 0, 0, 15,
+	65, 70, 50, 75, 0, 0, 0, 73 			      
+    };
+
     
     // Collect data from training data
     Mat data = Mat(RROWS, RCOLS, CV_32FC1, train_data).clone();
@@ -144,7 +147,8 @@ void BuildProfile :: generateThetaVals()
     invert(temp2, pseudo_inverted, cv::DECOMP_SVD);
     Mat temp4 = pseudo_inverted * XTranspose;
     theta = temp4 * Y;
-    cout << theta;
+    //cout << "Inntial Theta Values" << endl;
+    //cout << theta;
 }
 
 float BuildProfile::getRating(const Mat &input)
@@ -181,16 +185,11 @@ void BuildProfile :: build(double angleError, Shot *shot)
 
     //All the shot parameters should be updated before this.
     // #TODO: Replace with normal equation method
-    float overall = (straight + cut + spin + safety + powerAcc)/5;
-    cout << "By first method " << overall;
 
     // straight,cut,safety,spin,power,maxpot,maxscore
     float profile_input[] = {straight, cut, safety, spin,  powerAcc, 0, 0};
     Mat Xin = Mat(1, RCOLS - 1, CV_32FC1, profile_input);
-    cout << "===== Case 1 ==== " << endl;
-    cout << "Inputs => " << Xin << endl;
-    overall = getRating(Xin);
-    cout << "By 2nd method Rating => " << overall << endl;
+    float overall = getRating(Xin);
     
     string query = "update profile set straight= " + patch::to_string(straight)
 		+ ", cut= " + patch::to_string(cut)

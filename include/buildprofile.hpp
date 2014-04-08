@@ -16,7 +16,7 @@
 #include <string>
 using namespace std;
 using namespace cv;
-#define RROWS 10
+#define RROWS 11
 #define RCOLS 8
 
 /*!
