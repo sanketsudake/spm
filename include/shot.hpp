@@ -19,7 +19,7 @@ class Shot
 	private:
         Point startpoint, p1, p2;
 	    double angleError;
-
+        int shottype;
 	public:
 	    Shot();
 	    ~Shot();
@@ -32,6 +32,7 @@ class Shot
 	    void rateShot();
 	    int shotType();
         double getSuggDist();
+        void setShotType(int type);
 };
 
 #endif

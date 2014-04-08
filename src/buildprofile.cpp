@@ -48,6 +48,7 @@ BuildProfile::BuildProfile(string id)
         safety = atoi(row.at(3).c_str());
         spin = atoi(row.at(4).c_str());
         powerAcc = atoi(row.at(5).c_str());
+        angleAcc = atoi(row.at(8).c_str());
     }
 
 }
@@ -126,7 +127,7 @@ void BuildProfile :: profileStraight(int currAngleAcc, double dist){
     //add straight to database
 
     cout << "Current Straight Accuracy: " << currentStraight << endl;
-    cout << "Profile Straight Accuracy: " << straight <<  "  dist" << dist;
+    cout << "Profile Straight Accuracy: " << straight <<  "  dist" << dist <<endl<<endl;
     return;
 }
 void BuildProfile :: profileCut(int currAngleAcc, double dist){

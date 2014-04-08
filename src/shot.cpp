@@ -28,6 +28,7 @@ Shot::Shot()
     p1 = Point(1000, 10000);
     p2 = Point(1000, 10000);
     angleError = 0;
+    shottype = 0;
 }
 
 Shot::~Shot()
@@ -118,11 +119,27 @@ void Shot::rateShot()
 int Shot::shotType()
 {
     //1: straight 2: cut 3: spin
-    cout << "shot Type: Straight" << endl;
-    return 1;
+    switch(shottype)
+    {
+        case 1:
+            cout << "In Shot Class, Shot Type : Straight" << endl;
+            break;
+        case 2:
+            cout << "In Shot Class, Shot Type : Cut" << endl;
+            break;
+        case 3:
+            cout << "In Shot Class, Shot Type : Spin" << endl;
+            break;
+    }
+    return shottype;
 
 }
 
 double Shot :: getSuggDist(){
     return (double)sqrt(pow((startpoint.x - p1.x), 2) + pow((startpoint.y - p1.y), 2));
+}
+
+void ::Shot::setShotType(int type)
+{
+    shottype=type;
 }
