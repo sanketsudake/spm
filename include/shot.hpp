@@ -29,6 +29,7 @@ class Shot
 	    void drawSuggested(Mat &frame);
 	    double showFeedback(Mat &frame, ShotArray *shot_array,string shottype);
 	    void velocityError();
+            void shotType(Point,Point,Point);
 	    void rateShot();
 	    int shotType();
         double getSuggDist();

@@ -1,6 +1,6 @@
 /*!
  * \file collisionDetector.cpp
- * \brief Consist methods to process collisions
+ e* \brief Consist methods to process collisions
  */
 
 #include "collisionDetector.hpp"
@@ -65,17 +65,17 @@ void CollisionDetector::drawPrev(Mat &frame)
 }
 
 
-void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array)
+void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array,Point &final, Point &normalEndpoint, int &whiteSize)
 {
     Mat diff;
     Mat iGray;
     Mat interest;
     Rect roi;
     int interDistance;
-
+    vector<Point> metaData;
     //! Identifying only 4 collisions
     if(collisionCount > 4)
-        return;
+        return ;
 
     //! Code need to refactorized
     double currSlope = 1000;
@@ -87,8 +87,6 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     interDistance = distanceCalculate(position, prevPoint);
 
     if((xdelta || ydelta)){
-        // if((xdelta || ydelta) && interDistance>=10){
-        // if(xdelta){
         if(!xdelta)
             currSlope = 899;
         else
@@ -170,240 +168,250 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
                 }
 
                 int dots_size = shot_array.white_positions.size();
-
                 if(collisionCount==2 && circles.size()){
+                    whiteSize = dots_size;
                     collisionPoint(previous, shot_array.white_positions[0],
-                            shot_array.white_positions[dots_size-1]);
+                            shot_array.white_positions[dots_size-1],final,normalEndpoint );
+                    cout << "White size :" << whiteSize << "  "<< final << " "<< normalEndpoint << endl; 
                 }
 
                 //! Wait after every collision
                 if(collisionCount < 3){  
                     while(waitKey(1) != 27){
-                        imshow("Previous",previous);
-                        imshow("ROI",interest);
+                        // imshow("Previous",previous);
+                        // imshow("ROI",interest);
                     }
                 }
+
             }
-        }}
+        }
+    }
 
     prevPoint = position;
     prevSlope = currSlope;
-    }
+
+}
 
 
-    void CollisionDetector::shotType()
-    {
-        // We have first four apporox. collision type
-        // Need to shot type from that info
-    }
+void CollisionDetector::shotType()
+{
+    // We have first four apporox. collision type
+    // Need to shot type from that info
+}
 
-    int CollisionDetector::perpendicularDistance(Mat &frame, Point startpoint, Point center){
+int CollisionDetector::perpendicularDistance(Mat &frame, Point startpoint, Point center){
 
-        double slope, ydelta, xdelta;
-        double A, B, C;
-        double constant;
-        int distance;
+    double slope, ydelta, xdelta;
+    double A, B, C;
+    double constant;
+    int distance;
 
-        xdelta = (startpoint.x - prevPoint.x);
-        ydelta = (startpoint.y - prevPoint.y);
+    xdelta = (startpoint.x - prevPoint.x);
+    ydelta = (startpoint.y - prevPoint.y);
 
-        if(!xdelta)
-            slope = 899;
-        else
-            slope = (ydelta/xdelta);
-        constant = (-(slope*startpoint.x)+startpoint.y);
+    if(!xdelta)
+        slope = 899;
+    else
+        slope = (ydelta/xdelta);
+    constant = (-(slope*startpoint.x)+startpoint.y);
 
-        // cout<<"Slope: "<<slope<<endl;
-        // cout<<"Starpoint: "<<startpoint.x<<"\t"<<startpoint.y<<endl;
-        // cout<<"Endpoint: "<<prevPoint.x<<"\t"<<prevPoint.y<<endl;
-        // cout<<"A: "<<A<<"\tB: "<<B<<"\tC: "<<C<<endl;
+    // cout<<"Slope: "<<slope<<endl;
+    // cout<<"Starpoint: "<<startpoint.x<<"\t"<<startpoint.y<<endl;
+    // cout<<"Endpoint: "<<prevPoint.x<<"\t"<<prevPoint.y<<endl;
+    // cout<<"A: "<<A<<"\tB: "<<B<<"\tC: "<<C<<endl;
 
-        A = -(slope);
-        B = 1.0;
-        C = -constant;
+    A = -(slope);
+    B = 1.0;
+    C = -constant;
 
-        distance = int(abs(A*(center.x)+B*(center.y)+C)/(sqrt((A*A)+(B*B))));
-        return distance;
-    }
+    distance = int(abs(A*(center.x)+B*(center.y)+C)/(sqrt((A*A)+(B*B))));
+    return distance;
+}
 
-    Point CollisionDetector::generatePoint(int xdelta, int ydelta, extrapolate &line){
-        int X, Y;
+Point CollisionDetector::generatePoint(int xdelta, int ydelta, extrapolate &line){
+    int X, Y;
 
-        if(xDir==1){
-            // cout<<"Moving Forward!"<<endl;
-            if(abs(xdelta)>=abs(ydelta)){
-                X = prevPoint.x+(boxHeight/2);
-                Y = line.y(X);
-            }
-            else{
-                if(yDir==1)
-                    Y = prevPoint.y+(boxHeight/2);
-                else
-                    Y = prevPoint.y-(boxHeight/2);
-                X = line.x(Y);
-            }
-        }
-        else if(xDir==-1){
-            // cout<<"Moving Backward!"<<endl;
-            if(abs(xdelta)>=abs(ydelta)){
-                X = prevPoint.x-(boxHeight/2);
-                Y = line.y(X);
-            }
-            else{
-                if(yDir==1)
-                    Y = prevPoint.y+(boxHeight/2);
-                else
-                    Y = prevPoint.y-(boxHeight/2);
-                X = line.x(Y);
-            }
+    if(xDir==1){
+        // cout<<"Moving Forward!"<<endl;
+        if(abs(xdelta)>=abs(ydelta)){
+            X = prevPoint.x+(boxHeight/2);
+            Y = line.y(X);
         }
         else{
-            // cout<<"Moving Vertical"<<endl;
             if(yDir==1)
                 Y = prevPoint.y+(boxHeight/2);
-            else if(yDir==-1) 
+            else
                 Y = prevPoint.y-(boxHeight/2);
-            X = prevPoint.x;
+            X = line.x(Y);
         }
-
-        return Point(X,Y);
     }
-
-    void CollisionDetector::setDirection(Point startpoint, Point endpoint){
-        //! Detect X-Direction
-        if(startpoint.x == prevPoint.x)
-            xDir = 0;
-        else if(startpoint.x < prevPoint.x)
-            xDir = 1;
-        else if(startpoint.x > prevPoint.x)
-            xDir = -1;
-
-        //! Detect Y-Direction
-        if(startpoint.y == prevPoint.y)
-            yDir = 0;
-        else if(startpoint.y < prevPoint.y)
-            yDir = 1;
-        else if(startpoint.y > prevPoint.y)
-            yDir = -1;
-    }
-
-    void CollisionDetector::collisionPoint(Mat &frame, Point startpoint, Point lastpoint){
-
-        double slope, ydelta, xdelta;
-        double constant;
-        int X, Y;
-        bool x_direction;
-        bool y_direction;
-
-        xdelta = (prevPoint.x - startpoint.x);
-        ydelta = (prevPoint.y - startpoint.y);
-
-        slope = (ydelta/xdelta);
-        constant = (-(slope*startpoint.x)+startpoint.y);
-
-        // cout<<"Xdelta: "<<xdelta<<endl;
-        // cout<<"Ydelta: "<<ydelta<<endl;
-
-        extrapolate expectedLine(slope, startpoint.x, startpoint.y);
-
-        setDirection(startpoint, prevPoint);
-
-        Point expectedPoint = generatePoint(xdelta, ydelta, expectedLine);
-
-        // cout<<"XDir: "<<xDir<<"\t"<<"YDir: "<<yDir<<endl;
-        // cout<<"X: "<<expectedPoint.x<<"\tY: "<<expectedPoint.y<<endl;
-
-        //Expected White Line
-        line(frame, prevPoint, expectedPoint, Scalar(255, 0, 0), 1, CV_AA);
-
-        // Check for interested circles.
-        assert(circles.size()>0);
-        int shortest_dist=9000, index=-1;
-        // cout<<"Size: "<<circles.size()<<endl;
-
-        for( size_t i = 0; i < circles.size(); i++ ){
-            Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-            int temp;
-            temp=distanceCalculate(center, prevPoint);
-            if(temp<shortest_dist){
-                index = i;
-                shortest_dist=temp;
-            }
-            // !circles of interest
-            // circle(frame, Point(circles[i][0], circles[i][1]), 7, Scalar(90, 255 ,150), 2);
+    else if(xDir==-1){
+        // cout<<"Moving Backward!"<<endl;
+        if(abs(xdelta)>=abs(ydelta)){
+            X = prevPoint.x-(boxHeight/2);
+            Y = line.y(X);
         }
-
-        Point center(cvRound(circles[index][0]), cvRound(circles[index][1]));
-        int h = cvRound(circles[index][3]);
-
-        int ab;
-        int ac;
-        int ad;
-        int dc;
-        double angle;
-        Point final;        //Center of white ball at time of collision
-        Point poi;          //Point of interesection
-
-        angle = abs(atan (slope) * 180 / PI);
-
-        ab = distanceCalculate(center, prevPoint);
-        ac = round(sqrt(abs(pow(ab,2)-pow(h,2))));
-        dc = round(sqrt(abs(pow(14,2)-pow(h,2))));
-        ad = abs(ac-dc);
-
-        // cout<<"Angle: "<<angle<<endl;
-        // cout<<"Height: "<<h<<endl;
-        // cout<<"AB: "<<ab<<endl;
-        // cout<<"AC: "<<ac<<endl;
-        // cout<<"DC: "<<dc<<endl;
-        // cout<<"AD: "<<ad<<endl;
-
-        if(xDir>=0)  
-            final.x = prevPoint.x+round(ad*cos(angle*PI/180.0));
-        else
-            final.x = prevPoint.x-round(ad*cos(angle*PI/180.0));
-
-        if(yDir>=0)  
-            final.y = prevPoint.y+round(ad*sin(angle*PI/180.0));
-        else
-            final.y = prevPoint.y-round(ad*sin(angle*PI/180.0));
-
-        //! White circle at collision
-        circle(frame, final, 7, Scalar(0, 0, 0), 2);
-
-        //! Colliding Circle
-        circle(frame, Point(circles[index][0], circles[index][1]), 7, Scalar(0, 0 ,0), 2);
-
-        //! Point of intersection
-        poi.x = round((final.x+center.x)/2);
-        poi.y = round((final.y+center.y)/2);
-        circle(frame, poi, 1, Scalar(0, 255, 255), 2);
-
-        double normal_slope;
-        double tangent_slope;
-        Point normal_endpoint;
-        Point tangent_endpoint;
-        Point normal_startpoint;
-        Point tangent_startpoint;
-
-        xdelta = (final.x - center.x);
-        ydelta = (final.y - center.y);
-
-        normal_slope = (ydelta/xdelta);
-        tangent_slope = (-1)/(normal_slope);
-
-        extrapolate normalLine(normal_slope, final.x, final.y);
-        extrapolate tangentLine(tangent_slope, final.x, final.y);
-
-        normal_endpoint = generatePoint(xdelta, ydelta, normalLine);
-        tangent_endpoint = generatePoint(ydelta, xdelta, tangentLine);
-
-        xDir *= -1;
-        yDir *= -1;
-
-        normal_startpoint= generatePoint(xdelta, ydelta, normalLine);
-        tangent_startpoint= generatePoint(ydelta, xdelta, tangentLine);
-
-        line(frame, normal_startpoint, normal_endpoint, Scalar(18, 158, 230), 1, CV_AA);
-        line(frame, tangent_startpoint, tangent_endpoint, Scalar(255, 255, 0), 1, CV_AA);
+        else{
+            if(yDir==1)
+                Y = prevPoint.y+(boxHeight/2);
+            else
+                Y = prevPoint.y-(boxHeight/2);
+            X = line.x(Y);
+        }
     }
+    else{
+        // cout<<"Moving Vertical"<<endl;
+        if(yDir==1)
+            Y = prevPoint.y+(boxHeight/2);
+        else if(yDir==-1) 
+            Y = prevPoint.y-(boxHeight/2);
+        X = prevPoint.x;
+    }
+
+    return Point(X,Y);
+}
+
+void CollisionDetector::setDirection(Point startpoint, Point endpoint){
+    //! Detect X-Direction
+    if(startpoint.x == prevPoint.x)
+        xDir = 0;
+    else if(startpoint.x < prevPoint.x)
+        xDir = 1;
+    else if(startpoint.x > prevPoint.x)
+        xDir = -1;
+
+    //! Detect Y-Direction
+    if(startpoint.y == prevPoint.y)
+        yDir = 0;
+    else if(startpoint.y < prevPoint.y)
+        yDir = 1;
+    else if(startpoint.y > prevPoint.y)
+        yDir = -1;
+}
+
+void CollisionDetector::collisionPoint(Mat &frame, Point startpoint, Point lastpoint, Point &finalPoint, Point &normalEndpoint){
+
+    double slope, ydelta, xdelta;
+    double constant;
+    int X, Y;
+    bool x_direction;
+    bool y_direction;
+
+    xdelta = (prevPoint.x - startpoint.x);
+    ydelta = (prevPoint.y - startpoint.y);
+
+    slope = (ydelta/xdelta);
+    constant = (-(slope*startpoint.x)+startpoint.y);
+
+    // cout<<"Xdelta: "<<xdelta<<endl;
+    // cout<<"Ydelta: "<<ydelta<<endl;
+
+    extrapolate expectedLine(slope, startpoint.x, startpoint.y);
+
+    setDirection(startpoint, prevPoint);
+
+    Point expectedPoint = generatePoint(xdelta, ydelta, expectedLine);
+
+    // cout<<"XDir: "<<xDir<<"\t"<<"YDir: "<<yDir<<endl;
+    // cout<<"X: "<<expectedPoint.x<<"\tY: "<<expectedPoint.y<<endl;
+
+    //Expected White Line
+    line(frame, prevPoint, expectedPoint, Scalar(255, 0, 0), 1, CV_AA);
+
+    // Check for interested circles.
+    assert(circles.size()>0);
+    int shortest_dist=9000, index=-1;
+    // cout<<"Size: "<<circles.size()<<endl;
+
+    for( size_t i = 0; i < circles.size(); i++ ){
+        Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+        int temp;
+        temp=distanceCalculate(center, prevPoint);
+        if(temp<shortest_dist){
+            index = i;
+            shortest_dist=temp;
+        }
+        // !circles of interest
+        // circle(frame, Point(circles[i][0], circles[i][1]), 7, Scalar(90, 255 ,150), 2);
+    }
+
+    Point center(cvRound(circles[index][0]), cvRound(circles[index][1]));
+    int h = cvRound(circles[index][3]);
+
+    int ab;
+    int ac;
+    int ad;
+    int dc;
+    double angle;
+    Point final;        //Center of white ball at time of collision
+    Point poi;          //Point of interesection
+
+    angle = abs(atan (slope) * 180 / PI);
+
+    ab = distanceCalculate(center, prevPoint);
+    ac = round(sqrt(abs(pow(ab,2)-pow(h,2))));
+    dc = round(sqrt(abs(pow(14,2)-pow(h,2))));
+    ad = abs(ac-dc);
+
+    // cout<<"Angle: "<<angle<<endl;
+    // cout<<"Height: "<<h<<endl;
+    // cout<<"AB: "<<ab<<endl;
+    // cout<<"AC: "<<ac<<endl;
+    // cout<<"DC: "<<dc<<endl;
+    // cout<<"AD: "<<ad<<endl;
+
+    if(xDir>=0)  
+        final.x = prevPoint.x+round(ad*cos(angle*PI/180.0));
+    else
+        final.x = prevPoint.x-round(ad*cos(angle*PI/180.0));
+
+    if(yDir>=0)  
+        final.y = prevPoint.y+round(ad*sin(angle*PI/180.0));
+    else
+        final.y = prevPoint.y-round(ad*sin(angle*PI/180.0));
+
+    //! White circle at collision
+    circle(frame, final, 7, Scalar(0, 0, 0), 2);
+
+    //! Colliding Circle
+    circle(frame, Point(circles[index][0], circles[index][1]), 7, Scalar(0, 0 ,0), 2);
+
+    //! Point of intersection
+    poi.x = round((final.x+center.x)/2);
+    poi.y = round((final.y+center.y)/2);
+    circle(frame, poi, 1, Scalar(0, 255, 255), 2);
+
+    double normal_slope;
+    double tangent_slope;
+    Point normal_endpoint;
+    Point tangent_endpoint;
+    Point normal_startpoint;
+    Point tangent_startpoint;
+
+    xdelta = (final.x - center.x);
+    ydelta = (final.y - center.y);
+
+    normal_slope = (ydelta/xdelta);
+    tangent_slope = (-1)/(normal_slope);
+
+    extrapolate normalLine(normal_slope, final.x, final.y);
+    extrapolate tangentLine(tangent_slope, final.x, final.y);
+
+    normal_endpoint = generatePoint(xdelta, ydelta, normalLine);
+    tangent_endpoint = generatePoint(ydelta, xdelta, tangentLine);
+
+    xDir *= -1;
+    yDir *= -1;
+
+    normal_startpoint= generatePoint(xdelta, ydelta, normalLine);
+    tangent_startpoint= generatePoint(ydelta, xdelta, tangentLine);
+    //normal
+    line(frame, normal_startpoint, normal_endpoint, Scalar(18, 158, 230), 1, CV_AA);
+
+    //tangent
+    line(frame, tangent_startpoint, tangent_endpoint, Scalar(255, 255, 0), 1, CV_AA);
+
+    finalPoint = final;
+    normalEndpoint = normal_endpoint;
+}
+

@@ -95,7 +95,7 @@ double Shot::showFeedback(Mat &frame, ShotArray *shot_array,string shottype)
     putText(frame, ss.str(),
             Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
     ss.str("Shot Type : ");
- //   ss<<shottype;
+    //   ss<<shottype;
     putText(frame, ss.str()+shottype,
             Point(600, 550), 1, 1, Scalar(255, 255, 255), 2);
 
@@ -122,7 +122,16 @@ int Shot::shotType()
     return 1;
 
 }
+void Shot :: shotType(Point final, Point normalEndpoint, Point white){
+    double b = (double)sqrt(pow((white.x - normalEndpoint.x), 2) + pow((white.y - normalEndpoint.y), 2));
 
+    double c = (double)sqrt(pow((final.x - normalEndpoint.x), 2) + pow((final.y - normalEndpoint.y), 2));
+    double a = (double)sqrt(pow((final.x - white.x), 2) + pow((final.y - white.y), 2));
+    //angle between normal and final position of white ball.
+    //Calculated for purpose of spin detection.
+    double angle = acos(((a*a) + (c*c) - (b*b))/(2*a*c))*180/3.1415926;
+
+}
 double Shot :: getSuggDist(){
     return (double)sqrt(pow((startpoint.x - p1.x), 2) + pow((startpoint.y - p1.y), 2));
 }

@@ -26,11 +26,15 @@ int main(int argc, char **argv)
     Mat src,prev;					//! Matrix object to get input
     Mat original;
     Mat previous;
+    bool visited = false;
     Point white_position(-1, -1); //! White Ball Position
     DetectBall white_detector;
     char code = (char)-1;
     unsigned int shottype=-1;
     Vector<Vec3f> final_roi;
+    Point final;
+    Point normalEndpoint;
+    int whiteSize = 0;
 
     SnKalman kfchecker;
     ManageLogin login;
@@ -44,10 +48,10 @@ int main(int argc, char **argv)
     int flag = 1;
     static string userId;
     do{
-    userId = login.getUserID();
+        userId = login.getUserID();
     }while(userId == "\0");
 
-     BuildProfile build_profile(userId);
+    BuildProfile build_profile(userId);
 
     /*!
      * Open user input video from given path
@@ -67,10 +71,10 @@ int main(int argc, char **argv)
             exit(0);
 
         original = src.clone();
-        if(!roi.gotRoi()) {
-            final_roi = roi.getRoi(src);
-            printf("\n");
-        }
+        // if(!roi.gotRoi()) {
+        //     final_roi = roi.getRoi(src);
+        //     printf("\n");
+        // }
 
         //! detect white ball
         white_position = white_detector.detectWhite(src);
@@ -97,7 +101,7 @@ int main(int argc, char **argv)
                 shot_detector.preshotTrigger(src);
 
                 shottype = shot_classify.shot_classifier(76.0,1,0,1);
-
+              
                 double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
 
                 //int currAngleAcc = build_profile.profileAngle(angleError);
@@ -107,8 +111,11 @@ int main(int argc, char **argv)
                         white_array.shotVelocity()*(0.367347));
                 build_profile.setLastFrame(src);
                 prev = build_profile.getLastFrame();
+                //shot type 
+
                 //shot suggestion system call this function when we notify end of shot
                 imshow("last Frame ",prev);
+
             }
 
             white_array.clearArray();
@@ -145,9 +152,21 @@ int main(int argc, char **argv)
         imshow("Snooker Player Profile Management", src);
 
         //! Find colliding points
-        col_detector.checkCollision(white_position, previous, original, white_array);
+        col_detector.checkCollision(white_position, previous, original, white_array, final, normalEndpoint, whiteSize);
+        
+        if(white_array.white_positions.size() > (whiteSize+2) && !visited){
+            cout <<  white_array.white_positions[(whiteSize+2)] << endl;
+            shot.shotType(final, normalEndpoint, white_array.white_positions[(whiteSize+1)]);
+            visited = true;
+            // Mat angle;
+            // angle = src;
+            // line(angle, final, normalEndpoint, Scalar(100, 255, 0), 2, CV_AA);
+            // line(angle, normalEndpoint,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
+            // line(angle, final,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
+            // imshow("angle",angle);
+        }
 
-        //! Escape window on pressing 'Q' or 'q'
+        //! Escape window on pressing 'Q' or 'q
         code = (char)waitKey(5);
         if( code == 'q' || code == 'Q' )
             break;
