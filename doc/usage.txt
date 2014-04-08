@@ -25,6 +25,10 @@ DESCRIPTION
             Count no. of lines in source
             Example. spm.sh --count
 
+        --syncdb, syncdb
+            Creates new database with snooker schema.
+            Example. spm.sh --syncdb
+
        -db, --database, database
             Brings sqlite shell for execute db queries.
             Example. spm.sh -db
@@ -40,6 +44,10 @@ DESCRIPTION
         --restore, restore
              Creates new database $DB_PATH from $BACKUP
              Example. spm.sh --restore
+        
+        --rebuild, rebuild
+             Rebuild code
+             Example. spm.sh --rebuild
 
         -h, --help, help
             Get help.

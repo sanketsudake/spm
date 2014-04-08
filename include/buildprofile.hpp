@@ -16,20 +16,24 @@
 #include <string>
 using namespace std;
 using namespace cv;
+#define RROWS 11
+#define RCOLS 8
+
 /*!
  * \class BuildProfile
  * \brief
- o */
+ */
+
 class BuildProfile
 {
     private:
-        int angleAcc;
-        int powerAcc;
-        int straight;
-        int spin;
-        int cut;
-        int safety;
-        Mat lastFrame;
+        float angleAcc;
+        float powerAcc;
+        float straight;
+        float spin;
+        float cut;
+        float safety;
+        Mat lastFrame, theta;
         Database *db;
     public:
         BuildProfile(string id);
@@ -37,12 +41,14 @@ class BuildProfile
         void setLastFrame(Mat);
         Mat getLastFrame();
         int profileAngle(double);
+        void generateThetaVals();
+        float getRating(const Mat &input);
+        int getRanking(const char *uname);
         void build(double, Shot *);
         void addCurrent(string,double,double,double,double);
         void profileStraight(int currAngleAcc, double  );
         void profileSpin(int currAngleAcc, double  );
         void profileCut(int currAngleAcc, double  );
 };
-
 
 #endif

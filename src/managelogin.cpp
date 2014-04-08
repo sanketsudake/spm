@@ -7,7 +7,7 @@
 #include "database.hpp"
 #include <vector>
 #include <sqlite3.h>
-#include<stdlib.h>
+#include<cstdlib>
 #include<iostream>
 #include<string>
 #include<sstream>

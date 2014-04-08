@@ -5,6 +5,7 @@ FILENAME="spm.sh"
 TITLE="Snooker Player Profile Manager v0.1"
 DB_PATH="database/snooker.db"
 BACKUP="database/backup.sql"
+DB_DEF="database/ddl.sql"
 DOC_PATH="doc/usage.txt"
 
 #### functions
@@ -36,19 +37,19 @@ function run
 
 function backup
 {
-  sqlite3 -line $DB_PATH .dump > $BACKUP
+    sqlite3 -line $DB_PATH .dump > $BACKUP
 }
 
 function restore
 {
-    if [ ! -f "$1" ]
-	then
+    if [ ! -f $BACKUP ]
+    then
         echo "File $BACKUP does not exist."
         echo "Try spm.sh --help"
-		exit
-	fi
-	rm $DB_PATH
-	sqlite3 $DB_PATH < $BACKUP
+        exit
+    fi
+    rm $DB_PATH
+    sqlite3 $DB_PATH < $BACKUP
 }
 
 function search
@@ -71,6 +72,19 @@ function db
     sqlite3 --interactive -echo $DB_PATH
 }
 
+function syncdb
+{
+    if [ ! -f $DB_DEF ]
+    then
+        echo "File $BACKUP does not exist."
+        echo "Try spm.sh --help"
+        exit
+    fi
+    rm $DB_PATH
+    sqlite3 $DB_PATH < $DB_DEF
+
+}
+
 function dbdump
 {
     sqlite3 -line $DB_PATH .dump
@@ -84,13 +98,17 @@ function usage
         echo "Error: doc/usage.txt missing."
         exit
     fi
-	source $DOC_PATH
+    source $DOC_PATH
 }
 
 function spm_main
 {
     case $1 in
         -b | --build | build)
+            build
+            ;;
+        --rebuild | rebuild)
+            rm -rf ./build
             build
             ;;
         -r | --run | run)
@@ -108,12 +126,15 @@ function spm_main
         -dd | --dump | dump)
             dbdump
             ;;
-		--restore | restore)
-			restore
-			;;
-		--backup | backup)
-			backup
-			;;
+        --restore | restore)
+            restore
+            ;;
+        --backup | backup)
+            backup
+            ;;
+        --syncdb | syncdb)
+            syncdb
+            ;;
         -h | --help | help)
             usage
             ;;
