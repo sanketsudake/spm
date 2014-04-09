@@ -3,6 +3,7 @@
  * \shot related parameters, suggested shots.
  */
 #include "shot.hpp"
+#include "sclassifier.hpp"
 
 using namespace std;
 using namespace cv;
@@ -143,6 +144,30 @@ void Shot :: shotType(Point final, Point normalEndpoint, Point white){
     //Calculated for purpose of spin detection.
     double angle = acos(((a*a) + (c*c) - (b*b))/(2*a*c))*180/3.1415926;
     cout << "\n Angle betn Normal and White_Final: " << angle << endl;
+
+    int deltaX = final.x - normalEndpoint.x;
+    int deltaY = final.y - white.y;
+    int side = 0;
+    int motion = 0;
+    if(deltaX>=0 && deltaY >= 0){
+       side = 1;
+       motion = 1;
+    }else  if(deltaX>=0 && deltaY < 0){
+       side = 0; 
+       motion = 0;
+    }
+    else  if(deltaX<0 && deltaY >= 0){
+        side = 0;
+        motion = 1;
+    }
+    else  if(deltaX<0 && deltaY < 0){
+        side = 1; 
+        motion = 1;
+    }
+    Sclassifier shot_classify;
+    shot_classify.shot_classifier(angle, side, false,motion,this);
+
+    
 
 }
 double Shot :: getSuggDist(){

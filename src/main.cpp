@@ -100,8 +100,7 @@ int main(int argc, char **argv)
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
 
-                shottype = shot_classify.shot_classifier(0.0,-1,1,0,&shot);
-
+                shottype = shot.shottype; 
 
                 double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
 

@@ -16,22 +16,23 @@ extern void onMouseClick(int event, int x, int y, int flags, void* userdata);
 
 class Shot
 {
-	private:
+    private:
         Point startpoint, p1, p2;
-	    double angleError;
+        double angleError;
+    public:
+
         int shottype;
-	public:
-	    Shot();
-	    ~Shot();
-	    void clear();
-	    void setShotStartP(Point position);
-	    void getUserInput(Mat &frame);
-	    void drawSuggested(Mat &frame);
-	    double showFeedback(Mat &frame, ShotArray *shot_array,string shottype);
-	    void velocityError();
-            void shotType(Point,Point,Point);
-	    void rateShot();
-	    int shotType();
+        Shot();
+        ~Shot();
+        void clear();
+        void setShotStartP(Point position);
+        void getUserInput(Mat &frame);
+        void drawSuggested(Mat &frame);
+        double showFeedback(Mat &frame, ShotArray *shot_array,string shottype);
+        void velocityError();
+        void shotType(Point,Point,Point);
+        void rateShot();
+        int shotType();
         double getSuggDist();
         void setShotType(int type);
 };
