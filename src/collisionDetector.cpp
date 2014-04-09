@@ -84,9 +84,16 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     int ydelta = -(position.y - prevPoint.y);
 
     //! Distance of white ball between 2 frames
-    interDistance = distanceCalculate(position, prevPoint);
 
+    // cout<<"InterDistance: "<<interDistance<<endl;
     if((xdelta || ydelta)){
+        interDistance = distanceCalculate(position, prevPoint);
+        cout<<"InterDistance: "<<interDistance<<endl;
+
+        if(!interDistance)
+            cout<<"Ball stopped moving!"<<endl;
+        // if((xdelta || ydelta) && interDistance>=10){
+        // if(xdelta){
         if(!xdelta)
             currSlope = 899;
         else

@@ -10,6 +10,8 @@
 #include <cmath>
 #include <iostream>
 
+// #define TWIDTH 1028 
+// #define THEIGHT 532 
 #define TWIDTH 1140 
 #define THEIGHT 652 
 #define PI 3.14159265

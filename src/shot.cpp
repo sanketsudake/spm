@@ -14,7 +14,8 @@ void onMouseClick(int event, int x, int y, int flags, void* userdata)
     if(event == EVENT_LBUTTONDOWN)
     {
         //cout << "Mouseclick " << x << " " << y << endl;
-        if((x>=68+7 && x<=1091-7) && (y>=73+7 && y<=603-7))
+        // if((x>=68+7 && x<=1091-7) && (y>=73+7 && y<=603-7))
+        if((x>=5 && x<=1028) && (y>=5 && y<=532))
         {
             *p = Point(x, y);
         }

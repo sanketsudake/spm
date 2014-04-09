@@ -43,7 +43,7 @@ public:
     DetectShot();
 	~DetectShot();
 	int BgSubtractor(Mat &frame);
-	int shotChecker(Mat &frame, Point position);
+	int shotChecker(Mat &frame, int *, Point position);
 	void shotTrigger(Mat &frame);
 	void preshotTrigger(Mat &frame);
 	void displayShotnumber(Mat &frame);
