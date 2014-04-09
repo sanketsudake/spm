@@ -1,1 +1,1 @@
-g++ rating.cpp `pkg-config --cflags opencv` `pkg-config --libs opencv`
+g++ $1 `pkg-config --cflags opencv` `pkg-config --libs opencv`
