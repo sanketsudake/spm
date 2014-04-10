@@ -74,28 +74,14 @@ int main(int argc, char **argv)
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
     previous = capture.read(src);
 
-    getGreenMat(src);
-
-    // //Load profile picture
-    // profile_picture = imread((char*)"media/ronnie.jpeg", 1);
-    // Mat profile_table((SCREEN_HEIGHT-src.rows),SCREEN_WIDTH, CV_8UC3, Scalar(255,255,255));
-    // Mat game_statistics(profile_picture.cols,SCREEN_WIDTH-src.cols, CV_8UC3, Scalar(255,255,255));
-
-    // prepare_game_statistics(game_statistics, userId);
-    // prepare_profile_table(profile_table);
+    // getGreenMat(src);
 
     do
     {
-        //Load profile picture
-        // profile_picture = imread((char*)"media/ronnie.jpeg", 1);
-        
         // ! store image to matrix
         int c = capture.read(src);
         if(!c)
             exit(0);
-
-        // Mat profile_table((SCREEN_HEIGHT-src.rows),SCREEN_WIDTH, CV_8UC3, Scalar(255,255,255));
-        // Mat game_statistics(profile_picture.cols,SCREEN_WIDTH-src.cols, CV_8UC3, Scalar(255,255,255));
 
         // roi = Rect(left_top.x, left_top.y, right_bottom.x-left_top.x, right_bottom.y-left_top.y);
         // src = src(roi);

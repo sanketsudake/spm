@@ -8,8 +8,8 @@
 #include <string>
 
 //Hard-code these values for your configuration
-#define SCREEN_WIDTH 1366
-#define SCREEN_HEIGHT 768
+#define SCREEN_WIDTH 1440 
+#define SCREEN_HEIGHT 900 
 
 using namespace std;
 using namespace cv;
