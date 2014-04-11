@@ -12,7 +12,7 @@
 *.lib
 
 #database files
-# *.db
+*.db
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

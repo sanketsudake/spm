@@ -81,6 +81,7 @@ function syncdb
         exit
     fi
     rm $DB_PATH
+    touch $DB_PATH
     sqlite3 $DB_PATH < $DB_DEF
 
 }
