@@ -131,9 +131,11 @@ int Shot::shotType()
         case 3:
             cout << "In Shot Class, Shot Type : Spin" << endl;
             break;
+        default:
+	    cout << "In Shot Class, Shot Type : None" << endl;
+	    break;
     }
     return shottype;
-
 }
 void Shot :: shotType(Point final, Point normalEndpoint, Point white){
     double b = (double)sqrt(pow((white.x - normalEndpoint.x), 2) + pow((white.y - normalEndpoint.y), 2));

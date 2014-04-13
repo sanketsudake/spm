@@ -183,6 +183,9 @@ void BuildProfile :: build(double angleError, Shot *shot)
                 //if spin
         case 3: profileSpin(currAngleAcc,dist);
                 break;
+        default:
+	        cout << "[shot::build] No matching shot type" << shotType << endl;
+		break;
     }
 
     //All the shot parameters should be updated before this.
@@ -223,7 +226,6 @@ void BuildProfile :: addCurrent(string userId, double angleError,
     temp[query.size()] = '\0';
     // cout << query;
     db->query(temp);
-
 }
 
 void BuildProfile :: profileStraight(int currAngleAcc, double dist){
