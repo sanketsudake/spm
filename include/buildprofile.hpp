@@ -45,7 +45,7 @@ class BuildProfile
         float getRating(const Mat &input);
         int getRanking(const char *uname);
         void build(double, Shot *);
-        void addCurrent(string,double,double,double,double);
+        void addCurrent(string,double,double,double,double, int);
         void profileStraight(int currAngleAcc, double  );
         void profileSpin(int currAngleAcc, double  );
         void profileCut(int currAngleAcc, double  );

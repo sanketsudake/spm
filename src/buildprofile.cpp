@@ -119,7 +119,8 @@ void BuildProfile :: generateThetaVals()
      */
     // Placed from data/fakeprofile.txt
     // straight,cut,safety,spin,power,maxpot,maxscore,overall/rating
-    float train_data[] = {100, 100, 100, 100, 100, 100, 100, 100,
+    float train_data[] = {
+	100, 100, 100, 100, 100, 100, 100, 100,
 	100, 100, 100, 100,  0, 0, 0, 100,			      
 	90.2, 80, 83, 50, 0, 0, 0, 81.3, 
 	55, 60, 50, 63, 0, 0, 0, 62,
@@ -208,13 +209,14 @@ void BuildProfile :: build(double angleError, Shot *shot)
 }
 void BuildProfile :: addCurrent(string userId, double angleError,
 				double totalDist, double totalTime,
-				double velocity ){
-     string query = "insert into shothistory (userID,angleerror,totaldist,totalTime,velocity) values('" 
+				double velocity, int shottype){
+     string query = "insert into shothistory (userID,angleerror,totaldist,totalTime,velocity,shottype) values('" 
         + patch::to_string(userId) 
         + "','" + patch::to_string(angleError)
 	 + "','" + patch::to_string(totalDist)
 	 + "','" + patch::to_string(totalTime)
 	 + "','" + patch::to_string(velocity)
+	 + "','" + patch::to_string(shottype)
 	 + "');";
     char temp[query.size()+1];
     query.copy(temp,query.size(),0);

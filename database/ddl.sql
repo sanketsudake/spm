@@ -13,7 +13,6 @@ CREATE TABLE if not exists frame(
         lost INT,
         PRIMARY KEY (userID),
         FOREIGN KEY (userID) REFERENCES user(userID) ON DELETE RESTRICT
-
 );
 
 CREATE TABLE if not exists matches(
@@ -27,14 +26,14 @@ CREATE TABLE if not exists matches(
 
 CREATE TABLE if not exists profile(
         userID TEXT PRIMARY KEY,
-        straight INT,
-        cut INT,
-        safety INT,
-        spin INT,
-        power INT,
-        maxpot INT,
-        maxscore INT,
-        overall INT
+        straight REAL,
+        cut REAL,
+        safety REAL,
+        spin REAL,
+        power REAL,
+        maxpot REAL,
+        maxscore REAL,
+        overall REAL
 );
 
 CREATE TABLE if not exists shothistory(
@@ -43,6 +42,6 @@ CREATE TABLE if not exists shothistory(
         angleerror REAL,
         totaldist REAL,
         totaltime REAL,
-        velocity REAL
-
+        velocity REAL,
+	shottype INT
 );

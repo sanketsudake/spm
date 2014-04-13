@@ -62,7 +62,6 @@ int main(int argc, char **argv)
     capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
     previous = capture.read(src);
 
-    // while(1)
     do
     {
         //! store image to matrix
@@ -108,7 +107,7 @@ int main(int argc, char **argv)
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
                 build_profile.addCurrent(userId,angleError, white_array.totalDist(), white_array.totalTime(),
-                        white_array.shotVelocity()*(0.367347));
+					 white_array.shotVelocity()*(0.367347), shottype);
                 build_profile.setLastFrame(src);
                 prev = build_profile.getLastFrame();
                 //shot type 
