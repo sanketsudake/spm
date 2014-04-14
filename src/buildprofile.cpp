@@ -7,8 +7,6 @@
 #include <cmath>
 #include<cstdlib>
 #include <sstream>
-
-
 using namespace cv;
 using namespace std;
 
@@ -20,6 +18,42 @@ namespace patch
         stm << n ;
         return stm.str() ;
     }
+}
+
+static double profileStraight(double angleError, double dist)
+{
+    const double angle_weight = 100, dist_weight = 100;
+    double r_angle, r_dist;
+    r_angle = (angleError * angle_weight / ANGLE_RANGE);
+    r_dist = (dist * dist_weight / DISTANCE_RANGE);
+    return 100 - (r_angle * r_dist)/100;
+}
+
+static double profileCut(double angleError, double dist)
+{
+    const double angle_weight = 110, dist_weight = 90.905;
+    double r_angle, r_dist;
+    r_angle = (angleError * angle_weight / ANGLE_RANGE);
+    r_dist = (dist * dist_weight / DISTANCE_RANGE);
+    return 100 - (r_angle * r_dist)/100;
+}
+
+static double profileSpin(double angleError, double dist)
+{
+    const double angle_weight = 122, dist_weight = 81.9672;
+    double r_angle, r_dist;
+    r_angle = (angleError * angle_weight / ANGLE_RANGE);
+    r_dist = (dist * dist_weight / DISTANCE_RANGE);
+    return 100 - (r_angle * r_dist)/100;
+}
+
+static double profileSafety(double angleError, double dist)
+{
+    const double angle_weight = 110, dist_weight = 90.905;
+    double r_angle, r_dist;
+    r_angle = (angleError * angle_weight / ANGLE_RANGE);
+    r_dist = (dist * dist_weight / DISTANCE_RANGE);
+    return 100 - (r_angle * r_dist)/100;
 }
 
 /*!
@@ -38,9 +72,9 @@ namespace patch
   theta = pinv(X' * X) * X' * y
   rating = input * theta
 
-  Every time snooker program starts we should train our ranking finder with fake data.
-  Then in real time we should apply to user's profile whenever above input data
-  for user changes with weights we got from Normal Equation Method.
+  Every time snooker program starts we should train our ranking finder with fake
+  data. Then in real time we should apply to user's profile whenever above input
+  data for user changes with weights we got from Normal Equation Method.
 
   For getting correct values for input(straight, cut, safety, ...)
   Each value should be in range 0 to 100(can be float)
@@ -77,7 +111,8 @@ BuildProfile::BuildProfile(string id)
     query.copy(temp,query.size(),0);
     temp[query.size()] = '\0';
     vector<vector<string> > result = db->query(temp);
-    for(vector<vector<string> >::iterator it = result.begin(); it < result.end(); ++it)
+    for(vector<vector<string> >::iterator it = result.begin();
+	it < result.end(); ++it)
     {
         vector<string> row = *it;
         straight = atoi(row.at(1).c_str());
@@ -85,7 +120,9 @@ BuildProfile::BuildProfile(string id)
         safety = atoi(row.at(3).c_str());
         spin = atoi(row.at(4).c_str());
         powerAcc = atoi(row.at(5).c_str());
-        angleAcc = atoi(row.at(8).c_str());
+	maxpot = atoi(row.at(6).c_str());
+	maxscore = atoi(row.at(7).c_str());
+        overall = atoi(row.at(8).c_str());
     }
     generateThetaVals();
 }
@@ -106,7 +143,7 @@ void BuildProfile :: setLastFrame(Mat src)
 
 Mat BuildProfile :: getLastFrame()
 {
-    return lastFrame;;
+    return lastFrame;
 }
 
 void BuildProfile :: generateThetaVals()
@@ -155,6 +192,7 @@ void BuildProfile :: generateThetaVals()
 
 float BuildProfile::getRating(const Mat &input)
 {
+    // Find overall rating using input args
     Mat temp1 = Mat(1, 1, CV_32FC1, Scalar(1));
     Mat temp2 = input.clone();
     hconcat(temp1, temp2, temp2);
@@ -162,41 +200,16 @@ float BuildProfile::getRating(const Mat &input)
     return  result.at<float>(0, 0);
 }
 
-void BuildProfile :: build(double angleError, Shot *shot)
+void BuildProfile :: build(string userID,int shottype)
 {
-    int currAngleAcc = profileAngle(angleError);
-    //depending on shot type
-    int shotType = shot->shotType();
-    // eliminate this, use shottype variable in main,
-    // result of shot_classify.shot_classifier
-    double dist = shot->getSuggDist();
-    cout << "Dist to suggested: "<<dist << endl;
-
-    switch(shotType)
-    {
-        //if straight shot
-        case 1: profileStraight(currAngleAcc, dist);
-                break;
-                //if cut shot
-        case 2: profileCut(currAngleAcc, dist);
-                break;
-                //if spin
-        case 3: profileSpin(currAngleAcc,dist);
-                break;
-        default:
-	        cout << "[shot::build] No matching shot type" << shotType << endl;
-		break;
-    }
-
-    //All the shot parameters should be updated before this.
-    // #TODO: Replace with normal equation method
-
     // straight,cut,safety,spin,power,maxpot,maxscore
-    float profile_input[] = {straight, cut, safety, spin,  powerAcc, 0, 0};
+    float profile_input[] = {straight, cut, safety, spin, powerAcc,
+			     maxpot, maxscore};
     Mat Xin = Mat(1, RCOLS - 1, CV_32FC1, profile_input);
-    float overall = getRating(Xin);
+    overall = getRating(Xin);
     
-    string query = "update profile set straight= " + patch::to_string(straight)
+    string query = "update profile set straight= " 
+	        + patch::to_string(straight)
 		+ ", cut= " + patch::to_string(cut)
 		+ ", safety= " + patch::to_string(safety)
 		+ ",spin= " + patch::to_string(spin)
@@ -208,55 +221,49 @@ void BuildProfile :: build(double angleError, Shot *shot)
     // cout << query;
     db->query(temp);
 
-
+    // TODO
+    // Update Respective accuracy for shotype
+    // Parse all from database & apply some statistical method
+    
 }
-void BuildProfile :: addCurrent(string userId, double angleError,
-				double totalDist, double totalTime,
-				double velocity, int shottype){
-     string query = "insert into shothistory (userID,angleerror,totaldist,totalTime,velocity,shottype) values('" 
-        + patch::to_string(userId) 
-        + "','" + patch::to_string(angleError)
-	 + "','" + patch::to_string(totalDist)
-	 + "','" + patch::to_string(totalTime)
+
+void BuildProfile :: addCurrent(string userID, double angleerror,
+				double totaldist,double suggdist,
+				double totaltime, double velocity,
+				int shottype){
+    double (*accuracy_func)(double, double), accuracy;
+    
+    switch(shottype)
+    {
+        //if straight shot
+        case 1: accuracy_func = profileStraight;
+	    break;
+        case 2: accuracy_func = profileCut;
+	    break;
+        case 3: accuracy_func = profileSpin;
+	    break;
+        default:
+	    cout << "[shot::build] No matching shot type"
+		 << shottype << endl;
+	    accuracy_func = profileStraight;
+	    break;
+    }
+    accuracy = (*accuracy_func)(angleerror, suggdist);
+
+    string query = "insert into shothistory (userID,angleerror,totaldist,suggdist,totaltime,velocity,shottype,accuracy) values('" 
+        + patch::to_string(userID) 
+        + "','" + patch::to_string(angleerror)
+	 + "','" + patch::to_string(totaldist)
+	 + "','" + patch::to_string(suggdist)
+	 + "','" + patch::to_string(totaltime)
 	 + "','" + patch::to_string(velocity)
 	 + "','" + patch::to_string(shottype)
+	 + "','" + patch::to_string(accuracy)
 	 + "');";
     char temp[query.size()+1];
     query.copy(temp,query.size(),0);
     temp[query.size()] = '\0';
     // cout << query;
     db->query(temp);
-}
-
-void BuildProfile :: profileStraight(int currAngleAcc, double dist){
-    //max dist can be 1101,
-    dist = dist /500;
-    dist = 1 + (exp(-dist) / 10);
-    double currentStraight = currAngleAcc * dist;
-    //need to think of good logic for updating score #change
-    straight = (straight + currentStraight)/2;
-    //add straight to database
-
-    cout << "Current Straight Accuracy: " << currentStraight << endl;
-    cout << "Profile Straight Accuracy: " << straight <<  "  dist" << dist <<endl<<endl;
-    return;
-}
-void BuildProfile :: profileCut(int currAngleAcc, double dist)
-{
-
-}
-
-void BuildProfile :: profileSpin(int currAngleAcc, double dist)
-{
-
-}
-
-//this factor will be considered irrespective of shot type.
-int BuildProfile :: profileAngle(double angleError){
-    double currentAngleAcc = exp(-angleError);
-    currentAngleAcc *= 100;
-    cout << "Current Angle Accuracy: " << currentAngleAcc<< endl;
-    angleAcc = (currentAngleAcc + angleAcc)/2;
-    cout << "Profile Angle Accuracy: " << angleAcc << endl;
-    return currentAngleAcc;
+    build(userID, shottype);
 }

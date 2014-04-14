@@ -41,7 +41,9 @@ CREATE TABLE if not exists shothistory(
         userID TEXT,
         angleerror REAL,
         totaldist REAL,
+	suggdist REAL,
         totaltime REAL,
         velocity REAL,
-	shottype INT
+	shottype INT,
+	accuracy REAL
 );
