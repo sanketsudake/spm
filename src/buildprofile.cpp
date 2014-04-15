@@ -56,6 +56,12 @@ static double profileSafety(double angleError, double dist)
     return 100 - (r_angle * r_dist)/100;
 }
 
+static double estimateStrength(vector<double> accuracy_vals)
+{
+    // Method to be added
+    return 50.0;
+}
+
 /*!
   Profile Spec
   =============================================================================
@@ -115,14 +121,14 @@ BuildProfile::BuildProfile(string id)
 	it < result.end(); ++it)
     {
         vector<string> row = *it;
-        straight = atoi(row.at(1).c_str());
-        cut = atoi(row.at(2).c_str());
-        safety = atoi(row.at(3).c_str());
-        spin = atoi(row.at(4).c_str());
-        powerAcc = atoi(row.at(5).c_str());
-	maxpot = atoi(row.at(6).c_str());
-	maxscore = atoi(row.at(7).c_str());
-        overall = atoi(row.at(8).c_str());
+        straight = atof(row.at(1).c_str());
+        cut = atof(row.at(2).c_str());
+        safety = atof(row.at(3).c_str());
+        spin = atof(row.at(4).c_str());
+        powerAcc = atof(row.at(5).c_str());
+	maxpot = atof(row.at(6).c_str());
+	maxscore = atof(row.at(7).c_str());
+        overall = atof(row.at(8).c_str());
     }
     generateThetaVals();
 }
@@ -202,29 +208,64 @@ float BuildProfile::getRating(const Mat &input)
 
 void BuildProfile :: build(string userID,int shottype)
 {
+    // Update Respective accuracy for shotype
+    // Parse all from database & apply some statistical method
+    string query = "select accuracy from shothistory where userId='" 
+	+ patch::to_string(userID)
+	+"' and shottype="
+	+ patch::to_string(shottype)
+	+ ";";
+    char temp[query.size()+1];
+    query.copy(temp,query.size(),0);
+    temp[query.size()] = '\0';
+    vector<vector<string> > result = db->query(temp);
+
+    vector<double> accuracy_vals;
+    for(vector<vector<string> >::iterator it = result.begin();
+     	it < result.end(); ++it)
+     {
+         vector<string> row = *it;
+	 accuracy_vals.push_back(atof(row.at(0).c_str()));
+    }
+    
+    switch(shottype)
+    {
+    case 1:
+	straight = estimateStrength(accuracy_vals);
+	break;
+    case 2:
+	cut = estimateStrength(accuracy_vals);
+	break;
+    case 3:
+	spin = estimateStrength(accuracy_vals);
+	break;
+    case 4:
+	safety = estimateStrength(accuracy_vals);
+	break;
+    default:
+	cout << "Case not found." << endl;
+	break;
+    }
+    
     // straight,cut,safety,spin,power,maxpot,maxscore
     float profile_input[] = {straight, cut, safety, spin, powerAcc,
 			     maxpot, maxscore};
     Mat Xin = Mat(1, RCOLS - 1, CV_32FC1, profile_input);
     overall = getRating(Xin);
-    
-    string query = "update profile set straight= " 
-	        + patch::to_string(straight)
-		+ ", cut= " + patch::to_string(cut)
-		+ ", safety= " + patch::to_string(safety)
-		+ ",spin= " + patch::to_string(spin)
-		+ ",power= "+ patch::to_string(powerAcc)
-		+ ",overall = "+ patch::to_string(overall) + ";";
-    char temp[query.size()+1];
-    query.copy(temp,query.size(),0);
-    temp[query.size()] = '\0';
-    // cout << query;
-    db->query(temp);
 
-    // TODO
-    // Update Respective accuracy for shotype
-    // Parse all from database & apply some statistical method
-    
+    query = "update profile set straight= " 
+	+ patch::to_string(straight)
+	+ ", cut= " + patch::to_string(cut)
+	+ ", safety= " + patch::to_string(safety)
+	+ ",spin= " + patch::to_string(spin)
+	+ ",power= "+ patch::to_string(powerAcc)
+	+ ",overall = "+ patch::to_string(overall)
+	+ " where userID='" + patch::to_string(userID)
+	+ "';";
+    char temp2[query.size()+1];
+    query.copy(temp2,query.size(),0);
+    temp2[query.size()] = '\0';
+    db->query(temp2);
 }
 
 void BuildProfile :: addCurrent(string userID, double angleerror,
@@ -232,6 +273,11 @@ void BuildProfile :: addCurrent(string userID, double angleerror,
 				double totaltime, double velocity,
 				int shottype){
     double (*accuracy_func)(double, double), accuracy;
+
+    // Converting shottype to straight for profiling
+    // if it is unrecognized.
+    if(shottype < 1)
+	shottype = 1;
     
     switch(shottype)
     {
@@ -241,6 +287,8 @@ void BuildProfile :: addCurrent(string userID, double angleerror,
         case 2: accuracy_func = profileCut;
 	    break;
         case 3: accuracy_func = profileSpin;
+	    break;
+        case 4: accuracy_func = profileSafety;
 	    break;
         default:
 	    cout << "[shot::build] No matching shot type"
@@ -263,7 +311,6 @@ void BuildProfile :: addCurrent(string userID, double angleerror,
     char temp[query.size()+1];
     query.copy(temp,query.size(),0);
     temp[query.size()] = '\0';
-    // cout << query;
     db->query(temp);
     build(userID, shottype);
 }
