@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     Vector<Vec3f> final_roi;
     Point final;
     Point normalEndpoint;
-    int whiteSize = 0;
+    int whiteSize = 9999;
 
     SnKalman kfchecker;
     ManageLogin login;
@@ -153,17 +153,17 @@ int main(int argc, char **argv)
 
         //! Find colliding points
         col_detector.checkCollision(white_position, previous, original, white_array, final, normalEndpoint, whiteSize);
-        
-        if(white_array.white_positions.size() > (whiteSize+2) && !visited){
+        if(white_array.white_positions.size() > (whiteSize+9) && !visited){
+
             // cout <<  white_array.white_positions[(whiteSize+2)] << endl;
             shot.shotType(final, normalEndpoint, white_array.white_positions[(whiteSize+1)]);
             visited = true;
-            // Mat angle;
-            // angle = src;
-            // line(angle, final, normalEndpoint, Scalar(100, 255, 0), 2, CV_AA);
-            // line(angle, normalEndpoint,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
-            // line(angle, final,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
-            // imshow("angle",angle);
+            Mat angle;
+            angle = src;
+            line(angle, final, normalEndpoint, Scalar(100, 255, 0), 2, CV_AA);
+            line(angle, normalEndpoint,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
+            line(angle, final,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
+            imshow("angle",angle);
         }
 
         //! Escape window on pressing 'Q' or 'q
