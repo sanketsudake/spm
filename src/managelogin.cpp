@@ -90,7 +90,7 @@ string ManageLogin :: getUserID(){
             db->query(temp);
 
             string profile_query =  "INSERT INTO PROFILE VALUES('" + patch::to_string(id) 
-              + "',50,50,50,50,50,0,0,50)";
+              + "',0,0,0,0,0,0,0,0)";
             
             temp[profile_query.size()+1];
             profile_query.copy(temp,profile_query.size(),0);
