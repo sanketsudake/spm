@@ -1,0 +1,1217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>766</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0.006, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(114, 117, 97, 255));</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>1170</x>
+      <y>0</y>
+      <width>201</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(0, 85, 255);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../../../spm/media/ronnie.jpeg</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1152</width>
+      <height>660</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>1170</x>
+      <y>270</y>
+      <width>201</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="sizeIncrement">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 170, 127);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::WinPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>3</number>
+    </property>
+    <property name="columnCount">
+     <number>2</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderHighlightSections">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <row/>
+    <row/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Name</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>11</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>Ronnie</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </item>
+    <item row="1" column="0">
+     <property name="text">
+      <string>World Rank</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>11</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+    </item>
+    <item row="1" column="1">
+     <property name="text">
+      <string>1</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </item>
+    <item row="2" column="0">
+     <property name="text">
+      <string>Best</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </item>
+    <item row="2" column="1">
+     <property name="text">
+      <string>147</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>730</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 170, 255);
+background-color: rgb(241, 241, 210);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>2</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>1</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>1</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>700</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 170, 255);
+background-color: rgb(207, 188, 216);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Played</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>Won</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>Lost</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>670</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>300</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>300</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>300</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Match</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_7">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>670</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>300</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>300</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>300</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Match</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_10">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>670</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>300</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>300</width>
+      <height>16777215</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>300</number>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Shot Accuracy</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_5">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>700</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 170, 255);
+background-color: rgb(207, 188, 216);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Played</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>Won</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>Lost</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_6">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>730</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 170, 255);
+background-color: rgb(241, 241, 210);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>2</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>1</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>1</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_8">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>700</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 170, 255);
+background-color: rgb(207, 188, 216);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Straight</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>Cut</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>Safety</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_11">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>670</y>
+      <width>101</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>60</number>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Spin Acc.</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_13">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>670</y>
+      <width>101</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>60</number>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Power</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_15">
+    <property name="geometry">
+     <rect>
+      <x>1120</x>
+      <y>670</y>
+      <width>101</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>60</number>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Max Score</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_17">
+    <property name="geometry">
+     <rect>
+      <x>1220</x>
+      <y>670</y>
+      <width>101</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(158, 235, 117);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>1</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>60</number>
+    </attribute>
+    <row/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>Overall</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>13</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_9">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>730</y>
+      <width>300</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 170, 255);
+background-color: rgb(241, 241, 210);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>3</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>87</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>56</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>76</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget_12">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>730</y>
+      <width>400</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 170, 255);
+background-color: rgb(241, 241, 210);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="rowCount">
+     <number>1</number>
+    </property>
+    <property name="columnCount">
+     <number>4</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row/>
+    <column/>
+    <column/>
+    <column/>
+    <column/>
+    <item row="0" column="0">
+     <property name="text">
+      <string>87</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>56</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="2">
+     <property name="text">
+      <string>76</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+     </property>
+    </item>
+    <item row="0" column="3">
+     <property name="text">
+      <string>50</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_roi">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>390</y>
+      <width>200</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

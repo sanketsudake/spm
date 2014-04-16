@@ -1,4 +1,4 @@
-#include "gui.hpp"
+#include "../include/gui.hpp"
 
 using namespace std;
 using namespace cv;

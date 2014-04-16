@@ -3,7 +3,7 @@
  e* \brief Consist methods to process collisions
  */
 
-#include "collisionDetector.hpp"
+#include "../include/collisionDetector.hpp"
 #include <vector>
 
 using namespace std;
@@ -65,7 +65,7 @@ void CollisionDetector::drawPrev(Mat &frame)
 }
 
 
-void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array,Point &final, Point &normalEndpoint, int &whiteSize)
+Mat CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array,Point &final, Point &normalEndpoint, int &whiteSize)
 {
     Mat diff;
     Mat iGray;
@@ -75,7 +75,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     vector<Point> metaData;
     //! Identifying only 4 collisions
     if(collisionCount > 4)
-        return ;
+        return interest;
 
     //! Code need to refactorized
     double currSlope = 1000;
@@ -184,10 +184,11 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
 
                 //! Wait after every collision
                 if(collisionCount < 3){  
-                    while(waitKey(1) != 27){
+                    return interest;
+                    // while(waitKey(1) != 27){
                         // imshow("Previous",previous);
-                        imshow("ROI",interest);
-                    }
+                        // imshow("ROI",interest);
+                    // }
                 }
 
             }

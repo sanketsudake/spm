@@ -2,7 +2,7 @@
  * \file shot.cpp
  * \shot related parameters, suggested shots.
  */
-#include "shot.hpp"
+#include "../include/shot.hpp"
 
 using namespace std;
 using namespace cv;

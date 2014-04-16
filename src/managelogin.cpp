@@ -3,8 +3,8 @@
  * \brief Consist methods to authenticate user
  */
 
-#include "managelogin.hpp"
-#include "database.hpp"
+#include "../include/managelogin.hpp"
+#include "../include/database.hpp"
 #include <vector>
 #include <sqlite3.h>
 #include<cstdlib>

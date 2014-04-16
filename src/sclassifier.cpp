@@ -3,8 +3,8 @@
  * \brief Consist methods to classify shots
  */
 
-#include "sclassifier.hpp"
-#include "shot.hpp"
+#include "../include/sclassifier.hpp"
+#include "../include/shot.hpp"
 
 
 Sclassifier:: Sclassifier()

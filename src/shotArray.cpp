@@ -4,7 +4,7 @@
  * required for shot.
  */
 
-#include "shotArray.hpp"
+#include "../include/shotArray.hpp"
 #include <cmath>
 #include <vector>
 using namespace std;
