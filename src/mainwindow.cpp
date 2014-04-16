@@ -55,7 +55,7 @@ void MainWindow::openVideo(char *video)
     Vector<Vec3f> final_roi;
     Point final;
     Point normalEndpoint;
-    int whiteSize = 0;
+    int whiteSize = 9999;
     // Rect roi;
     Mat interest;
 
