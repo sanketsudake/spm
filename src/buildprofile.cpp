@@ -59,7 +59,16 @@ static double profileSafety(double angleError, double dist)
 static double estimateStrength(vector<double> accuracy_vals)
 {
     // Method to be added
-    return 50.0;
+    // Currently just pushing mean for upstream merge
+    // I will be updating this logic in internal
+    // function only
+    int no_values = accuracy_vals.size();
+    double sum = 0;
+    for(int i = 0; i < no_values; i++)
+	sum += accuracy_vals[i];
+
+    double mean = sum / no_values;
+    return mean;
 }
 
 /*!
