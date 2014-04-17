@@ -63,21 +63,21 @@ unsigned int Sclassifier::shot_classifier(double angle,int side, bool iscollinea
     {
         printf("Shot Type : NO_SPIN_HEADON");
         shot_result = NO_SPIN_HEADON;
-        shotclass->setShotType(1);
+        shotclass->setShotType(0);
     }
 
     else if(motion == int(1) && iscollinear && angle>=0.0 && angle <= THRESHOLD_HEADON)
     {
         printf("Shot Type : FORWARD_SPIN_HEADON");
         shot_result = FORWARD_SPIN_HEADON;
-        shotclass->setShotType(3);
+        shotclass->setShotType(2);
     }
 
     else if(motion == int(2) && iscollinear && angle>=0.0 && angle <= THRESHOLD_HEADON)
     {
         printf("Shot Type : BACKWARD_SPIN_HEADON");
         shot_result = BACKWARD_SPIN_HEADON;
-        shotclass->setShotType(3);
+        shotclass->setShotType(6);
     }
 
     else if(angle > THRESHOLD_SPIN_GREATER_THAN_90 && angle <= 180.0)
@@ -85,13 +85,13 @@ unsigned int Sclassifier::shot_classifier(double angle,int side, bool iscollinea
         if(side == int(0)) { 
             printf("Shot Type : RIGHT_SPIN_LEFT");
             shot_result = RIGHT_SPIN_LEFT;
-        shotclass->setShotType(3);
+        shotclass->setShotType(12);
         }
 
         else if (side == int(1)) { 
             printf("Shot Type : LEFT_SPIN_RIGHT");
             shot_result = LEFT_SPIN_RIGHT;
-            shotclass->setShotType(3);
+            shotclass->setShotType(10);
         }
     }
 
@@ -100,13 +100,13 @@ unsigned int Sclassifier::shot_classifier(double angle,int side, bool iscollinea
         if(side == int(0)) { 
             printf("Shot Type : RIGHT_SPIN_RIGHT");
             shot_result = RIGHT_SPIN_RIGHT;
-            shotclass->setShotType(3);
+            shotclass->setShotType(13);
         }
 
         else if (side == int(1)) { 
             printf("Shot Type : LEFT_SPIN_LEFT");
             shot_result = LEFT_SPIN_LEFT;
-            shotclass->setShotType(3);
+            shotclass->setShotType(9);
         }
     }
 
@@ -117,19 +117,19 @@ unsigned int Sclassifier::shot_classifier(double angle,int side, bool iscollinea
             if(side == int(0)) { 
                 printf("Shot Type : RIGHT_SPIN_HEADON");
                 shot_result = RIGHT_SPIN_HEADON;
-                shotclass->setShotType(3);
+                shotclass->setShotType(11);
             }
 
             else if (side == int(1)) { 
                 printf("Shot Type : LEFT_SPIN_HEADON");
                 shot_result = LEFT_SPIN_HEADON;
-                shotclass->setShotType(3);
+                shotclass->setShotType(7);
             }
         }
         else if(!iscollinear) {
             printf("Shot Type : NO_SPIN_CUTSHOT");
             shot_result = NO_SPIN_CUT;
-            shotclass->setShotType(2);
+            shotclass->setShotType(1);
         }
     }		
 

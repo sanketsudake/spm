@@ -155,17 +155,15 @@ int main(int argc, char **argv)
 
         //! Find colliding points
         col_detector.checkCollision(white_position, previous, original, white_array, final, normalEndpoint, whiteSize);
-        if(white_array.white_positions.size() > (whiteSize+9) && !visited){
-
-            // cout <<  white_array.white_positions[(whiteSize+2)] << endl;
+        if(white_array.white_positions.size() > (whiteSize+2) && !visited){
             shot.shotType(final, normalEndpoint, white_array.white_positions[(whiteSize+1)]);
             visited = true;
-            Mat angle;
-            angle = src;
-            line(angle, final, normalEndpoint, Scalar(100, 255, 0), 2, CV_AA);
-            line(angle, normalEndpoint,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
-            line(angle, final,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
-            imshow("angle",angle);
+            // Mat angle;
+            // angle = src;
+            // line(angle, final, normalEndpoint, Scalar(100, 255, 0), 2, CV_AA);
+            // line(angle, normalEndpoint,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
+            // line(angle, final,  white_array.white_positions[(whiteSize+1)], Scalar(100, 255, 0), 2, CV_AA);
+            // imshow("angle",angle);
         }
 
         //! Escape window on pressing 'Q' or 'q
