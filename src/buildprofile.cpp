@@ -20,6 +20,7 @@ namespace patch
     }
 }
 
+
 static double profileStraight(double angleError, double dist)
 {
     const double angle_weight = 100, dist_weight = 100;
@@ -56,19 +57,45 @@ static double profileSafety(double angleError, double dist)
     return 100 - (r_angle * r_dist)/100;
 }
 
+// Optimizations in sigmoid functions
+static double var_sigmoid(double x)
+{
+    return 1 - (1.0 / (1.0 + exp(-x * 0.01)));
+}
+
+static double n_sigmoid(double x)
+{
+    return (1.0 / (1.0 + exp(-x * 0.1))) - 0.5;
+}
+
+// Estimate particular strenght for each shot type
+// We can profile as our input range grows
 static double estimateStrength(vector<double> accuracy_vals)
 {
-    // Method to be added
-    // Currently just pushing mean for upstream merge
-    // I will be updating this logic in internal
-    // function only
     int no_values = accuracy_vals.size();
+
     double sum = 0;
     for(int i = 0; i < no_values; i++)
 	sum += accuracy_vals[i];
-
     double mean = sum / no_values;
-    return mean;
+    
+    sum = 0;
+    for(int i = 0; i < no_values; i++){
+       sum += pow(accuracy_vals[i] - mean, 2);
+    }
+    
+    double variance = sum / (no_values);
+    
+    // cout << "No => " << no_values << endl;
+    // cout << "Sigmoid =>"<< n_sigmoid(no_values) << " " << var_sigmoid(sqrt(variance)) << endl;
+    // cout << "Mean => " << mean << endl;
+
+    // Combining two sigmoid functions to yeild better result
+    // based on variance and no of values
+    // Estimate will be always between 0 to 100
+    double estimate = (n_sigmoid(no_values) + var_sigmoid(sqrt(variance))) * mean;
+    
+    return estimate;
 }
 
 /*!
@@ -236,20 +263,22 @@ void BuildProfile :: build(string userID,int shottype)
          vector<string> row = *it;
 	 accuracy_vals.push_back(atof(row.at(0).c_str()));
     }
+
+    double estimate = estimateStrength(accuracy_vals);
     
     switch(shottype)
     {
     case 1:
-	straight = estimateStrength(accuracy_vals);
+	straight = estimate;
 	break;
     case 2:
-	cut = estimateStrength(accuracy_vals);
+	cut = estimate;
 	break;
     case 3:
-	spin = estimateStrength(accuracy_vals);
+	spin = estimate;
 	break;
     case 4:
-	safety = estimateStrength(accuracy_vals);
+	safety = estimate;
 	break;
     default:
 	cout << "Case not found." << endl;
