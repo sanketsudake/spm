@@ -10,6 +10,7 @@
 using namespace std;
 using namespace cv;
 
+extern Mat roi_image;
 
 DetectShot::DetectShot()
 {
@@ -118,6 +119,9 @@ void DetectShot::preshotTrigger(Mat &frame)
 void DetectShot::shotTrigger(Mat &frame)
 {
     shotcount++;
+    cout<<"Entered here!"<<endl;
+    roi_image = imread("/home/sagar/Workspace/spm/media/whiteBall.jpg", CV_LOAD_IMAGE_COLOR);
+    cv::resize(roi_image, roi_image, Size(200, 200), 2, 2, INTER_CUBIC);
 }
 
 

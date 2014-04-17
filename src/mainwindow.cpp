@@ -28,6 +28,8 @@
 using namespace std;
 using namespace cv;
 
+Mat roi_image = Mat(Size(200, 200), CV_32F, CV_RGB(255,255,255));
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -57,7 +59,6 @@ void MainWindow::openVideo(char *video)
     Point normalEndpoint;
     int whiteSize = 0;
     // Rect roi;
-    Mat interest;
 
     SnKalman kfchecker;
     DetectBall white_detector;
@@ -122,6 +123,7 @@ void MainWindow::openVideo(char *video)
             // Do not if block for first shot starting
             if(!flag)
             {
+                interface.cut = 88;
                 cout << "\t\"total_distance\" : " << white_array.totalDist() << ","<< endl;
                 cout << "\t\"total_time\" : " << white_array.totalTime() << ","<< endl;
                 // Velocity in cm/sec
@@ -144,7 +146,6 @@ void MainWindow::openVideo(char *video)
 
                 //shot suggestion system call this function when we notify end of shot
                 // imshow("last Frame ",prev);
-
             }
 
             white_array.clearArray();
@@ -178,14 +179,11 @@ void MainWindow::openVideo(char *video)
         }
 
         //! Find colliding points
-        interest = col_detector.checkCollision(white_position, previous, original, white_array, final, normalEndpoint, whiteSize);
-        
-        cout<<interest.cols<<endl;
-        cout<<interest.rows<<endl;
-        cout<<"Visit:"<<visited<<endl;
+        col_detector.checkCollision(white_position, previous, original, white_array, final, normalEndpoint, whiteSize);
 
-        QImage roiImage = QImage((const unsigned char*)(interest.data), interest.cols,interest.rows,QImage::Format_RGB888).rgbSwapped();
+        QImage roiImage = QImage((const unsigned char*)(roi_image.data), roi_image.cols,roi_image.rows,QImage::Format_RGB888).rgbSwapped();
         ui->label_roi->setPixmap(QPixmap::fromImage(roiImage));
+
 
         if(white_array.white_positions.size() > (whiteSize+9) && !visited){
             // cout <<  white_array.white_positions[(whiteSize+2)] << endl;
@@ -218,8 +216,24 @@ void MainWindow::openVideo(char *video)
 
         // cv::resize(src, src, Size(src.cols*0.75, src.rows*0.75), 2, 2, INTER_CUBIC);
 
+        showProfile(interface);
         QImage imageView = QImage((const unsigned char*)(src.data), src.cols,src.rows,QImage::Format_RGB888).rgbSwapped();
         ui->label->setPixmap(QPixmap::fromImage(imageView));
 
     }while(waitKey(1)!=27);
+}
+
+void MainWindow::showProfile(GUI interface){
+
+    QTableWidgetItem *item = new QTableWidgetItem();
+    item->text(QString::number(interface.straight));
+
+    ui->tableWidget_9->setItem(0, 0, item);
+    // ui->tableWidget_9->setItem(0, 0, new QTableWidgetItem(QString::number(interface.straight)));
+    ui->tableWidget_9->setItem(0, 1, new QTableWidgetItem(QString::number(interface.cut)));
+    ui->tableWidget_9->setItem(0, 2, new QTableWidgetItem(QString::number(interface.safety)));
+
+    ui->tableWidget_12->setItem(0, 0, new QTableWidgetItem(QString::number(interface.spin)));
+    ui->tableWidget_12->setItem(0, 1, new QTableWidgetItem(QString::number(interface.power)));
+    ui->tableWidget_12->setItem(0, 3, new QTableWidgetItem(QString::number(interface.overall)));
 }

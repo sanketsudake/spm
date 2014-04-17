@@ -8,6 +8,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv/cv.h>
+#include "../include/gui.hpp"
 
 using namespace cv;
 
@@ -25,6 +26,7 @@ class MainWindow : public QMainWindow
         ~MainWindow();
 
         void openVideo(char *video);
+        void showProfile(GUI );
 
     protected:
         QString FileOpName;

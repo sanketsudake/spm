@@ -62,7 +62,7 @@ class CollisionDetector
         void setShotStartPoint(Point position);
         void drawPrev(Mat &frame);
         void shotType();
-        Mat checkCollision(Point position, Mat &frame, Mat &original, ShotArray &,Point &, Point &, int &);
+        void checkCollision(Point position, Mat &frame, Mat &original, ShotArray &,Point &, Point &, int & );
         void collisionPoint(Mat &, Point , Point, Point &, Point &);
         int perpendicularDistance(Mat&, Point, Point);
         int distanceCalculate(Point, Point);

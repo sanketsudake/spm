@@ -28,6 +28,12 @@ class GUI
         int shot_count;
         // All parameters of profile
         // write to these variables and it will display in profile_table window.
+        int straight;
+        int cut;
+        int safety;
+        int spin; 
+        int power;
+        int overall;
 
 	    GUI();
 	    ~GUI();

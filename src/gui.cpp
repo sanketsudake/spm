@@ -9,6 +9,12 @@ GUI::GUI()
     game_statistics.create(150, 300, CV_8UC3);
     profile_table.create(150, 1366, CV_8UC3);
     frame_count = 0;
+    straight = 50;
+    cut = 60;
+    safety = 80;
+    spin = 40;
+    power = 75; 
+    overall = 66;
 }
 
 GUI::~GUI()

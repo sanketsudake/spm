@@ -9,6 +9,7 @@
 using namespace std;
 using namespace cv;
 
+extern Mat roi_image;
 
 int CollisionDetector::distanceCalculate(Point p1, Point p2)
 {
@@ -65,7 +66,7 @@ void CollisionDetector::drawPrev(Mat &frame)
 }
 
 
-Mat CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array,Point &final, Point &normalEndpoint, int &whiteSize)
+void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &original, ShotArray &shot_array,Point &final, Point &normalEndpoint, int &whiteSize)
 {
     Mat diff;
     Mat iGray;
@@ -74,8 +75,11 @@ Mat CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origin
     int interDistance;
     vector<Point> metaData;
     //! Identifying only 4 collisions
-    if(collisionCount > 4)
-        return interest;
+    if(collisionCount > 4){
+        // interest.release();
+        // return roi_image;
+        return ;
+    }
 
     //! Code need to refactorized
     double currSlope = 1000;
@@ -184,7 +188,8 @@ Mat CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origin
 
                 //! Wait after every collision
                 if(collisionCount < 3){  
-                    return interest;
+                    roi_image = interest.clone();
+                    // return interest;
                     // while(waitKey(1) != 27){
                         // imshow("Previous",previous);
                         // imshow("ROI",interest);
