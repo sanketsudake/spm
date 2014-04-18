@@ -9,6 +9,7 @@
 using namespace std;
 using namespace cv;
 
+extern Mat roi_image;
 
 int CollisionDetector::distanceCalculate(Point p1, Point p2)
 {
@@ -74,8 +75,11 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     int interDistance;
     vector<Point> metaData;
     //! Identifying only 4 collisions
-    if(collisionCount > 4)
+    if(collisionCount > 4){
+        // interest.release();
+        // return roi_image;
         return ;
+    }
 
     //! Code need to refactorized
     double currSlope = 1000;
@@ -84,9 +88,16 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     int ydelta = -(position.y - prevPoint.y);
 
     //! Distance of white ball between 2 frames
-    interDistance = distanceCalculate(position, prevPoint);
 
+    // cout<<"InterDistance: "<<interDistance<<endl;
     if((xdelta || ydelta)){
+        interDistance = distanceCalculate(position, prevPoint);
+        // cout<<"InterDistance: "<<interDistance<<endl;
+
+        if(!interDistance)
+            cout<<"Ball stopped moving!"<<endl;
+        // if((xdelta || ydelta) && interDistance>=10){
+        // if(xdelta){
         if(!xdelta)
             currSlope = 899;
         else
@@ -177,10 +188,12 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
 
                 //! Wait after every collision
                 if(collisionCount < 3){  
-                    while(waitKey(1) != 27){
+                    roi_image = interest.clone();
+                    // return interest;
+                    // while(waitKey(1) != 27){
                         // imshow("Previous",previous);
-                        imshow("ROI",interest);
-                    }
+                        // imshow("ROI",interest);
+                    // }
                 }
 
             }

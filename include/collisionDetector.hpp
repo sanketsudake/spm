@@ -10,6 +10,8 @@
 #include <cmath>
 #include <iostream>
 
+// #define TWIDTH 1028 
+// #define THEIGHT 532 
 #define TWIDTH 1140 
 #define THEIGHT 652 
 #define PI 3.14159265
@@ -60,7 +62,7 @@ class CollisionDetector
         void setShotStartPoint(Point position);
         void drawPrev(Mat &frame);
         void shotType();
-        void checkCollision(Point position, Mat &frame, Mat &original, ShotArray &,Point &, Point &, int &);
+        void checkCollision(Point position, Mat &frame, Mat &original, ShotArray &,Point &, Point &, int & );
         void collisionPoint(Mat &, Point , Point, Point &, Point &);
         int perpendicularDistance(Mat&, Point, Point);
         int distanceCalculate(Point, Point);

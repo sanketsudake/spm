@@ -20,7 +20,6 @@ class Shot
         Point startpoint, p1, p2;
         double angleError;
     public:
-
         int shottype;
         Shot();
         ~Shot();

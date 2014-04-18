@@ -34,7 +34,8 @@ public:
 	Point trackFilteredObject(Mat &frame);
 	Point detectWhite(Mat &frame);
 	void mapPosition(Mat &frame, Point position, int status);
-    void showFrameNo(Mat &frame);
+    // int showFrameNo(Mat &frame);
+    int showFrameNo();
 };
 
 

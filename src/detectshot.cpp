@@ -10,6 +10,7 @@
 using namespace std;
 using namespace cv;
 
+extern Mat roi_image;
 
 DetectShot::DetectShot()
 {
@@ -53,7 +54,7 @@ int DetectShot::BgSubtractor(Mat &frame)
 }
 
 
-int DetectShot::shotChecker(Mat &frame, Point position)
+int DetectShot::shotChecker(Mat &frame, int *count, Point position)
 {
     int returnval = 0;
 
@@ -101,7 +102,8 @@ int DetectShot::shotChecker(Mat &frame, Point position)
             flag = contour_temp = shottemp = 0;
         }
     }
-    displayShotnumber(frame);
+    // displayShotnumber(game_statistics);
+    *count = shotcount;
 
     return returnval;
 }
@@ -109,14 +111,20 @@ int DetectShot::shotChecker(Mat &frame, Point position)
 
 void DetectShot::preshotTrigger(Mat &frame)
 {
-    putText(frame, "Press ESC.",
-            Point(600, 500), 1, 1, Scalar(200, 200, 200), 2);
+    // putText(frame, "Press ESC.",
+    //         Point(600, 500), 1, 1, Scalar(200, 200, 200), 2);
 }
 
 
 void DetectShot::shotTrigger(Mat &frame)
 {
     shotcount++;
+    if(shotcount<=1)
+        roi_image = imread("./media/whiteBall.png", CV_LOAD_IMAGE_COLOR);
+    else{
+        roi_image = imread("./media/noSpin.png", CV_LOAD_IMAGE_COLOR);
+    }
+    cv::resize(roi_image, roi_image, Size(200, 200), 2, 2, INTER_CUBIC);
 }
 
 
@@ -124,9 +132,9 @@ void DetectShot::displayShotnumber(Mat &frame)
 {
     //! Show shot number on screen
     stringstream ss;
-    ss << "Shot No : " << shotcount;
-    putText(frame, ss.str(),
-            Point(40, 15), 1, 1, Scalar(255, 255, 255), 2);
+    ss << " " << shotcount;
+    // putText(frame, ss.str(), Point(40, 15), 1, 1, Scalar(255, 255, 255), 2);
+    putText(frame, ss.str(), Point(frame.cols/2+10, frame.rows/4*3-25), 1, 1, Scalar(0, 0, 0), 2);
 }
 
 
