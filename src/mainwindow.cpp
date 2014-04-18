@@ -78,7 +78,7 @@ void MainWindow::openVideo(char *video)
         userId = login.getUserID();
     }while(userId == "\0");
 
-    BuildProfile build_profile((string)"ronnie11");
+    BuildProfile build_profile(userId);
 
     /*!
      * Open user input video from given path
