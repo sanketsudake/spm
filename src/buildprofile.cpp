@@ -167,6 +167,12 @@ BuildProfile::BuildProfile(string id)
 	maxscore = atof(row.at(7).c_str());
         overall = atof(row.at(8).c_str());
     }
+    gCut = cut;
+    gSpin = spin;
+    gStraight = straight;
+    gPower = powerAcc;
+    gOverall = overall;
+    gSafety = safety;
     generateThetaVals();
 }
 
