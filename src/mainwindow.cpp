@@ -132,7 +132,6 @@ void MainWindow::openVideo(char *video)
 
                 shottype = shot_classify.shot_classifier(0.0,-1,1,0,&shot);
 
-
                 double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
 
                 //int currAngleAcc = build_profile.profileAngle(angleError);
@@ -140,6 +139,7 @@ void MainWindow::openVideo(char *video)
                 build_profile.build(angleError, &shot);
                 build_profile.addCurrent(userId,angleError, white_array.totalDist(), white_array.totalTime(),
                         white_array.shotVelocity()*(0.367347));
+
                 build_profile.setLastFrame(src);
                 prev = build_profile.getLastFrame();
                 //shot type 
@@ -217,6 +217,8 @@ void MainWindow::openVideo(char *video)
         // cv::resize(src, src, Size(src.cols*0.75, src.rows*0.75), 2, 2, INTER_CUBIC);
 
         showProfile(interface);
+        showGameStat(interface);
+
         QImage imageView = QImage((const unsigned char*)(src.data), src.cols,src.rows,QImage::Format_RGB888).rgbSwapped();
         ui->label->setPixmap(QPixmap::fromImage(imageView));
 
@@ -225,15 +227,21 @@ void MainWindow::openVideo(char *video)
 
 void MainWindow::showProfile(GUI interface){
 
-    QTableWidgetItem *item = new QTableWidgetItem();
-    item->text(QString::number(interface.straight));
+    // QTableWidgetItem *item = new QTableWidgetItem();
+    // item->text(QString::number(interface.straight));
 
-    ui->tableWidget_9->setItem(0, 0, item);
-    // ui->tableWidget_9->setItem(0, 0, new QTableWidgetItem(QString::number(interface.straight)));
+    // ui->tableWidget_9->setItem(0, 0, item);
+    ui->tableWidget_9->setItem(0, 0, new QTableWidgetItem(QString::number(interface.straight)));
     ui->tableWidget_9->setItem(0, 1, new QTableWidgetItem(QString::number(interface.cut)));
     ui->tableWidget_9->setItem(0, 2, new QTableWidgetItem(QString::number(interface.safety)));
 
     ui->tableWidget_12->setItem(0, 0, new QTableWidgetItem(QString::number(interface.spin)));
     ui->tableWidget_12->setItem(0, 1, new QTableWidgetItem(QString::number(interface.power)));
     ui->tableWidget_12->setItem(0, 3, new QTableWidgetItem(QString::number(interface.overall)));
+}
+
+void MainWindow::showGameStat(GUI interface){
+
+    ui->tableWidget_14->setItem(0, 1, new QTableWidgetItem(QString::number(interface.frame_count)));
+    ui->tableWidget_14->setItem(1, 1, new QTableWidgetItem(QString::number(interface.shot_count)));
 }

@@ -119,8 +119,11 @@ void DetectShot::preshotTrigger(Mat &frame)
 void DetectShot::shotTrigger(Mat &frame)
 {
     shotcount++;
-    cout<<"Entered here!"<<endl;
-    roi_image = imread("/home/sagar/Workspace/spm/media/whiteBall.jpg", CV_LOAD_IMAGE_COLOR);
+    cout<<"Shotcount: "<<shotcount<<endl;
+    if(shotcount<=1)
+        roi_image = imread("./media/whiteBall.png", CV_LOAD_IMAGE_COLOR);
+    else
+        roi_image = imread("./media/noSpin.png", CV_LOAD_IMAGE_COLOR);
     cv::resize(roi_image, roi_image, Size(200, 200), 2, 2, INTER_CUBIC);
 }
 

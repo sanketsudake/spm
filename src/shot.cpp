@@ -94,12 +94,12 @@ double Shot::showFeedback(Mat &frame, ShotArray *shot_array,string shottype)
     stringstream ss;
     ss << "AngleError : " << angleError << " deg";
     cout << "\t\"angle_error\" : " << angleError << endl;
-    putText(frame, ss.str(),
-            Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
+    // putText(frame, ss.str(),
+    //         Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
     ss.str("Shot Type : ");
     //   ss<<shottype;
-    putText(frame, ss.str()+shottype,
-            Point(600, 550), 1, 1, Scalar(255, 255, 255), 2);
+    // putText(frame, ss.str()+shottype,
+    //         Point(600, 550), 1, 1, Scalar(255, 255, 255), 2);
 
     return angleError;
 }

@@ -92,7 +92,7 @@ void CollisionDetector::checkCollision(Point position, Mat &previous, Mat &origi
     // cout<<"InterDistance: "<<interDistance<<endl;
     if((xdelta || ydelta)){
         interDistance = distanceCalculate(position, prevPoint);
-        cout<<"InterDistance: "<<interDistance<<endl;
+        // cout<<"InterDistance: "<<interDistance<<endl;
 
         if(!interDistance)
             cout<<"Ball stopped moving!"<<endl;
