@@ -207,6 +207,9 @@ background-color: rgb(241, 241, 210);</string>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -290,6 +293,9 @@ background-color: rgb(207, 188, 216);</string>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="rowCount">
      <number>1</number>
@@ -386,6 +392,9 @@ background-color: rgb(207, 188, 216);</string>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -455,6 +464,9 @@ background-color: rgb(207, 188, 216);</string>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="rowCount">
      <number>1</number>
@@ -526,6 +538,9 @@ background-color: rgb(207, 188, 216);</string>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -584,6 +599,9 @@ background-color: rgb(207, 188, 216);</string>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="rowCount">
      <number>1</number>
@@ -669,6 +687,9 @@ background-color: rgb(241, 241, 210);</string>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -753,6 +774,9 @@ background-color: rgb(207, 188, 216);</string>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -830,6 +854,9 @@ background-color: rgb(207, 188, 216);</string>
     <property name="frameShadow">
      <enum>QFrame::Plain</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -882,6 +909,9 @@ background-color: rgb(207, 188, 216);</string>
     <property name="frameShadow">
      <enum>QFrame::Plain</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -933,6 +963,9 @@ background-color: rgb(207, 188, 216);</string>
     </property>
     <property name="frameShadow">
      <enum>QFrame::Plain</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="rowCount">
      <number>1</number>
@@ -1045,6 +1078,9 @@ background-color: rgb(241, 241, 210);</string>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="rowCount">
      <number>1</number>
     </property>
@@ -1128,6 +1164,9 @@ background-color: rgb(241, 241, 210);</string>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="rowCount">
      <number>1</number>
@@ -1242,6 +1281,9 @@ background-color: rgb(241, 241, 210);</string>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
     <property name="rowCount">
      <number>2</number>

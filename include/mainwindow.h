@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow
 
         void openVideo(char *video);
         void showProfile(GUI );
-        void showGameStat(GUI );
+        void showGameStat(GUI , string);
 
     protected:
         QString FileOpName;

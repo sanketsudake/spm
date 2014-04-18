@@ -185,7 +185,7 @@ void MainWindow::openVideo(char *video)
         ui->label_roi->setPixmap(QPixmap::fromImage(roiImage));
 
 
-        if(white_array.white_positions.size() > (whiteSize+9) && !visited){
+        if(white_array.white_positions.size() > (whiteSize+2) && !visited){
             // cout <<  white_array.white_positions[(whiteSize+2)] << endl;
             shot.shotType(final, normalEndpoint, white_array.white_positions[(whiteSize+1)]);
             visited = true;
@@ -217,7 +217,7 @@ void MainWindow::openVideo(char *video)
         // cv::resize(src, src, Size(src.cols*0.75, src.rows*0.75), 2, 2, INTER_CUBIC);
 
         showProfile(interface);
-        showGameStat(interface);
+        showGameStat(interface, userId);
 
         QImage imageView = QImage((const unsigned char*)(src.data), src.cols,src.rows,QImage::Format_RGB888).rgbSwapped();
         ui->label->setPixmap(QPixmap::fromImage(imageView));
@@ -241,8 +241,9 @@ void MainWindow::showProfile(GUI interface){
     ui->tableWidget_12->setItem(0, 3, new QTableWidgetItem(QString::number(interface.overall)));
 }
 
-void MainWindow::showGameStat(GUI interface){
+void MainWindow::showGameStat(GUI interface, string userid){
 
     ui->tableWidget_14->setItem(0, 1, new QTableWidgetItem(QString::number(interface.frame_count)));
     ui->tableWidget_14->setItem(1, 1, new QTableWidgetItem(QString::number(interface.shot_count)));
+    // ui->tableWidget_2->setItem(0, 1, new QTableWidgetItem(userid));
 }
