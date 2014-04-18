@@ -130,7 +130,8 @@ void MainWindow::openVideo(char *video)
                 cout << "\t\"velocity\" : " << white_array.shotVelocity() * (0.367347)  << "," << endl;
                 shot_detector.preshotTrigger(src);
 
-                shottype = shot_classify.shot_classifier(0.0,-1,1,0,&shot);
+                shottype = shot.shottype;
+                // shottype = shot_classify.shot_classifier(0.0,-1,1,0,&shot);
 
                 double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
                 //int currAngleAcc = build_profile.profileAngle(angleError);
@@ -206,7 +207,7 @@ void MainWindow::openVideo(char *video)
 
         // Uncomment to debug code
         // while(waitKey(1) != 27);
-        
+
         // interface.ShowProfilePicture();
         // interface.ShowGameStatistics(userId);
         // interface.ShowProfileTable();

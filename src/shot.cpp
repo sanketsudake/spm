@@ -3,7 +3,7 @@
  * \shot related parameters, suggested shots.
  */
 #include "../include/shot.hpp"
-
+#include "../include/sclassifier.hpp"
 using namespace std;
 using namespace cv;
 
@@ -91,15 +91,13 @@ double Shot::showFeedback(Mat &frame, ShotArray *shot_array,string shottype)
 {
     //using cosine law
     angleError = abs(shot_array->angleError(p1) * 180 / M_PI);
-    stringstream ss;
-    ss << "AngleError : " << angleError << " deg";
-    cout << "\t\"angle_error\" : " << angleError << endl;
-    // putText(frame, ss.str(),
-    //         Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
-    ss.str("Shot Type : ");
-    //   ss<<shottype;
-    // putText(frame, ss.str()+shottype,
-    //         Point(600, 550), 1, 1, Scalar(255, 255, 255), 2);
+    stringstream ss,ss2;
+     ss << "AngleError : " << angleError << " deg";
+    putText(frame, ss.str(),
+            Point(600, 600), 1, 1, Scalar(255, 255, 255), 2);
+    ss2<<shottype;
+    putText(frame, ss2.str(),
+            Point(600, 570), 1, 1, Scalar(255, 255, 255), 2);
 
     return angleError;
 }
@@ -144,6 +142,27 @@ void Shot :: shotType(Point final, Point normalEndpoint, Point white){
     //Calculated for purpose of spin detection.
     double angle = acos(((a*a) + (c*c) - (b*b))/(2*a*c))*180/3.1415926;
     cout << "\n Angle betn Normal and White_Final: " << angle << endl;
+    int deltaX = final.x - normalEndpoint.x;
+    int deltaY = final.y - white.y;
+    int side = 0;
+    int motion = 0;
+    if(deltaX>=0 && deltaY >= 0){
+        side = 1;
+        motion = 1;
+    }else  if(deltaX>=0 && deltaY < 0){
+        side = 0; 
+        motion = 0;
+    }
+    else  if(deltaX<0 && deltaY >= 0){
+        side = 0;
+        motion = 1;
+    }
+    else  if(deltaX<0 && deltaY < 0){
+        side = 1; 
+        motion = 1;
+    }
+    Sclassifier shot_classify;
+    shot_classify.shot_classifier(angle, side, false,motion,this);
 
 }
 double Shot :: getSuggDist(){
