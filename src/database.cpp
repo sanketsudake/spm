@@ -1,6 +1,6 @@
 #include<iostream>
 
-#include "../include/database.hpp"
+#include "database.hpp"
 
 Database :: Database(char *filename){
     database = NULL;

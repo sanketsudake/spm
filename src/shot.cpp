@@ -2,8 +2,8 @@
  * \file shot.cpp
  * \shot related parameters, suggested shots.
  */
-#include "../include/shot.hpp"
-#include "../include/sclassifier.hpp"
+#include "shot.hpp"
+#include "sclassifier.hpp"
 using namespace std;
 using namespace cv;
 

@@ -3,7 +3,7 @@
  * \brief Consist methods to build user profile
  */
 
-#include "../include/buildprofile.hpp"
+#include "buildprofile.hpp"
 #include <cmath>
 #include<cstdlib>
 #include <sstream>

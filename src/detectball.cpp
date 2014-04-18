@@ -3,7 +3,7 @@
  * \brief Consist methods to detect ball
  */
 
-#include "../include/detectball.hpp"
+#include "detectball.hpp"
 
 
 using namespace std;

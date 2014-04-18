@@ -3,7 +3,7 @@
  e* \brief Consist methods to process collisions
  */
 
-#include "../include/collisionDetector.hpp"
+#include "collisionDetector.hpp"
 #include <vector>
 
 using namespace std;

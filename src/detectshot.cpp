@@ -3,7 +3,7 @@
  * \brief Consist methods to process shot
  */
 
-#include "../include/detectshot.hpp"
+#include "detectshot.hpp"
 #include <cmath>
 #include <vector>
 
