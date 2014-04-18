@@ -74,9 +74,9 @@ void MainWindow::openVideo(char *video)
     int flag = 1;
     static string userId;
 
-    // do{
-    //     userId = login.getUserID();
-    // }while(userId == "\0");
+    do{
+        userId = login.getUserID();
+    }while(userId == "\0");
 
     BuildProfile build_profile((string)"ronnie11");
 
@@ -133,13 +133,11 @@ void MainWindow::openVideo(char *video)
                 shottype = shot_classify.shot_classifier(0.0,-1,1,0,&shot);
 
                 double angleError = shot.showFeedback(src, &white_array,shot_classify.getShotString(shottype));
-
                 //int currAngleAcc = build_profile.profileAngle(angleError);
                 //cout << "Current Angle Accuracy: "<<currAngleAcc <<endl;
                 build_profile.build(angleError, &shot);
                 build_profile.addCurrent(userId,angleError, white_array.totalDist(), white_array.totalTime(),
                         white_array.shotVelocity()*(0.367347));
-
                 build_profile.setLastFrame(src);
                 prev = build_profile.getLastFrame();
                 //shot type 
@@ -170,9 +168,11 @@ void MainWindow::openVideo(char *video)
 
         if(trigger_val)
         {
-            if(!flag)
+            if(!flag){
                 //! While ESC is not pressed dont proceed to next shot
-                while(waitKey(1) != 27);
+                // while(waitKey(1) != 27);
+            }
+
             shot.setShotStartP(white_position);
             shot.clear();
             flag = 0;
@@ -222,7 +222,8 @@ void MainWindow::openVideo(char *video)
         QImage imageView = QImage((const unsigned char*)(src.data), src.cols,src.rows,QImage::Format_RGB888).rgbSwapped();
         ui->label->setPixmap(QPixmap::fromImage(imageView));
 
-    }while(waitKey(1)!=27);
+    }while(1);
+    // }while(waitKey(1)!=27);
 }
 
 void MainWindow::showProfile(GUI interface){
