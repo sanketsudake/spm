@@ -9,7 +9,8 @@
 #include <sstream>
 using namespace cv;
 using namespace std;
-
+extern float gSpin,gStraight,gCut,gOverall,gPower,gSafety;
+ 
 namespace patch
 {
     template < typename T > std::string to_string( const T& n )
@@ -304,6 +305,12 @@ void BuildProfile :: build(string userID,int shottype)
     query.copy(temp2,query.size(),0);
     temp2[query.size()] = '\0';
     db->query(temp2);
+    gCut = cut;
+    gSpin = spin;
+    gStraight = straight;
+    gPower = powerAcc;
+    gOverall = overall;
+    gSafety = safety;
 }
 
 void BuildProfile :: addCurrent(string userID, double angleerror,

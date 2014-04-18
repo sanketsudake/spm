@@ -29,7 +29,7 @@ using namespace std;
 using namespace cv;
 
 Mat roi_image = Mat(Size(200, 200), CV_32F, CV_RGB(255,255,255));
-
+float gSpin,gStraight,gCut,gOverall,gPower,gSafety;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -238,13 +238,13 @@ void MainWindow::showProfile(GUI interface){
     // item->text(QString::number(interface.straight));
 
     // ui->tableWidget_9->setItem(0, 0, item);
-    ui->tableWidget_9->setItem(0, 0, new QTableWidgetItem(QString::number(interface.straight)));
-    ui->tableWidget_9->setItem(0, 1, new QTableWidgetItem(QString::number(interface.cut)));
-    ui->tableWidget_9->setItem(0, 2, new QTableWidgetItem(QString::number(interface.safety)));
+    ui->tableWidget_9->setItem(0, 0, new QTableWidgetItem(QString::number(gStraight)));
+    ui->tableWidget_9->setItem(0, 1, new QTableWidgetItem(QString::number(gCut)));
+    ui->tableWidget_9->setItem(0, 2, new QTableWidgetItem(QString::number(gSafety)));
 
-    ui->tableWidget_12->setItem(0, 0, new QTableWidgetItem(QString::number(interface.spin)));
-    ui->tableWidget_12->setItem(0, 1, new QTableWidgetItem(QString::number(interface.power)));
-    ui->tableWidget_12->setItem(0, 3, new QTableWidgetItem(QString::number(interface.overall)));
+    ui->tableWidget_12->setItem(0, 0, new QTableWidgetItem(QString::number(gSpin)));
+    ui->tableWidget_12->setItem(0, 1, new QTableWidgetItem(QString::number(gPower)));
+    ui->tableWidget_12->setItem(0, 3, new QTableWidgetItem(QString::number(gOverall)));
 }
 
 void MainWindow::showGameStat(GUI interface, string userid){
