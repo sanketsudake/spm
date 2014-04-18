@@ -11,6 +11,8 @@ Execute code
 ```
 $ git clone https://github.com/tripples/spm.git ; cd spm
 $ source packages.txt
+$./spm.sh --syncdb
+$./spm.sh --restore #if you want ready snapshot
 $./spm.sh --build
 $./spm.sh --run video_path
 ```
