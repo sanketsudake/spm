@@ -16,3 +16,6 @@ $./spm.sh --restore #if you want ready snapshot
 $./spm.sh --build
 $./spm.sh --run video_path
 ```
+
+Patent Info
+Patent Pending Ref No. 1399/MUM/2014
